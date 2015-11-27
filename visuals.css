@@ -1,0 +1,29 @@
+
+#field {
+	width: 512px;
+	height: 512px;
+	background-color: NavajoWhite;
+	margin: auto auto;
+	display: block;
+
+	fill: Sienna;
+	stroke: Sienna;
+	cursor: crosshair;
+	box-shadow: 0 0 .5em .25em NavajoWhite;
+}
+
+.points g:nth-child(1) circle {
+	fill: SkyBlue;
+}
+
+.points g:nth-child(2) circle {
+	fill: Tomato;
+}
+
+.lines line, .dragline line {
+	stroke-width: .5em;
+}
+
+.dragline line {
+	stroke: Coral;
+}

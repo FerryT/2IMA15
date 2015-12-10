@@ -6,6 +6,7 @@
 	<script src="geometry.js"></script>
 	<script src="game.js"></script>
 	<script src="visuals.js"></script>
+	<script src="sliceAlgorithms.js"></script>
 	<link rel="stylesheet" type="text/css" href="interface.css">
 	<link rel="stylesheet" type="text/css" href="visuals.css">
 </head>
@@ -34,9 +35,12 @@
 	<div id="options" class="page">
 		<h1>Options</h1>
 	</div>
-	<div id="about" class="page">
-		<h1>About</h1>
-	</div>
+	<nav id="about" class="page">
+		<a id="btn-algorithms">Algorithms</a>
+		<a id="btn-duality">Duality</a>
+		<a id="btn-info">Info</a>
+		<a id="btn-credits">Credits</a>
+	</nav>
 	<div id="loader" class="page">
 		<h1>Loading...</h1>
 	</div>
@@ -50,18 +54,22 @@
 				rect = game.rect.shrink(20),
 				field = new Field('field', game);
 
-			game.addLevel(new Level('test', [
+			var groupOne = [
 					rect.randomPoint(),
 					rect.randomPoint(),
 					rect.randomPoint(),
-				],[
+				];
+			var groupTwo =	[
 					rect.randomPoint(),
 					rect.randomPoint(),
 					rect.randomPoint(),
-				]));
+				];
 
+			game.addLevel(new Level('test', groupOne, groupTwo));
 			game.start(1);
+			game.slice(NaiveAlgorithm(groupOne, groupTwo))
 			field.updatePoints();
+			field.updateLines();
 
 			window.game = game;
 			window.field = field;

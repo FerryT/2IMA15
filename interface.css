@@ -65,3 +65,26 @@ svg.icon {
 	background: Papayawhip;
 	color: Sienna;
 }
+
+#about a {
+	display: block;
+	margin: 2em auto;
+	width: 5em;
+	height: 5em;
+	background: Sienna;
+	text-align: center;
+	padding: 1em;
+	font-size: 2em;
+	text-decoration: none;
+	color: Papayawhip;
+	border-radius: 1em;
+	cursor: pointer;
+}
+#about a:hover {
+	box-shadow: 0 0 1em Coral;
+	text-shadow: 0 0 1em Papayawhip;
+}
+#about a:active {
+	background: Papayawhip;
+	color: Sienna;
+}

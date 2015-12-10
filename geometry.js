@@ -64,6 +64,17 @@ Line.prototype.extend = function extend(rect)
 
 //------------------------------------------------------------------------------
 
+Line.prototype.orientation = function orientation(point)
+{
+	if (point.constructor != Point)
+		throw new TypeError('first argument must be a point.')
+	
+	var d = (this.x1 - point.x) * (this.y2 - point.y) - (this.x2 - point.x) * (this.y1 - point.y);
+	return d>0?1:d<0?-1:0; // Determines the sign
+}
+
+//------------------------------------------------------------------------------
+
 function Rectangle(x, y, w, h)
 {
 	if ($.isArray(x))

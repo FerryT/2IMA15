@@ -1,0 +1,58 @@
+// A cubic time algorithm which simply tries all possible lines,
+// and checks whether or not it is a good one.
+function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
+{
+	var groupOneLength = PointGroupOne.length;
+	var groupTwoLength = PointGroupTwo.length;
+
+	for(var i = 0; i < groupOneLength; i++)
+	{		
+		for(var j = 0; j < groupTwoLength; j++)
+		{			
+			var p1 = PointGroupOne[i];
+			var p2 = PointGroupTwo[j];
+			var candidateLine = new Line(p1, p2);
+
+			var isProperCut = NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo);
+			if(isProperCut)
+			{
+				// If for both group 1 and group 2, there are as many points left as right of the line,
+				// it is the line we're looking for - and can stop looking.
+				return candidateLine;
+			}
+		}
+	}
+}
+
+// A function which checks whether or not the given line divides both
+// point groups in half, using a linear time algorithm.
+function NaiveCheckIfLineIsProperCut(line, pointGroupOne, pointGroupTwo)
+{
+	var groupOneLength = pointGroupOne.length;
+	var groupTwoLength = pointGroupTwo.length;
+
+	// Stores how many points are left/on/right of the line
+	var groupOnePositions = [0,0,0];
+	var groupTwoPositions = [0,0,0];
+
+	// Given we have a candidate line, we can just count all other points
+	// to see whether or not the candidate line is a good split
+	// Note that even if we evaluate the points which make up the line,
+	// it doesn't matter as they'll be on the line.
+	for(var k = 0; k < groupOneLength; k++)
+	{
+		var p = pointGroupOne[k];
+		var pos = line.orientation(p);
+		groupOnePositions[pos + 1]++;
+	}
+
+	for(var k = 0; k < groupTwoLength; k++)
+	{
+		var p = pointGroupTwo[k];
+		var pos = line.orientation(p);
+		groupTwoPositions[pos + 1]++;
+	}
+
+	// If for both group 1 and group 2, there are as many points left as right of the line, it is a proper cut
+	return (groupOnePositions[0] == groupOnePositions[2] && groupTwoPositions[0] == groupTwoPositions[2]);
+}

@@ -52,20 +52,16 @@
 
 			var game = new Game(512, 512),
 				rect = game.rect.shrink(20),
-				field = new Field('field', game);
+				field = new Field('field', game),
+				level1 = new Level('test');
 
-			var groupOne = [
-					rect.randomPoint(),
-					rect.randomPoint(),
-					rect.randomPoint(),
-				];
-			var groupTwo =	[
-					rect.randomPoint(),
-					rect.randomPoint(),
-					rect.randomPoint(),
-				];
+			level1.add(new Entity(rect.randomPoint(), 0));
+			level1.add(new Entity(rect.randomPoint(), 1));
+			game.addLevel(level1);
 
-			game.addLevel(new Level('test', groupOne, groupTwo));
+			var groupOne = level1.points(0);
+			var groupTwo = level1.points(1);
+
 			game.start(1);
 			game.slice(NaiveAlgorithm(groupOne, groupTwo))
 			field.updatePoints();

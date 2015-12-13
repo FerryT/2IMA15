@@ -12,18 +12,14 @@
 	box-shadow: 0 0 .5em .25em NavajoWhite;
 }
 
-.points g:nth-child(1) circle {
+.points .group0 {
 	fill: SkyBlue;
 }
 
-.points g:nth-child(2) circle {
+.points .group1 {
 	fill: Tomato;
 }
 
-.lines line, .dragline line {
+.lines line {
 	stroke-width: .5em;
-}
-
-.dragline line {
-	stroke: Coral;
 }

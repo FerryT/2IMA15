@@ -34,15 +34,51 @@ Game.prototype.pause = function pause()
 
 Game.prototype.slice = function slice(line)
 {
-	this.slices.push(line);
+	this.slices.push(new Slice(line, this.rect.shrink(-10)));
 }
 
 //------------------------------------------------------------------------------
 
-function Level(name/*, [[p1, p2, ...], [p1, p2, ...], ...] */)
+function Level(name)
 {
 	this.name = name;
-	this.sets = Array.prototype.slice.call(arguments, 1);
+	this.entities = [];
+	this.groups = [];
+}
+
+Level.prototype.add = function(ent)
+{
+	if (ent && ent.constructor == Entity)
+	{
+		this.entities.push(ent);
+		this.groups[ent.group] = this.groups[ent.group] || [];
+		this.groups[ent.group].push(ent);
+	}
+}
+
+Level.prototype.points = function(group)
+{
+	return this.groups[group].map(function (ent) { return ent.point; });
+}
+
+//------------------------------------------------------------------------------
+
+function Entity(point, group)
+{
+	if (!point || point.constructor != Point)
+		throw new TypeError('first argument must be a Point.');
+	this.point = point;
+	this.group = +group || 0;
+}
+
+//------------------------------------------------------------------------------
+
+function Slice(line, bb)
+{
+	if (!line || line.constructor != Line)
+		throw new TypeError('first argument must be a Line.');
+	this.line = line;
+	this.slice = line.extend(bb);
 }
 
 //------------------------------------------------------------------------------

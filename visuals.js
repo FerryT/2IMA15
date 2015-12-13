@@ -11,8 +11,8 @@ function Field(id, game)
 
 	this.svg.selectAll('*').remove();
 	this.svg.attr('viewBox', this.game.rect + '');
-	this.points = this.svg.append('g').attr('class', 'points');
 	this.lines = this.svg.append('g').attr('class', 'lines');
+	this.points = this.svg.append('g').attr('class', 'points');
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -21,7 +21,8 @@ Field.prototype.updatePoints = function()
 {
 	var radius = 10,
 		points = this.points.selectAll('circle')
-			.data(this.game.levels[this.game.level].entities);
+			.data(this.game.levels[this.game.level].entities,
+				function (d) { return d.id; });
 
 	points.enter()
 		.append('circle')

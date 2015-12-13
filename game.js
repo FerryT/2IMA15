@@ -67,9 +67,12 @@ function Entity(point, group)
 {
 	if (!point || point.constructor != Point)
 		throw new TypeError('first argument must be a Point.');
+	this.id = Entity.id++;
 	this.point = point;
 	this.group = +group || 0;
 }
+
+Entity.id = 0;
 
 //------------------------------------------------------------------------------
 

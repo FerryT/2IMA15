@@ -4,7 +4,6 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
 {
 	var groupOneLength = PointGroupOne.length;
 	var groupTwoLength = PointGroupTwo.length;
-	console.log("Computing line "+groupOneLength+" "+groupTwoLength)
 
 	for(var i = 0; i < groupOneLength; i++)
 	{		
@@ -19,7 +18,6 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
 			{
 				// If for both group 1 and group 2, there are as many points left as right of the line,
 				// it is the line we're looking for - and can stop looking.
-				console.log("Found line")
 				return candidateLine;
 			}
 		}

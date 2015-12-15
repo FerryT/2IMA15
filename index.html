@@ -13,14 +13,27 @@
 <body>
 	<svg version="1.1" xmlns="http://www.w3.org/2000/svg" style="display:none">
 		<defs>
+			<symbol id="resume-icon" viewBox="0 0 8 8">
+				<path style="fill:#000000;fill-opacity:0.89803922;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.89940828" d="M 1.0044644,8.1657759 0.96357132,1.1358145 7.0721431,4.6153808 Z"></path>
+			</symbol>
 			<symbol id="chevron-left" viewBox="0 0 8 8">
 				<path d="M4 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z" transform="translate(1)"></path>
+			</symbol>
+			<symbol id="pause-icon" viewBox="0 0 8 8">
+				<path
+			       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.81599164px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+			       d="M 2.6828861,0.78684804 C 2.8081871,7.5536273 2.8081871,7.5536273 2.8081871,7.5536273"/>
+   			 	<path
+			       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.81599164px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+			       d="M 5.3837787,0.71988376 C 5.5090797,7.486663 5.5090797,7.486663 5.5090797,7.486663"/>
 			</symbol>
 		</defs>
 	</svg>
 
 	<header id="topbar">
 		<button class="icon" id="btn-back">chevron-left</button>
+		<button class="icon" id="btn-pause"><i>pause-icon</i></button>
+		<button class="icon" id="btn-resume"><i>resume-icon</i></button>
 	</header>
 	<div id="game" class="page">
 		<h1>Level 1</h1>
@@ -46,6 +59,7 @@
 	</div>
 	<script src="interface.js"></script>
 	<script>
+		var mainGame = 0;
 		$(function() // Debug
 		{
 			$('#btn-play').click();
@@ -54,6 +68,8 @@
 				rect = game.rect.shrink(20),
 				field = new Field('field', game),
 				level1 = new Level('test');
+			
+			mainGame = game;
 
 			level1.add(new Entity(rect.randomPoint(), 0));
 			level1.add(new Entity(rect.randomPoint(), 1));
@@ -69,6 +85,19 @@
 
 			window.game = game;
 			window.field = field;
+
+			function update()
+			{
+				var level = game.levels[game.level],
+					line = NaiveAlgorithm(level.points(0), level.points(1));
+				game.slices = [];
+				if (line)
+					game.slice(line);
+				field.updateLines();
+				field.updatePoints();
+			}
+
+			setInterval(function(){game.update(20); update();}, 20);
 		});
 	</script>
 	<script>

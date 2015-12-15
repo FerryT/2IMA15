@@ -22,6 +22,23 @@ $('#btn-back').click(function()
 	$('#options').hide();
 	$('#about').hide();
 	$('#topbar').hide();
+	$('#btn-resume').hide();
+});
+
+$('#btn-pause').click(function()
+{
+	game.pause();
+
+	$('#btn-pause').hide();
+	$('#btn-resume').show();
+});
+
+$('#btn-resume').click(function()
+{
+	game.resume();
+
+	$('#btn-pause').show();
+	$('#btn-resume').hide();
 });
 
 // Menu

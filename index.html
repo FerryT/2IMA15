@@ -59,7 +59,6 @@
 	</div>
 	<script src="interface.js"></script>
 	<script>
-		var mainGame = 0;
 		$(function() // Debug
 		{
 			$('#btn-play').click();
@@ -68,8 +67,6 @@
 				rect = game.rect.shrink(20),
 				field = new Field('field', game),
 				level1 = new Level('test');
-			
-			mainGame = game;
 
 			level1.add(new Entity(rect.randomPoint(), 0));
 			level1.add(new Entity(rect.randomPoint(), 1));
@@ -88,7 +85,7 @@
 
 			function update()
 			{
-				var level = game.levels[game.level],
+				var level = game.level,
 					line = NaiveAlgorithm(level.points(0), level.points(1));
 				game.slices = [];
 				if (line)
@@ -106,7 +103,7 @@
 		{
 			function update()
 			{
-				var level = game.levels[game.level],
+				var level = game.level,
 					line = NaiveAlgorithm(level.points(0), level.points(1));
 				game.slices = [];
 				if (line)
@@ -121,7 +118,7 @@
 					.on('contextmenu', function (d)
 					{
 						d3.event.preventDefault();
-						var level = game.levels[game.level];
+						var level = game.level;
 						function remove(arr, d)
 						{
 							var i = arr.indexOf(d);
@@ -156,7 +153,7 @@
 			field.svg.on('click', function ()
 			{
 				if (d3.event.defaultPrevented) return;
-				var level = game.levels[game.level];
+				var level = game.level;
 				level.add(new Entity(new Point(d3.mouse(this)),
 					+(level.groups[0].length > level.groups[1].length)));
 				field.updatePoints();

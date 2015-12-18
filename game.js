@@ -10,7 +10,7 @@ function Game(width, height)
 	this.rect = new Rectangle(0, 0, width, height);
 	this.levels = [new Level('')];
 
-	this.level = 0;
+	this.level = this.levels[0].clone();
 	this.score = 0;
 	this.slices = [];
 }
@@ -24,8 +24,7 @@ Game.prototype.addLevel = function addLevel(def)
 
 Game.prototype.start = function start(level)
 {
-	this.level = level || 1;
-	// Todo
+	this.level = this.levels[level].clone();
 }
 
 Game.prototype.pause = function pause()
@@ -47,7 +46,7 @@ Game.prototype.update = function update(elapsedTime)
 {
 	if(!this.paused)
 	{
-		this.levels[this.level].update(elapsedTime, this.rect.w, this.rect.h);
+		this.level.update(elapsedTime, this.rect.w, this.rect.h);
 	}
 }
 
@@ -56,23 +55,39 @@ Game.prototype.update = function update(elapsedTime)
 function Level(name)
 {
 	this.name = name;
+	this.goals = [];
 	this.entities = [];
 	this.groups = [];
 }
 
 Level.prototype.add = function(ent)
 {
-	if (ent && ent.constructor == Entity)
+	if (!ent) return;
+	if (ent.constructor == Entity)
 	{
 		this.entities.push(ent);
 		this.groups[ent.group] = this.groups[ent.group] || [];
 		this.groups[ent.group].push(ent);
+	}
+	else if (ent.constructor == Goal)
+	{
+		this.goals.push(ent);
 	}
 }
 
 Level.prototype.points = function(group)
 {
 	return this.groups[group].map(function (ent) { return ent.point; });
+}
+
+Level.prototype.clone = function clone()
+{
+	var level = new Level(this.name);
+	for (var i = 0, l = this.goals.length; i < l; ++i)
+		level.add(this.goals[i].clone());
+	for (var i = 0, l = this.entities.length; i < l; ++i)
+		level.add(this.entities[i].clone());
+	return level;
 }
 
 Level.prototype.update = function update(elapsedTime, width, height)
@@ -86,17 +101,31 @@ Level.prototype.update = function update(elapsedTime, width, height)
 
 //------------------------------------------------------------------------------
 
-function Entity(point, group)
+function Goal(line, width)
+{
+	this.line = line;
+	this.width = width;
+}
+
+Goal.prototype.clone = function clone()
+	{ return new Goal(this.line.clone(), this.width); }
+
+//------------------------------------------------------------------------------
+
+function Entity(point, group, id)
 {
 	if (!point || point.constructor != Point)
 		throw new TypeError('first argument must be a Point.');
-	this.id = Entity.id++;
+	
 	this.point = point;
-		console.log(this.id +":"+this.point.x + " , " + this.point.y)
 	this.group = +group || 0;
+	this.id = id || Entity.id++;
 }
 
 Entity.id = 0;
+
+Entity.prototype.clone = function clone()
+	{ return new Entity(this.point.clone(), this.group, this.id); }
 
 //------------------------------------------------------------------------------
 

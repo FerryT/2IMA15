@@ -21,7 +21,7 @@ Field.prototype.updatePoints = function()
 {
 	var radius = 10,
 		points = this.points.selectAll('circle')
-			.data(this.game.levels[this.game.level].entities,
+			.data(this.game.level.entities,
 				function (d) { return d.id; });
 
 	points.enter()

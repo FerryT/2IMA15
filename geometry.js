@@ -16,6 +16,9 @@ function Point(x, y)
 	}
 }
 
+Point.prototype.clone = function clone()
+	{ return new Point(this.x, this.y); }
+
 //------------------------------------------------------------------------------
 
 function Line(x1, y1, x2, y2)
@@ -42,6 +45,9 @@ function Line(x1, y1, x2, y2)
 		this.y2 = y2 || 0;
 	}
 }
+
+Line.prototype.clone = function clone()
+	{ return new Line(this.x1, this.y1, this.x2, this.y2); }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -99,6 +105,9 @@ function Rectangle(x, y, w, h)
 		this.h = h || 0;
 	}
 }
+
+Rectangle.prototype.clone = function clone()
+	{ return new Rectangle(this.x, this.y, this.w, this.h); }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 

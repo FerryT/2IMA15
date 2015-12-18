@@ -2,7 +2,7 @@
 * Structural definition of the game                       *
 \*********************************************************/
 
-function Game(width, height)
+function Game(width, height, rate)
 {
 	this.paused = false;
 	width = width || 100;
@@ -11,8 +11,10 @@ function Game(width, height)
 	this.levels = [new Level('')];
 
 	this.level = this.levels[0].clone();
+	this.paused = true;
 	this.score = 0;
 	this.slices = [];
+	this.rate = rate || 1000;
 }
 
 Game.prototype.addLevel = function addLevel(def)
@@ -24,17 +26,23 @@ Game.prototype.addLevel = function addLevel(def)
 
 Game.prototype.start = function start(level)
 {
+	this.pause();
 	this.level = this.levels[level].clone();
+	this.resume();
 }
 
 Game.prototype.pause = function pause()
 {
+	if (this.paused) return;
 	this.paused = true;
+	clearInterval(this.interval);
 }
 
 Game.prototype.resume = function resume()
 {
+	if (!this.paused) return;
 	this.paused = false;
+	this.interval = setInterval(this.update.bind(this), this.rate);
 }
 
 Game.prototype.slice = function slice(line)
@@ -42,11 +50,13 @@ Game.prototype.slice = function slice(line)
 	this.slices.push(new Slice(line, this.rect.shrink(-10)));
 }
 
-Game.prototype.update = function update(elapsedTime)
+Game.prototype.update = function update()
 {
-	if(!this.paused)
+	if(this.paused) return;
+	for (var i = 0, l = this.level.entities.length, ent; i < l; ++i)
 	{
-		this.level.update(elapsedTime, this.rect.w, this.rect.h);
+		ent = this.level.entities[i];
+		ent.behavior.update.call(ent, this.rate);
 	}
 }
 
@@ -90,15 +100,6 @@ Level.prototype.clone = function clone()
 	return level;
 }
 
-Level.prototype.update = function update(elapsedTime, width, height)
-{
-	var nrEntities = this.entities.length;
-	for(var i = 0; i<nrEntities; i++)
-	{
-		this.entities[i].update(elapsedTime, width, height)
-	}
-}
-
 //------------------------------------------------------------------------------
 
 function Goal(line, width)
@@ -112,20 +113,23 @@ Goal.prototype.clone = function clone()
 
 //------------------------------------------------------------------------------
 
-function Entity(point, group, id)
+function Entity(point, group, behavior, id)
 {
 	if (!point || point.constructor != Point)
 		throw new TypeError('first argument must be a Point.');
 	
 	this.point = point;
 	this.group = +group || 0;
+	this.behavior = behavior || Behavior.None;
 	this.id = id || Entity.id++;
 }
 
 Entity.id = 0;
 
 Entity.prototype.clone = function clone()
-	{ return new Entity(this.point.clone(), this.group, this.id); }
+{
+	return new Entity(this.point.clone(), this.group, this.behavior, this.id);
+}
 
 //------------------------------------------------------------------------------
 
@@ -137,16 +141,4 @@ function Slice(line, bb)
 	this.slice = line.extend(bb);
 }
 
-Entity.prototype.update = function update(elapsedTime, width, height)
-{	
-		var dx = (Math.random() - 0.5)*elapsedTime/10;
-		var dy = (Math.random() - 0.5)*elapsedTime/10;
-
-		this.point.x += dx;
-		this.point.y += dy;
-		this.point.x = Math.min(this.point.x, width);
-		this.point.x = Math.max(this.point.x, 0);
-		this.point.y = Math.min(this.point.y, height);
-		this.point.y = Math.max(this.point.y, 0);
-}
 //------------------------------------------------------------------------------

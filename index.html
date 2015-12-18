@@ -4,6 +4,7 @@
 	<script src="jquery-2.1.4.min.js"></script>
 	<script src="d3.min.js" charset="utf-8"></script>
 	<script src="geometry.js"></script>
+	<script src="behavior.js"></script>
 	<script src="game.js"></script>
 	<script src="visuals.js"></script>
 	<script src="sliceAlgorithms.js"></script>
@@ -63,13 +64,13 @@
 		{
 			$('#btn-play').click();
 
-			var game = new Game(512, 512),
+			var game = new Game(512, 512, 1000 / 60 /* 60 fps */),
 				rect = game.rect.shrink(20),
 				field = new Field('field', game),
 				level1 = new Level('test');
 
-			level1.add(new Entity(rect.randomPoint(), 0));
-			level1.add(new Entity(rect.randomPoint(), 1));
+			level1.add(new Entity(rect.randomPoint(), 0, Behavior.Pieter));
+			level1.add(new Entity(rect.randomPoint(), 1, Behavior.Pieter));
 			game.addLevel(level1);
 
 			var groupOne = level1.points(0);
@@ -94,7 +95,7 @@
 				field.updatePoints();
 			}
 
-			setInterval(function(){game.update(20); update();}, 20);
+			setInterval(function(){ update(); }, game.rate); // XXX: add field update event to game update
 		});
 	</script>
 	<script>

@@ -19,6 +19,16 @@ function Point(x, y)
 Point.prototype.clone = function clone()
 	{ return new Point(this.x, this.y); }
 
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Point.prototype.clamp = function clamp(rect)
+{
+	if (rect.constructor != Rectangle)
+		throw new TypeError('first argument must be a Rectangle.');
+	this.x = Math.min(Math.max(this.x, rect.x), rect.x + rect.w);
+	this.y = Math.min(Math.max(this.y, rect.y), rect.y + rect.h);
+}
+
 //------------------------------------------------------------------------------
 
 function Line(x1, y1, x2, y2)

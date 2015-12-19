@@ -28,6 +28,8 @@ Game.prototype.start = function start(level)
 {
 	this.pause();
 	this.level = this.levels[level].clone();
+	if (level + 1 < this.levels.length)
+		this.level.next = level + 1;
 	this.resume();
 }
 
@@ -61,7 +63,14 @@ Game.prototype.update = function update()
 
 	for (var i = 0, l = this.level.goals.length; i < l; ++i)
 		if (this.level.goals[i].check())
-			; // Todo: do something
+			this.win();
+}
+
+Game.prototype.win = function win()
+{
+	// Todo: do something
+	if (this.level.next)
+		this.start(this.level.next);
 }
 
 //------------------------------------------------------------------------------

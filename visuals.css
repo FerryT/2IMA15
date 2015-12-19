@@ -12,6 +12,10 @@
 	box-shadow: 0 0 .5em .25em NavajoWhite;
 }
 
+.goals {
+	stroke: DarkKhaki ;
+}
+
 .points .group0 {
 	fill: SkyBlue;
 }

@@ -69,6 +69,7 @@
 
 			level1.add(new Entity(rect.randomPoint(), 0, behavior1));
 			level1.add(new Entity(rect.randomPoint(), 1, behavior2));
+			level1.add(new Goal(new Line(0, .5, 1, .5).multiply(rect), 40));
 			game.addLevel(level1);
 
 			var groupOne = level1.points(0);
@@ -91,6 +92,7 @@
 					game.slice(line);
 				field.updateLines();
 				field.updatePoints();
+				field.updateGoals();
 			}
 
 			setInterval(function(){ update(); }, game.rate); // XXX: add field update event to game update

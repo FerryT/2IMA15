@@ -11,8 +11,33 @@ function Field(id, game)
 
 	this.svg.selectAll('*').remove();
 	this.svg.attr('viewBox', this.game.rect + '');
+	this.goals = this.svg.append('g').attr('class', 'goals');
 	this.lines = this.svg.append('g').attr('class', 'lines');
 	this.points = this.svg.append('g').attr('class', 'points');
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Field.prototype.updateGoals = function()
+{
+	var goals = this.goals.selectAll('line')
+		.data(this.game.level.goals);
+
+	goals.enter()
+		.append('line')
+	;
+
+	goals
+		.attr('x1', function (d) { return d.line.x1; })
+		.attr('y1', function (d) { return d.line.y1; })
+		.attr('x2', function (d) { return d.line.x2; })
+		.attr('y2', function (d) { return d.line.y2; })
+		.style('stroke-width', function (d) { return d.width; })
+	;
+
+	goals.exit()
+		.remove()
+	;
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -31,8 +56,8 @@ Field.prototype.updatePoints = function()
 	;
 
 	points
-		.attr('cx', function (d) { return d.point.x })
-		.attr('cy', function (d) { return d.point.y })
+		.attr('cx', function (d) { return d.point.x; })
+		.attr('cy', function (d) { return d.point.y; })
 	;
 
 	points.exit()

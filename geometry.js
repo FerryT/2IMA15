@@ -64,7 +64,7 @@ Line.prototype.clone = function clone()
 Line.prototype.extend = function extend(rect)
 {
 	if (rect.constructor != Rectangle)
-		throw new TypeError('first argument must be a Rectangle.')
+		throw new TypeError('first argument must be a Rectangle.');
 	var dx = this.x2 - this.x1,
 		dy = this.y2 - this.y1,
 		x = this.x1,
@@ -78,12 +78,25 @@ Line.prototype.extend = function extend(rect)
 	return new Line(t1 * dx + x, t1 * dy + y, t2 * dx + x, t2 * dy + y);
 }
 
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Line.prototype.multiply = function multiply(rect)
+{
+	if (rect.constructor != Rectangle)
+		throw new TypeError('first argument must be a Rectangle.');
+	return new Line(
+		rect.x + rect.w * this.x1,
+		rect.y + rect.h * this.y1,
+		rect.x + rect.w * this.x2,
+		rect.y + rect.h * this.y2);
+}
+
 //------------------------------------------------------------------------------
 
 Line.prototype.orientation = function orientation(point)
 {
 	if (point.constructor != Point)
-		throw new TypeError('first argument must be a point.')
+		throw new TypeError('first argument must be a point.');
 	
 	var d = (this.x1 - point.x) * (this.y2 - point.y) - (this.x2 - point.x) * (this.y1 - point.y);
 	return Math.sign(d); // Determines the sign

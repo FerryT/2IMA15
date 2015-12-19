@@ -2,11 +2,8 @@
 * Bahavior classes for game entities                      *
 \*********************************************************/
 
-function Behavior(name, parent)
+function Behavior()
 {
-	parent = parent || this;
-	this.name = name;
-	this.parent = parent;
 	this.update    = parent.update    || function() {};
 	this.click     = parent.click     || function() {};
 	this.drag      = parent.drag      || function() {};
@@ -14,26 +11,44 @@ function Behavior(name, parent)
 	this.dragend   = parent.dragend   || function() {};
 }
 
-Behavior.create = function create(name, parent)
-	{ return Behavior[name] = new Behavior(name, parent); }
-
-//------------------------------------------------------------------------------
-
-Behavior.create('None'); // No behavior, booooooring!
-
-//------------------------------------------------------------------------------
-
-Behavior.create('Pieter'); // Random wiggling
-Behavior.Pieter.rate = 10;
-
-Behavior.Pieter.update = function update(dt)
+Behavior.Habit = function Habit(name, func)
 {
-	var dx = (Math.random() - 0.5) * dt / Behavior.Pieter.rate;
-	var dy = (Math.random() - 0.5) * dt / Behavior.Pieter.rate;
+	Behavior.prototype[name] = function()
+	{
+		var prev = {};
+		for (var x in this)
+			if (this.hasOwnProperty(x))
+				prev[x] = this[x];
 
-	this.point.x += dx;
-	this.point.y += dy;
-	this.point.clamp(game.rect);
+		func.apply(this, Array.prototype.slice.call(arguments));
+
+		for (var x in this)
+			if (this.hasOwnProperty(x) && prev[x] != this[x])
+				this[x].next = prev[x];
+
+		return this;
+	}
 }
+
+Behavior.None = Object.freeze(new Behavior); // No behavior, booooooring!
+
+//------------------------------------------------------------------------------
+
+Behavior.Habit('Pieter', function (rate) // Random wiggling
+{
+	rate = rate || 10;
+
+	this.update = function update(dt)
+	{
+		var dx = (Math.random() - 0.5) * dt / rate;
+		var dy = (Math.random() - 0.5) * dt / rate;
+
+		this.point.x += dx;
+		this.point.y += dy;
+		this.point.clamp(game.rect);
+
+		update.next.call(this, dt);
+	}
+});
 
 //------------------------------------------------------------------------------

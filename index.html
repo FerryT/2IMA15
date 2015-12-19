@@ -10,6 +10,9 @@
 	<script src="sliceAlgorithms.js"></script>
 	<link rel="stylesheet" type="text/css" href="interface.css">
 	<link rel="stylesheet" type="text/css" href="visuals.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 	<!-- Icons from Open Iconic: see /ICON-LICENSE -->
@@ -60,7 +63,7 @@
 		{
 			$('#btn-play').click();
 
-			var game = new Game(512, 512, 1000 / 60 /* 60 fps */),
+			var game = new Game(640, 360, 1000 / 60 /* 60 fps */),
 				rect = game.rect.shrink(20),
 				field = new Field('field', game),
 				level1 = new Level('test'),

@@ -15,6 +15,18 @@ $('button.icon').each(function()
 	;
 });
 
+window.scrollTo(0, 1);
+
+function resize()
+{
+	var isTouchScreen = 'ontouchstart' in window;
+	$('body')
+		.css('font-size', Math.max(screen.height / 50, 5) * (isTouchScreen ? 1 : 0.8))
+	;
+}
+
+resize();
+
 // Topbar
 $('#btn-back').click(function()
 {

@@ -1,7 +1,9 @@
 
 #field {
-	width: 512px;
-	height: 512px;
+	position: relative;
+	top: 2.5%;
+	max-width: 95%;
+	max-height: 82.5%;
 	background-color: NavajoWhite;
 	margin: auto auto;
 	display: block;
@@ -25,5 +27,5 @@
 }
 
 .lines line {
-	stroke-width: .5em;
+	stroke-width: 5;
 }

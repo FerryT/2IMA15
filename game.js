@@ -58,6 +58,10 @@ Game.prototype.update = function update()
 		ent = this.level.entities[i];
 		ent.behavior.update.call(ent, this.rate);
 	}
+
+	for (var i = 0, l = this.level.goals.length; i < l; ++i)
+		if (this.level.goals[i].check())
+			; // Todo: do something
 }
 
 //------------------------------------------------------------------------------
@@ -110,6 +114,11 @@ function Goal(line, width)
 
 Goal.prototype.clone = function clone()
 	{ return new Goal(this.line.clone(), this.width); }
+
+Goal.prototype.check = function check()
+{
+	// Todo: implement
+}
 
 //------------------------------------------------------------------------------
 

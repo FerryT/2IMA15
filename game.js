@@ -27,6 +27,7 @@ Game.prototype.addLevel = function addLevel(def)
 Game.prototype.start = function start(level)
 {
 	this.pause();
+	levelheader.innerText = this.levels[level].name;
 	this.level = this.levels[level].clone();
 	if (level + 1 < this.levels.length)
 		this.level.next = level + 1;
@@ -70,7 +71,14 @@ Game.prototype.win = function win()
 {
 	// Todo: do something
 	if (this.level.next)
-		this.start(this.level.next);
+	{
+		window.alert("Congratulations! But there are more levels..");
+		this.start(this.level.next);		
+	}
+	else
+	{
+		window.alert("You beat the game");
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -95,6 +103,13 @@ Level.prototype.add = function(ent)
 	else if (ent.constructor == Goal)
 	{
 		this.goals.push(ent);
+	}
+	else if(ent.constructor == Array && ent.length > 0 && ent[0].constructor == Entity)
+	{
+		for(var i = 0; i<ent.length; i++)
+		{
+			this.add(ent[i]);
+		}
 	}
 }
 
@@ -126,7 +141,10 @@ Goal.prototype.clone = function clone()
 
 Goal.prototype.check = function check()
 {
-	// Todo: implement
+	var gameGroupOne = game.level.points(0);
+	var gameGroupTwo = game.level.points(1);
+	var goalAchieved = NaiveCheckIfLineIsProperCut(this.line, gameGroupOne, gameGroupTwo);
+	return goalAchieved;
 }
 
 //------------------------------------------------------------------------------
@@ -140,6 +158,9 @@ function Entity(point, group, behavior, id)
 	this.group = +group || 0;
 	this.behavior = behavior || Behavior.None;
 	this.id = id || Entity.id++;
+
+	// We use point as a 2D speed vector (for now)
+	this.velocity = new Point(0,0);
 }
 
 Entity.id = 0;

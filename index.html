@@ -8,6 +8,7 @@
 	<script src="game.js"></script>
 	<script src="visuals.js"></script>
 	<script src="sliceAlgorithms.js"></script>
+	<script src="leveldesign.js"></script>
 	<link rel="stylesheet" type="text/css" href="interface.css">
 	<link rel="stylesheet" type="text/css" href="visuals.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -36,7 +37,7 @@
 		<button class="icon" id="btn-resume">media-play</button>
 	</header>
 	<div id="game" class="page">
-		<h1>Level 1</h1>
+		<h1 id="levelheader">Level 1</h1>
 		<svg id="field"></svg>
 	</div>
 	<nav id="menu" class="page">
@@ -65,26 +66,20 @@
 
 			var game = new Game(640, 360, 1000 / 60 /* 60 fps */),
 				rect = game.rect.shrink(20),
-				field = new Field('field', game),
-				level1 = new Level('test'),
-				behavior1 = new Behavior().Pieter(10),
-				behavior2 = new Behavior().Pieter(30);
-
-			level1.add(new Entity(rect.randomPoint(), 0, behavior1));
-			level1.add(new Entity(rect.randomPoint(), 1, behavior2));
-			level1.add(new Goal(new Line(0, .5, 1, .5).multiply(rect), 40));
-			game.addLevel(level1);
-
-			var groupOne = level1.points(0);
-			var groupTwo = level1.points(1);
-
-			game.start(1);
-			game.slice(NaiveAlgorithm(groupOne, groupTwo))
-			field.updatePoints();
-			field.updateLines();
+				field = new Field('field', game);
 
 			window.game = game;
 			window.field = field;
+			InitializeLevels(rect);
+
+
+			game.start(1);
+
+			var groupOne = game.level.points(0);
+			var groupTwo = game.level.points(1);
+			game.slice(NaiveAlgorithm(groupOne, groupTwo))
+			field.updatePoints();
+			field.updateLines();
 
 			function update()
 			{
@@ -157,11 +152,15 @@
 			field.svg.on('click', function ()
 			{
 				if (d3.event.defaultPrevented) return;
-				var level = game.level;
+				/*var level = game.level;
 				level.add(new Entity(new Point(d3.mouse(this)),
 					+(level.groups[0].length > level.groups[1].length)));
 				field.updatePoints();
-				handle(field.svg.selectAll('.points circle'));
+				handle(field.svg.selectAll('.points circle'));*/
+				for(var i = 0; i < game.level.entities.length; i++)
+				{
+					game.level.entities[0].behavior.click(d3.mouse(this));
+				}
 				update();
 			});
 		});

@@ -13,7 +13,11 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
 			var p2 = PointGroupTwo[j];
 			var candidateLine = new Line(p1, p2);
 
-			var isProperCut = NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo);
+			// We allow for a difference of one if the groups are of even size
+			// the naive algorithm could be expanded to not need this.
+			var allowOneDifference = true;
+
+			var isProperCut = NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference);
 			if(isProperCut)
 			{
 				// If for both group 1 and group 2, there are as many points left as right of the line,
@@ -26,8 +30,9 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
 
 // A function which checks whether or not the given line divides both
 // point groups in half, using a linear time algorithm
-function NaiveCheckIfLineIsProperCut(line, pointGroupOne, pointGroupTwo)
+function NaiveCheckIfLineIsProperCut(line, pointGroupOne, pointGroupTwo, allowOneDifference)
 {
+	allowOneDifference = allowOneDifference || false;
 	var groupOneLength = pointGroupOne.length;
 	var groupTwoLength = pointGroupTwo.length;
 
@@ -58,15 +63,19 @@ function NaiveCheckIfLineIsProperCut(line, pointGroupOne, pointGroupTwo)
 	var groupTwoWellSplit = (groupTwoPositions[0] == groupTwoPositions[2]);
 
 	// However, if a group is of even size, then there won't be a split with as many points
-	// to the left as to the right, so we allow for a difference of one
-	if(groupOneLength % 2 == 0)
+	// to the left as to the right, so we allow for a difference of one (if we evaluate a slice through two points)
+	if(allowOneDifference)
 	{
-		groupOneWellSplit = ((groupOnePositions[0] + 1 == groupOnePositions[2]) || (groupOnePositions[0] - 1 == groupOnePositions[2]));
+		if(groupOneLength % 2 == 0)
+		{
+			groupOneWellSplit = ((groupOnePositions[0] + 1 == groupOnePositions[2]) || (groupOnePositions[0] - 1 == groupOnePositions[2]));
+		}
+		if(groupTwoLength % 2 == 0)
+		{
+			groupTwoWellSplit = ((groupTwoPositions[0] + 1 == groupTwoPositions[2]) || (groupTwoPositions[0] - 1 == groupTwoPositions[2]));
+		}
 	}
-	if(groupOneLength % 2 == 0)
-	{
-		groupTwoWellSplit = ((groupTwoPositions[0] + 1 == groupTwoPositions[2]) || (groupTwoPositions[0] - 1 == groupTwoPositions[2]));
-	}
+
 
 	// If for both group 1 and group 2, there are as many points left as right of the line, it is a proper cut
 	return groupOneWellSplit && groupTwoWellSplit;

@@ -52,3 +52,54 @@ Behavior.Habit('Pieter', function (rate) // Random wiggling
 });
 
 //------------------------------------------------------------------------------
+
+// Describes points moving vertically in a jumping motion
+Behavior.Habit('Bounce', function (rate)
+{
+	rate = rate || 10;
+
+	this.update = function update(dt)
+	{
+		if(this.velocity.y >= 50)
+			this.velocity.y = -50;
+
+		this.velocity.y += rate * dt / 1000;
+
+
+		this.point.y += this.velocity.y / dt;
+		this.point.clamp(game.rect);
+
+		update.next.call(this, dt);
+	}
+});
+
+//------------------------------------------------------------------------------
+
+// Describes points moving away from mouse clicks
+Behavior.Habit('Coward', function (rate)
+{
+	rate = rate || 10;
+
+	this.update = function update(dt)
+	{
+		var decayRate = 0.05 * rate;
+		this.velocity.x *= (1 - decayRate * dt / 1000);
+		this.velocity.y *= (1 - decayRate * dt / 1000);
+
+
+		this.point.x += this.velocity.x / dt;
+		this.point.y += this.velocity.y / dt;
+		this.point.clamp(game.rect);
+
+		update.next.call(this, dt);
+	};
+
+	this.click = function click(coordinates)
+	{
+		var dx = this.point.x - coordinates[0];
+		var dy = this.point.y - coordinates[1];
+
+		this.velocity.y = 100.0/dx;
+		this.velocity.y = 100.0/dy;
+	}
+});

@@ -38,6 +38,8 @@ Field.prototype.updateGoals = function()
 	goals.exit()
 		.remove()
 	;
+
+	return this;
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -63,6 +65,8 @@ Field.prototype.updatePoints = function()
 	points.exit()
 		.remove()
 	;
+
+	return this;
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -86,6 +90,8 @@ Field.prototype.updateLines = function()
 	lines.exit()
 		.remove()
 	;
+
+	return this;
 }
 
 //------------------------------------------------------------------------------

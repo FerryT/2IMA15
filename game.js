@@ -22,6 +22,7 @@ Game.prototype.addLevel = function addLevel(def)
 	if (!def.constructor == Level)
 		throw new TypeError();
 	this.levels.push(def);
+	return this;
 }
 
 Game.prototype.start = function start(level)
@@ -32,6 +33,7 @@ Game.prototype.start = function start(level)
 	if (level + 1 < this.levels.length)
 		this.level.next = level + 1;
 	this.resume();
+	return this;
 }
 
 Game.prototype.pause = function pause()
@@ -39,6 +41,7 @@ Game.prototype.pause = function pause()
 	if (this.paused) return;
 	this.paused = true;
 	clearInterval(this.interval);
+	return this;
 }
 
 Game.prototype.resume = function resume()
@@ -46,11 +49,13 @@ Game.prototype.resume = function resume()
 	if (!this.paused) return;
 	this.paused = false;
 	this.interval = setInterval(this.update.bind(this), this.rate);
+	return this;
 }
 
 Game.prototype.slice = function slice(line)
 {
 	this.slices.push(new Slice(line, this.rect.shrink(-10)));
+	return this;
 }
 
 Game.prototype.update = function update()
@@ -65,6 +70,8 @@ Game.prototype.update = function update()
 	for (var i = 0, l = this.level.goals.length; i < l; ++i)
 		if (this.level.goals[i].check())
 			this.win();
+
+	return this;
 }
 
 Game.prototype.win = function win()
@@ -79,6 +86,7 @@ Game.prototype.win = function win()
 	{
 		window.alert("You beat the game");
 	}
+	return this;
 }
 
 //------------------------------------------------------------------------------
@@ -111,6 +119,7 @@ Level.prototype.add = function(ent)
 			this.add(ent[i]);
 		}
 	}
+	return this;
 }
 
 Level.prototype.points = function(group)

@@ -1,14 +1,15 @@
 /*********************************************************\
-* Bahavior classes for game entities                      *
+* Behavior classes for game entities                      *
 \*********************************************************/
 
 function Behavior()
 {
-	this.update    = parent.update    || function() {};
-	this.click     = parent.click     || function() {};
-	this.drag      = parent.drag      || function() {};
-	this.dragstart = parent.dragstart || function() {};
-	this.dragend   = parent.dragend   || function() {};
+	function noop() { return false; }
+	this.update    = parent.update    || noop;
+	this.click     = parent.click     || noop;
+	this.drag      = parent.drag      || noop;
+	this.dragstart = parent.dragstart || noop;
+	this.dragend   = parent.dragend   || noop;
 }
 
 Behavior.Habit = function Habit(name, func)
@@ -47,7 +48,7 @@ Behavior.Habit('Pieter', function (rate) // Random wiggling
 		this.point.y += dy;
 		this.point.clamp(game.rect);
 
-		update.next.call(this, dt);
+		return update.next.call(this, dt) || true;
 	}
 });
 
@@ -69,7 +70,7 @@ Behavior.Habit('Bounce', function (rate)
 		this.point.y += this.velocity.y / dt;
 		this.point.clamp(game.rect);
 
-		update.next.call(this, dt);
+		return update.next.call(this, dt) || true;
 	}
 });
 
@@ -91,7 +92,7 @@ Behavior.Habit('Coward', function (rate)
 		this.point.y += this.velocity.y / dt;
 		this.point.clamp(game.rect);
 
-		update.next.call(this, dt);
+		return update.next.call(this, dt) || true;
 	};
 
 	this.click = function click(coordinates)
@@ -101,5 +102,7 @@ Behavior.Habit('Coward', function (rate)
 
 		this.velocity.y = 100.0/dx;
 		this.velocity.y = 100.0/dy;
+
+		return click.next.call(this, dt) || false;
 	}
 });

@@ -35,6 +35,21 @@ Behavior.None = Object.freeze(new Behavior); // No behavior, booooooring!
 
 //------------------------------------------------------------------------------
 
+// Makes entities movable by dragging them
+Behavior.Habit('Draggable', function ()
+{
+	this.drag = function drag(x, y)
+	{
+		this.point.x = x;
+		this.point.y = y;
+		this.point.clamp(game.rect); // Todo: Make clamping a separate habit
+
+		return drag.next.call(this, x, y) || true;
+	}
+});
+
+//------------------------------------------------------------------------------
+
 Behavior.Habit('Pieter', function (rate) // Random wiggling
 {
 	rate = rate || 10;
@@ -95,10 +110,10 @@ Behavior.Habit('Coward', function (rate)
 		return update.next.call(this, dt) || true;
 	};
 
-	this.click = function click(coordinates)
+	this.click = function click(x, y)
 	{
-		var dx = this.point.x - coordinates[0];
-		var dy = this.point.y - coordinates[1];
+		var dx = this.point.x - x;
+		var dy = this.point.y - y;
 
 		this.velocity.y = 100.0/dx;
 		this.velocity.y = 100.0/dy;

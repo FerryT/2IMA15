@@ -29,16 +29,17 @@ function LevelZero()
 
 function LevelOne()
 {	
-	var level = new Level('I\'ll wait');
+	var level = new Level('I\'ll wait', new Behavior().Editable()),
+		behavior = new Behavior().Draggable();
 
-	var groupOne = [new Entity(game.rect.randomPoint(), 0, Behavior.None),
-					new Entity(game.rect.randomPoint(), 0, Behavior.None),
-					new Entity(game.rect.randomPoint(), 0, Behavior.None),
-					new Entity(game.rect.randomPoint(), 0, Behavior.None)];
-	var groupTwo = [new Entity(game.rect.randomPoint(), 1, Behavior.None),
-					new Entity(game.rect.randomPoint(), 1, Behavior.None),
-					new Entity(game.rect.randomPoint(), 1, Behavior.None),
-					new Entity(game.rect.randomPoint(), 1, Behavior.None)];
+	var groupOne = [new Entity(game.rect.randomPoint(), 0, behavior),
+					new Entity(game.rect.randomPoint(), 0, behavior),
+					new Entity(game.rect.randomPoint(), 0, behavior),
+					new Entity(game.rect.randomPoint(), 0, behavior)];
+	var groupTwo = [new Entity(game.rect.randomPoint(), 1, behavior),
+					new Entity(game.rect.randomPoint(), 1, behavior),
+					new Entity(game.rect.randomPoint(), 1, behavior),
+					new Entity(game.rect.randomPoint(), 1, behavior)];
 
 	level.add(groupOne);
 	level.add(groupTwo);

@@ -88,81 +88,10 @@
 				game.slices = [];
 				if (line)
 					game.slice(line);
-				field.updateLines();
-				field.updatePoints();
-				field.updateGoals();
+				field.updateLevel();
 			}
 
 			setInterval(function(){ update(); }, game.rate); // XXX: add field update event to game update
-		});
-	</script>
-	<script>
-		//Temporary point manipulation -- removed in final version
-		$(function()
-		{
-			function update()
-			{
-				var level = game.level,
-					line = NaiveAlgorithm(level.points(0), level.points(1));
-				game.slices = [];
-				if (line)
-					game.slice(line);
-				field.updateLines();
-			}
-
-			function handle(circle)
-			{
-				circle
-					.call(drag)
-					.on('contextmenu', function (d)
-					{
-						d3.event.preventDefault();
-						var level = game.level;
-						function remove(arr, d)
-						{
-							var i = arr.indexOf(d);
-							if (i >= 0)
-								arr.splice(i, 1);
-						}
-						remove(level.entities, d);
-						for (var i = level.groups.length -1; i >= 0; --i)
-							remove(level.groups[i], d);
-
-						field.updatePoints();
-						update();
-					})
-				;
-			}
-
-			var bb = game.rect.shrink(5);
-			var drag = d3.behavior.drag()
-				.on('drag', function (d)
-				{
-					d.point.x = Math.min(Math.max(bb.x, d3.event.x), bb.x + bb.w);
-					d.point.y = Math.min(Math.max(bb.y, d3.event.y), bb.y + bb.h);
-					d3.select(this)
-						.attr('cx', function (d) { return d.point.x })
-						.attr('cy', function (d) { return d.point.y })
-					;
-					update();
-				})
-			;
-			handle(field.svg.selectAll('.points circle'));
-
-			field.svg.on('click', function ()
-			{
-				if (d3.event.defaultPrevented) return;
-				/*var level = game.level;
-				level.add(new Entity(new Point(d3.mouse(this)),
-					+(level.groups[0].length > level.groups[1].length)));
-				field.updatePoints();
-				handle(field.svg.selectAll('.points circle'));*/
-				for(var i = 0; i < game.level.entities.length; i++)
-				{
-					game.level.entities[0].behavior.click(d3.mouse(this));
-				}
-				update();
-			});
 		});
 	</script>
 </body>

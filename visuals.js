@@ -14,6 +14,23 @@ function Field(id, game)
 	this.goals = this.svg.append('g').attr('class', 'goals');
 	this.lines = this.svg.append('g').attr('class', 'lines');
 	this.points = this.svg.append('g').attr('class', 'points');
+
+	this.svg
+		.datum(this.game.level)
+		.call(Field.behave, Field.updateField.bind(this, this))
+		.on('contextmenu', function() { d3.event.preventDefault(); })
+	;
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Field.prototype.updateLevel = function()
+{
+	this.svg
+		.datum(this.game.level)
+	;
+	Field.updateField(this);
+	return this;
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

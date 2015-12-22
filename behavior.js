@@ -35,6 +35,20 @@ Behavior.None = Object.freeze(new Behavior); // No behavior, booooooring!
 
 //------------------------------------------------------------------------------
 
+// Clicking the level will add points
+Behavior.Habit('Editable', function ()
+{
+	this.click = function click(x, y)
+	{
+		var group = +(this.groups[0].length > this.groups[1].length),
+			behavior = new Behavior().Draggable();
+		this.add(new Entity(new Point(x, y), group, behavior));
+		return click.next.call(this, x, y) || true;
+	}
+});
+
+//------------------------------------------------------------------------------
+
 // Makes entities movable by dragging them
 Behavior.Habit('Draggable', function ()
 {

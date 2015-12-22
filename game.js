@@ -91,12 +91,13 @@ Game.prototype.win = function win()
 
 //------------------------------------------------------------------------------
 
-function Level(name)
+function Level(name, behavior)
 {
 	this.name = name;
 	this.goals = [];
 	this.entities = [];
 	this.groups = [];
+	this.behavior = behavior || Behavior.None;
 }
 
 Level.prototype.add = function(ent)
@@ -129,7 +130,7 @@ Level.prototype.points = function(group)
 
 Level.prototype.clone = function clone()
 {
-	var level = new Level(this.name);
+	var level = new Level(this.name, this.behavior);
 	for (var i = 0, l = this.goals.length; i < l; ++i)
 		level.add(this.goals[i].clone());
 	for (var i = 0, l = this.entities.length; i < l; ++i)

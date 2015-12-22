@@ -15,6 +15,10 @@ function Game(width, height, rate)
 	this.score = 0;
 	this.slices = [];
 	this.rate = rate || 1000;
+
+	var dispatch = d3.dispatch('update');
+	this.on = dispatch.on.bind(dispatch);
+	this.on.dispatch = dispatch;
 }
 
 Game.prototype.addLevel = function addLevel(def)
@@ -71,6 +75,7 @@ Game.prototype.update = function update()
 		if (this.level.goals[i].check())
 			this.win();
 
+	this.on.dispatch.update();
 	return this;
 }
 

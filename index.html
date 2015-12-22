@@ -90,8 +90,8 @@
 					game.slice(line);
 				field.updateLevel();
 			}
-
-			setInterval(function(){ update(); }, game.rate); // XXX: add field update event to game update
+			
+			game.on('update', update);
 		});
 	</script>
 </body>

@@ -37,6 +37,11 @@ $('#btn-back').click(function()
 	$('#btn-resume').hide();
 });
 
+$('#btn-restart').click(function()
+{
+	game.start(game.level.id);
+});
+
 $('#btn-pause').click(function()
 {
 	game.pause();

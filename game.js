@@ -11,6 +11,7 @@ function Game(width, height, rate)
 	this.levels = [new Level('')];
 
 	this.level = this.levels[0].clone();
+	this.level.id = 0;
 	this.paused = true;
 	this.score = 0;
 	this.slices = [];
@@ -23,7 +24,7 @@ function Game(width, height, rate)
 
 Game.prototype.addLevel = function addLevel(def)
 {
-	if (!def.constructor == Level)
+	if (!def || def.constructor != Level)
 		throw new TypeError();
 	this.levels.push(def);
 	return this;
@@ -31,11 +32,10 @@ Game.prototype.addLevel = function addLevel(def)
 
 Game.prototype.start = function start(level)
 {
+	if (level >= this.levels.length) return;
 	this.pause();
-	levelheader.innerText = this.levels[level].name;
 	this.level = this.levels[level].clone();
-	if (level + 1 < this.levels.length)
-		this.level.next = level + 1;
+	this.level.id = level;
 	return this.resume();
 }
 
@@ -90,10 +90,10 @@ Game.prototype.update = function update()
 Game.prototype.win = function win()
 {
 	// Todo: do something
-	if (this.level.next)
+	if (this.level.id + 1 < this.levels.length)
 	{
 		window.alert("Congratulations! But there are more levels..");
-		this.start(this.level.next);		
+		this.start(this.level.id + 1);
 	}
 	else
 	{

@@ -30,7 +30,7 @@ function LevelZero()
 function LevelOne()
 {	
 	var level = new Level('I\'ll wait', new Behavior().Editable()),
-		behavior = new Behavior().Draggable();
+		behavior = new Behavior().Draggable().Clamped(game.rect);
 
 	var groupOne = [new Entity(game.rect.randomPoint(), 0, behavior),
 					new Entity(game.rect.randomPoint(), 0, behavior),

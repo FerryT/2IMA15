@@ -65,13 +65,12 @@
 			$('#btn-play').click(); // Debug
 
 			var game = new Game(640, 360, 1000 / 60 /* 60 fps */),
-				rect = game.rect.shrink(20),
 				field = new Field('field', game);
 
 			window.game = game;
 			window.field = field;
 
-			InitializeLevels(rect);
+			InitializeLevels(game.rect.shrink(20));
 			game.on('update', field.updateLevel.bind(field));
 			game.start(1);
 		});

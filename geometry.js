@@ -31,6 +31,25 @@ Point.prototype.clamp = function clamp(rect)
 
 //------------------------------------------------------------------------------
 
+function Vector(x, y)
+{
+	if ($.isArray(x))
+	{
+		this.x = x[0];
+		this.y = x[1];
+	}
+	else
+	{
+		this.x = x || 0;
+		this.y = y || 0;
+	}
+}
+
+Vector.prototype.clone = function clone()
+	{ return new Vector(this.x, this.y); }
+
+//------------------------------------------------------------------------------
+
 function Line(x1, y1, x2, y2)
 {
 	if ($.isArray(x1))

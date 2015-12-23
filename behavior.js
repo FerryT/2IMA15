@@ -37,12 +37,11 @@ Behavior.None = Object.freeze(new Behavior); // No behavior, booooooring!
 //------------------------------------------------------------------------------
 
 // Clicking the level will add points
-Behavior.Habit('Editable', function ()
+Behavior.Habit('Editable', function (behavior)
 {
 	this.click = function click(x, y)
 	{
-		var group = +(this.groups[0].length > this.groups[1].length),
-			behavior = new Behavior().Draggable();
+		var group = +(this.groups[0].length > this.groups[1].length);
 		this.add(new Entity(new Point(x, y), group, behavior));
 		return click.next.call(this, x, y) || true;
 	}
@@ -63,15 +62,71 @@ Behavior.Habit('Draggable', function ()
 	{
 		this.point.x = x;
 		this.point.y = y;
-		this.point.clamp(game.rect); // Todo: Make clamping a separate habit
-
 		return drag.next.call(this, x, y) || true;
 	}
 });
 
 //------------------------------------------------------------------------------
 
-Behavior.Habit('Pieter', function (rate) // Random wiggling
+// Keeps the entities within a rectangle
+Behavior.Habit('Clamped', function (rect)
+{
+	if (rect.constructor != Rectangle)
+		throw new TypeError('first argument must be a Rectangle.');
+
+	if (this.create.next)
+		this.create = function create()
+		{
+			var ret = create.next.call(this);
+			this.point.clamp(rect);
+			return ret;
+		}
+
+	if (this.update.next)
+		this.update = function update(dt)
+		{
+			var ret = update.next.call(this, dt);
+			this.point.clamp(rect);
+			return ret;
+		}
+
+	if (this.click.next)
+		this.click = function click(x, y)
+		{
+			var ret = click.next.call(this, x, y);
+			this.point.clamp(rect);
+			return ret;
+		}
+
+	if (this.drag.next)
+		this.drag = function drag(x, y)
+		{
+			var ret = drag.next.call(this, x, y);
+			this.point.clamp(rect);
+			return ret;
+		}
+
+	if (this.dragstart.next)
+		this.dragstart = function dragstart(x, y)
+		{
+			var ret = dragstart.next.call(this, x, y);
+			this.point.clamp(rect);
+			return ret;
+		}
+
+	if (this.dragend.next)
+		this.dragend = function dragend(x, y)
+		{
+			var ret = dragend.next.call(this, x, y);
+			this.point.clamp(rect);
+			return ret;
+		}
+});
+
+//------------------------------------------------------------------------------
+
+// Entities that wiggle randomly
+Behavior.Habit('Pieter', function (rate)
 {
 	rate = rate || 10;
 
@@ -82,7 +137,6 @@ Behavior.Habit('Pieter', function (rate) // Random wiggling
 
 		this.point.x += dx;
 		this.point.y += dy;
-		this.point.clamp(game.rect);
 
 		return update.next.call(this, dt) || true;
 	}
@@ -90,7 +144,7 @@ Behavior.Habit('Pieter', function (rate) // Random wiggling
 
 //------------------------------------------------------------------------------
 
-// Describes points moving vertically in a jumping motion
+// Describes entities moving vertically in a jumping motion
 Behavior.Habit('Bounce', function (rate)
 {
 	rate = rate || 10;
@@ -101,10 +155,7 @@ Behavior.Habit('Bounce', function (rate)
 			this.velocity.y = -50;
 
 		this.velocity.y += rate * dt / 1000;
-
-
 		this.point.y += this.velocity.y / dt;
-		this.point.clamp(game.rect);
 
 		return update.next.call(this, dt) || true;
 	}
@@ -112,21 +163,19 @@ Behavior.Habit('Bounce', function (rate)
 
 //------------------------------------------------------------------------------
 
-// Describes points moving away from mouse clicks
+// Describes entities moving away from mouse clicks
 Behavior.Habit('Coward', function (rate)
 {
 	rate = rate || 10;
+	var decayRate = 0.05 * rate;
 
 	this.update = function update(dt)
 	{
-		var decayRate = 0.05 * rate;
 		this.velocity.x *= (1 - decayRate * dt / 1000);
 		this.velocity.y *= (1 - decayRate * dt / 1000);
 
-
 		this.point.x += this.velocity.x / dt;
 		this.point.y += this.velocity.y / dt;
-		this.point.clamp(game.rect);
 
 		return update.next.call(this, dt) || true;
 	};
@@ -142,3 +191,5 @@ Behavior.Habit('Coward', function (rate)
 		return click.next.call(this, dt) || false;
 	}
 });
+
+//------------------------------------------------------------------------------

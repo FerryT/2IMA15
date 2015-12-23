@@ -128,12 +128,10 @@ Level.prototype.add = function(ent)
 	{
 		this.goals.push(ent);
 	}
-	else if(ent.constructor == Array && ent.length > 0 && ent[0].constructor == Entity)
+	else if(Array.isArray(ent) && ent.length && ent[0].constructor == Entity)
 	{
-		for(var i = 0; i<ent.length; i++)
-		{
+		for(var i = 0, l = ent.length; i < l; ++i)
 			this.add(ent[i]);
-		}
 	}
 	return this;
 }
@@ -184,9 +182,7 @@ function Entity(point, group, behavior, id)
 	this.group = +group || 0;
 	this.behavior = behavior || Behavior.None;
 	this.id = id || Entity.id++;
-
-	// We use point as a 2D speed vector (for now)
-	this.velocity = new Point(0,0);
+	this.velocity = new Vector(0, 0);
 
 	this.behavior.create.call(this);
 }

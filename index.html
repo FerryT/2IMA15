@@ -60,9 +60,9 @@
 	</div>
 	<script src="interface.js"></script>
 	<script>
-		$(function() // Debug
+		$(function()
 		{
-			$('#btn-play').click();
+			$('#btn-play').click(); // Debug
 
 			var game = new Game(640, 360, 1000 / 60 /* 60 fps */),
 				rect = game.rect.shrink(20),
@@ -70,28 +70,10 @@
 
 			window.game = game;
 			window.field = field;
+
 			InitializeLevels(rect);
-
-
+			game.on('update', field.updateLevel.bind(field));
 			game.start(1);
-
-			var groupOne = game.level.points(0);
-			var groupTwo = game.level.points(1);
-			game.slice(NaiveAlgorithm(groupOne, groupTwo))
-			field.updatePoints();
-			field.updateLines();
-
-			function update()
-			{
-				var level = game.level,
-					line = NaiveAlgorithm(level.points(0), level.points(1));
-				game.slices = [];
-				if (line)
-					game.slice(line);
-				field.updateLevel();
-			}
-			
-			game.on('update', update);
 		});
 	</script>
 </body>

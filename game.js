@@ -36,8 +36,7 @@ Game.prototype.start = function start(level)
 	this.level = this.levels[level].clone();
 	if (level + 1 < this.levels.length)
 		this.level.next = level + 1;
-	this.resume();
-	return this;
+	return this.resume();
 }
 
 Game.prototype.pause = function pause()
@@ -52,19 +51,20 @@ Game.prototype.resume = function resume()
 {
 	if (!this.paused) return;
 	this.paused = false;
-	this.interval = setInterval(this.update.bind(this), this.rate);
+	this.interval = setInterval(this.frame.bind(this), this.rate);
 	return this;
 }
 
 Game.prototype.slice = function slice(line)
 {
-	this.slices.push(new Slice(line, this.rect.shrink(-10)));
+	this.slices = [new Slice(line, this.rect.shrink(-10))];
 	return this;
 }
 
-Game.prototype.update = function update()
+Game.prototype.frame = function frame()
 {
 	if(this.paused) return;
+
 	for (var i = 0, l = this.level.entities.length, ent; i < l; ++i)
 	{
 		ent = this.level.entities[i];
@@ -75,6 +75,14 @@ Game.prototype.update = function update()
 		if (this.level.goals[i].check())
 			this.win();
 
+	this.level.behavior.update.call(this.level, this.rate);
+	return this.update();
+}
+
+Game.prototype.update = function update()
+{
+	var line = NaiveAlgorithm(this.level.points(0), this.level.points(1));
+	this.slice(line);
 	this.on.dispatch.update();
 	return this;
 }
@@ -103,6 +111,8 @@ function Level(name, behavior)
 	this.entities = [];
 	this.groups = [];
 	this.behavior = behavior || Behavior.None;
+
+	this.behavior.create.call(this);
 }
 
 Level.prototype.add = function(ent)
@@ -170,12 +180,15 @@ function Entity(point, group, behavior, id)
 		throw new TypeError('first argument must be a Point.');
 	
 	this.point = point;
+	this.size = 10;
 	this.group = +group || 0;
 	this.behavior = behavior || Behavior.None;
 	this.id = id || Entity.id++;
 
 	// We use point as a 2D speed vector (for now)
 	this.velocity = new Point(0,0);
+
+	this.behavior.create.call(this);
 }
 
 Entity.id = 0;

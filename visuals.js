@@ -63,21 +63,20 @@ Field.prototype.updateGoals = function()
 
 Field.prototype.updatePoints = function()
 {
-	var radius = 10,
-		points = this.points.selectAll('circle')
+	var points = this.points.selectAll('circle')
 			.data(this.game.level.entities,
 				function (d) { return d.id; });
 
 	points.enter()
 		.append('circle')
 		.attr('class', function (d) { return 'group' + d.group; })
-		.attr('r', radius)
 		.call(Field.behave, Field.updatePoint)
 	;
 
 	points
 		.attr('cx', function (d) { return d.point.x; })
 		.attr('cy', function (d) { return d.point.y; })
+		.attr('r', function (d) { return d.size; })
 	;
 
 	points.exit()
@@ -150,6 +149,7 @@ Field.updatePoint = function update(point)
 	d3.select(point)
 		.attr('cx', function (d) { return d.point.x; })
 		.attr('cy', function (d) { return d.point.y; })
+		.attr('r', function (d) { return d.size; })
 	;
 }
 

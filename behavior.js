@@ -5,11 +5,12 @@
 function Behavior()
 {
 	function noop() { return false; }
-	this.update    = parent.update    || noop;
-	this.click     = parent.click     || noop;
-	this.drag      = parent.drag      || noop;
-	this.dragstart = parent.dragstart || noop;
-	this.dragend   = parent.dragend   || noop;
+	this.create    = noop;
+	this.update    = noop;
+	this.click     = noop;
+	this.drag      = noop;
+	this.dragstart = noop;
+	this.dragend   = noop;
 }
 
 Behavior.Habit = function Habit(name, func)
@@ -52,6 +53,12 @@ Behavior.Habit('Editable', function ()
 // Makes entities movable by dragging them
 Behavior.Habit('Draggable', function ()
 {
+	this.create = function create()
+	{
+		this.size = 20;
+		return create.next.call(this) || true;
+	}
+
 	this.drag = function drag(x, y)
 	{
 		this.point.x = x;

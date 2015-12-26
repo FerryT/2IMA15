@@ -13,11 +13,16 @@ body {
 	height: 100%;
 	position: absolute;
 }
-#topbar {
+#topbar, #gamebar {
 	position: absolute;
 	z-index: 100;
 	padding: 1em;
 	display: none;
+	box-sizing: border-box;
+	width: 100%;
+}
+#gamebar .group2 {
+	float: right;
 }
 h1 {
 	margin: 1em auto;
@@ -43,6 +48,29 @@ svg.icon {
 	width: 1em;
 	height: 1em;
 	padding: .25em;
+}
+
+#pause-screen {
+	display: none;
+}
+#pause-screen {
+	background: rgba(192, 192, 192, .5);
+	z-index: 200;
+}
+#pause-screen h1 {
+	color: White;
+	font-size: 5em;
+	text-shadow: 0 0 .5em Black;
+	position: relative;
+	top: 25%;
+}
+#pause-screen p {
+	color: White;
+	font-size: 2em;
+	text-shadow: 0 0 .5em Black;
+	text-align: center;
+	position: relative;
+	top: 25%;
 }
 
 #menu a {

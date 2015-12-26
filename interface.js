@@ -15,7 +15,7 @@ $('button.icon').each(function()
 	;
 });
 
-window.scrollTo(0, 1);
+setTimeout(function () { window.scrollTo(0, 1); }, 1);
 
 function resize()
 {
@@ -34,7 +34,15 @@ $('#btn-back').click(function()
 	$('#options').hide();
 	$('#about').hide();
 	$('#topbar').hide();
-	$('#btn-resume').hide();
+});
+
+// Game bar
+$('#btn-menu').click(function()
+{
+	$('#btn-play').text('Resume');
+	$('#menu').show();
+	$('#gamebar').hide();
+	game.pause();
 });
 
 $('#btn-restart').click(function()
@@ -46,23 +54,21 @@ $('#btn-pause').click(function()
 {
 	game.pause();
 
-	$('#btn-pause').hide();
-	$('#btn-resume').show();
+	$('#pause-screen').show();
 });
 
-$('#btn-resume').click(function()
+$('#pause-screen').click(function()
 {
+	$('#pause-screen').hide();
 	game.resume();
-
-	$('#btn-pause').show();
-	$('#btn-resume').hide();
 });
 
 // Menu
 $('#btn-play').click(function()
 {
 	$('#menu').hide();
-	$('#topbar').show();
+	$('#gamebar').show();
+	game.resume();
 });
 $('#btn-options').click(function()
 {
@@ -80,8 +86,11 @@ $('#btn-exit').click(function()
 });
 
 // Done loading
-$('#btn-back').click();
-$('#loader').hide();
+$(function()
+{
+	$('#btn-back').click();
+	$('#loader').hide();
+});
 
 //------------------------------------------------------------------------------
 

@@ -4,14 +4,25 @@
 	top: 2.5%;
 	max-width: 95%;
 	max-height: 82.5%;
-	background-color: NavajoWhite;
 	margin: auto auto;
 	display: block;
-
+	background-color: NavajoWhite;
 	fill: Sienna;
 	stroke: Sienna;
 	cursor: crosshair;
 	box-shadow: 0 0 .5em .25em NavajoWhite;
+}
+
+#about-field1, #about-field2 {
+	width: 20em;
+	height: 20em;
+	margin: .5em;
+	display: inline-block;
+	background-color: White;
+	fill: Sienna;
+	stroke: Sienna;
+	cursor: crosshair;
+	border: 2px solid Sienna;
 }
 
 .goals {

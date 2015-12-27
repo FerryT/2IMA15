@@ -29,6 +29,14 @@ Point.prototype.clamp = function clamp(rect)
 	this.y = Math.min(Math.max(this.y, rect.y), rect.y + rect.h);
 }
 
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Point.prototype.dual = function dual() // *IMPORTANT* do not use in algorithms!
+{
+	//return new Line(0, -this.y, this.y / this.x, 0);
+	return new Line(0, -this.y, 1, this.x - this.y);
+}
+
 //------------------------------------------------------------------------------
 
 function Vector(x, y)

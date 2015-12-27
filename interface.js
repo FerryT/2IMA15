@@ -97,6 +97,7 @@ $('#btn-about').click(function()
 {
 	$('#about').show();
 	$('#topbar').show();
+	Waypoint.refreshAll();
 });
 $('#btn-exit').click(function()
 {

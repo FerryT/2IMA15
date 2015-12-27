@@ -17,7 +17,7 @@ function Game(width, height, rate)
 	this.slices = [];
 	this.rate = rate || 1000;
 
-	var dispatch = d3.dispatch('update');
+	var dispatch = d3.dispatch('update', 'win');
 	this.on = dispatch.on.bind(dispatch);
 	this.on.dispatch = dispatch;
 }
@@ -36,6 +36,7 @@ Game.prototype.start = function start(level)
 	this.pause();
 	this.level = this.levels[level].clone();
 	this.level.id = level;
+	this.level.next = level + 1 < this.levels.length ? level + 1 : 0;
 	return this.resume();
 }
 
@@ -82,23 +83,18 @@ Game.prototype.frame = function frame()
 Game.prototype.update = function update()
 {
 	var line = NaiveAlgorithm(this.level.points(0), this.level.points(1));
-	this.slice(line);
-	this.on.dispatch.update();
+	if (line)
+	{
+		this.slice(line);
+		this.on.dispatch.update();
+	}
 	return this;
 }
 
 Game.prototype.win = function win()
 {
-	// Todo: do something
-	if (this.level.id + 1 < this.levels.length)
-	{
-		window.alert("Congratulations! But there are more levels..");
-		this.start(this.level.id + 1);
-	}
-	else
-	{
-		window.alert("You beat the game");
-	}
+	this.pause();
+	this.on.dispatch.win();
 	return this;
 }
 
@@ -138,7 +134,7 @@ Level.prototype.add = function(ent)
 
 Level.prototype.points = function(group)
 {
-	return this.groups[group].map(function (ent) { return ent.point; });
+	return (this.groups[group] || []).map(function (ent) { return ent.point; });
 }
 
 Level.prototype.clone = function clone()

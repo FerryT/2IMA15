@@ -34,7 +34,7 @@ button {
 	border: .25em solid Sienna;
 	font-size: 2em;
 	border-radius: 5em;
-	background: none;
+	background: Papayawhip;
 	padding: .25em .5em;
 }
 button.icon {
@@ -52,7 +52,7 @@ svg.icon {
 	padding: .25em;
 }
 
-#pause-screen {
+#pause-screen, #win-screen {
 	display: none;
 }
 #pause-screen {
@@ -73,6 +73,34 @@ svg.icon {
 	text-align: center;
 	position: relative;
 	top: 25%;
+}
+
+#win-screen {
+	background: rgba(255, 255, 255, .75);
+	z-index: 200;
+}
+#win-screen h1 {
+	color: Gold;
+	font-size: 4em;
+	text-shadow: -2px -2px 1px DarkGoldenrod,
+	             -3px  0px 1px DarkGoldenrod,
+	             -2px  2px 1px DarkGoldenrod,
+	              0px  3px 1px DarkGoldenrod,
+	              2px -2px 1px DarkGoldenrod,
+	              3px  0px 1px DarkGoldenrod,
+	              2px  2px 1px DarkGoldenrod,
+	              0px -3px 1px DarkGoldenrod;
+	position: relative;
+	top: 15%;
+}
+#win-screen p {
+	text-align: center;
+	position: relative;
+	top: 15%;
+}
+#win-screen button {
+	margin: .5em;
+	width: 5em;
 }
 
 #menu a {

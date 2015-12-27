@@ -33,6 +33,9 @@
 			<symbol id="reload" viewBox="0 0 8 8">
 				<path d="M4 0c-2.201 0-4 1.799-4 4s1.799 4 4 4c1.104 0 2.092-.456 2.813-1.188l-.688-.688c-.54.548-1.289.875-2.125.875-1.659 0-3-1.341-3-3s1.341-3 3-3c.834 0 1.545.354 2.094.906l-1.094 1.094h3v-3l-1.188 1.188c-.731-.72-1.719-1.188-2.813-1.188z"></path>
 			</symbol>
+			<symbol id="arrow-thick-right" viewBox="0 0 8 8">
+				<path d="M5 0v2h-5v2h5v2l3-3.031-3-2.969z" transform="translate(0 1)"></path>
+			</symbol>
 		</defs>
 	</svg>
 
@@ -82,6 +85,19 @@
 		<h1>- Paused -</h1>
 		<p>Press here to resume</p>
 	</div>
+	<div id="win-screen" class="page">
+		<h1>Congratulations!</h1>
+		<p>
+			But there are more levels..
+		</p>
+		<p>
+			<button id="btn-win-restart">Replay</button>
+			<button id="btn-win-resume">Next</button>
+		</p>
+		<p>
+			<button id="btn-win-menu">Menu</button>
+		</p>
+	</div>
 	<script src="interface.js"></script>
 	<script src="about.js"></script>
 	<script>
@@ -95,7 +111,8 @@
 
 			InitializeLevels(game.rect.shrink(20));
 			game.on('update', field.updateLevel.bind(field));
-			game.start(1);
+			game.on('win', function() { $('#win-screen').show() });
+			game.start(1).pause();
 
 			$(function() // Debug
 			{

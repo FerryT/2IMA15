@@ -188,7 +188,7 @@ Behavior.Habit('Coward', function (rate)
 		this.velocity.y = 100.0/dx;
 		this.velocity.y = 100.0/dy;
 
-		return click.next.call(this, dt) || false;
+		return click.next.call(this, x, y) || false;
 	}
 });
 

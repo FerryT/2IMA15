@@ -36,7 +36,7 @@ $('#btn-back').click(function()
 	$('#topbar').hide();
 });
 
-// Game bar
+// Game bar / screen
 $('#btn-menu').click(function()
 {
 	$('#btn-play').text('Resume');
@@ -53,7 +53,6 @@ $('#btn-restart').click(function()
 $('#btn-pause').click(function()
 {
 	game.pause();
-
 	$('#pause-screen').show();
 });
 
@@ -61,6 +60,25 @@ $('#pause-screen').click(function()
 {
 	$('#pause-screen').hide();
 	game.resume();
+});
+
+$('#btn-win-restart').click(function()
+{
+	$('#win-screen').hide();
+	game.start(game.level.id);
+});
+
+$('#btn-win-resume').click(function()
+{
+	$('#win-screen').hide();
+	game.start(game.level.next);
+});
+
+$('#btn-win-menu').click(function()
+{
+	$('#win-screen').hide();
+	game.start(game.level.next);
+	$('#btn-menu').click();
 });
 
 // Menu

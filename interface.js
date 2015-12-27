@@ -85,6 +85,23 @@ $('#btn-exit').click(function()
 	window.close();
 });
 
+// About
+$('#about-tabs a').click(function()
+{
+	var target = $('#' + $(this).attr('id').slice(4));
+	$('#about article').scrollTo(target, 350, { offset: -20 });
+});
+function select()
+{
+	$('#about-tabs a').removeClass('selected');
+	$('#btn-' + $(this.element).attr('id')).toggleClass('selected', true);
+}
+$('#about section').waypoint(select, { context: $('#about article') });
+$('#about section').waypoint(select, {
+	context: $('#about article'),
+	offset: '50%'
+});
+
 // Done loading
 $(function()
 {

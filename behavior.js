@@ -43,6 +43,7 @@ Behavior.Habit('Editable', function (behavior)
 	{
 		var group = +(this.groups[0].length > this.groups[1].length);
 		this.add(new Entity(new Point(x, y), group, behavior));
+
 		return click.next.call(this, x, y) || true;
 	}
 });

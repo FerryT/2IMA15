@@ -39,6 +39,17 @@ Point.prototype.dual = function dual() // *IMPORTANT* do not use in algorithms!
 
 //------------------------------------------------------------------------------
 
+Point.prototype.multiply = function multiply(rect)
+{
+	if (rect.constructor != Rectangle)
+		throw new TypeError('first argument must be a Rectangle.');
+	return new Point(
+		 rect.x + rect.w * this.x,
+		 rect.y + rect.h * this.y);
+}
+
+//------------------------------------------------------------------------------
+
 function Vector(x, y)
 {
 	if ($.isArray(x))

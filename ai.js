@@ -24,14 +24,15 @@ Behavior.Habit('Pieter', function (rate)
 //------------------------------------------------------------------------------
 
 // Describes entities moving vertically in a jumping motion
-Behavior.Habit('Bounce', function (rate)
+Behavior.Habit('Bounce', function (rate, height)
 {
 	rate = rate || 10;
+	height = height || 50;
 
 	this.update = function update(dt)
 	{
-		if(this.velocity.y >= 50)
-			this.velocity.y = -50;
+		if(this.velocity.y >= height)
+			this.velocity.y = -height;
 
 		this.velocity.y += rate * dt / 1000;
 		this.point.y += this.velocity.y / dt;

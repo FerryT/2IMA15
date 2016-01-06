@@ -44,11 +44,33 @@ Behavior.Habit('Editable', function (behavior)
 		var group = +(this.groups[0].length > this.groups[1].length);
 		this.add(new Entity(new Point(x, y), group, behavior));
 
+		for(var i = 0; i < this.entities.length; i++)
+		{
+			this.entities[i].behavior.click.call(this.entities[i], x,y);
+		}
+
 		return click.next.call(this, x, y) || true;
 	}
 });
 
 //------------------------------------------------------------------------------
+
+// Clicking the level will notify entities
+Behavior.Habit('Clickable', function ()
+{
+	this.click = function click(x, y)
+	{
+		for(var i = 0; i < this.entities.length; i++)
+		{
+			this.entities[i].behavior.click.call(this.entities[i], x,y);
+		}
+
+		return click.next.call(this, x, y) || true;
+	}
+});
+
+//------------------------------------------------------------------------------
+
 
 // Makes entities movable by dragging them
 Behavior.Habit('Draggable', function ()

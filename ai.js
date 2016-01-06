@@ -44,10 +44,11 @@ Behavior.Habit('Bounce', function (rate, height)
 //------------------------------------------------------------------------------
 
 // Describes entities moving away from mouse clicks
-Behavior.Habit('Coward', function (rate)
+Behavior.Habit('Coward', function (initialspeed, decayrate)
 {
-	rate = rate || 10;
-	var decayRate = 0.05 * rate;
+	decayrate = decayrate || 10;
+	var decayRate = 0.05 * decayrate;
+	initialspeed = initialspeed || 100.0;
 
 	this.update = function update(dt)
 	{
@@ -65,8 +66,13 @@ Behavior.Habit('Coward', function (rate)
 		var dx = this.point.x - x;
 		var dy = this.point.y - y;
 
-		this.velocity.y = 100.0/dx;
-		this.velocity.y = 100.0/dy;
+		var speed = initialspeed / Math.sqrt(dx*dx + dy*dy);
+
+		//if(Math.abs(dx) < 50)
+			this.velocity.x = speed/dx;
+		
+		//if(Math.abs(dy) < 50)
+			this.velocity.y = speed/dy;
 
 		return click.next.call(this, x, y) || false;
 	}

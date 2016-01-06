@@ -1,20 +1,20 @@
 function InitializeLevels()
 {
-	//game.addLevel(LevelZero());
 	game.addLevel(LevelOne());
 	game.addLevel(LevelOneB());
-	game.addLevel(LevelTwo());
 	game.addLevel(LevelThree());
-	game.addLevel(LevelFour());
+	game.addLevel(LevelZero());
+	game.addLevel(LevelTwo());
+	//game.addLevel(LevelFour());
 }
 
 // Todo: concrete points instead of random ones
 
 function LevelZero()
 {	
-	var behavior1 = new Behavior().Draggable().Coward(5).Clamped(game.rect),
-		behavior2 = new Behavior().Draggable().Coward(1).Clamped(game.rect),
-		level = new Level('Runaround')
+	var behavior1 = new Behavior().Coward(3500, 25).Clamped(game.rect),
+		behavior2 = new Behavior().Coward(2500, 25).Clamped(game.rect),
+		level = new Level('Runaround', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.5, 0.5).multiply(game.rect), 0, behavior1))

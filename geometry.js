@@ -142,6 +142,17 @@ Line.prototype.orientation = function orientation(point)
 
 //------------------------------------------------------------------------------
 
+Line.prototype.distance = function distance(point)
+{
+	if (point.constructor != Point)
+		throw new TypeError('first argument must be a point.');
+
+	var d = Math.abs((this.x2-this.x1)*(this.y1-point.y)-(this.x1-point.x)*(this.y2-this.y1))/Math.sqrt(Math.pow((this.x2-this.x1),2)+Math.pow((this.y2-this.y1),2));
+	return d;
+}
+
+//------------------------------------------------------------------------------
+
 function Rectangle(x, y, w, h)
 {
 	if ($.isArray(x))

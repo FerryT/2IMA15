@@ -53,7 +53,7 @@
 		</span>
 	</header>
 	<div id="game" class="page">
-		<h1 id="levelheader">Level 1</h1>
+		<h1 id="levelheader">&nbsp;</h1>
 		<svg id="field"></svg>
 	</div>
 	<nav id="menu" class="page">
@@ -62,6 +62,10 @@
 		<a id="btn-about">About</a>
 		<a id="btn-exit">Exit</a>
 	</nav>
+	<div id="levels" class="page">
+		<h1>Levels</h1>
+		<div id="level-buttons"></div>
+	</div>
 	<div id="options" class="page">
 		<h1>Options</h1>
 	</div>
@@ -96,10 +100,9 @@
 			<button id="btn-win-resume">Next</button>
 		</p>
 		<p>
-			<button id="btn-win-menu">Menu</button>
+			<button id="btn-win-menu">Levels</button>
 		</p>
 	</div>
-	<script src="interface.js"></script>
 	<script src="about.js"></script>
 	<script>
 		$(function()
@@ -113,13 +116,8 @@
 			InitializeLevels(game.rect.shrink(20));
 			game.on('update', field.updateLevel.bind(field));
 			game.on('win', function() { $('#win-screen').show() });
-			game.start(1).pause();
-
-			$(function() // Debug
-			{
-				$('#btn-play').click();
-			})
 		});
 	</script>
+	<script src="interface.js"></script>
 </body>
 </html>

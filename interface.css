@@ -125,6 +125,43 @@ svg.icon {
 	color: Sienna;
 }
 
+#level-buttons {
+	height: 100%;
+	margin: 0 10%;
+}
+
+#levels a {
+	display: inline-block;
+	margin: 1%;
+	padding: 2%;
+	min-width: 2em;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 2em;
+	background: Peru;
+	color: Papayawhip;
+	font-size: 2em;
+	border-radius: 1em;
+	cursor: pointer;
+}
+#levels a.paused {
+	box-shadow: 0 0 .25em .25em Goldenrod;
+}
+#levels a:hover {
+	box-shadow: 0 0 1em Coral;
+	text-shadow: 0 0 1em Papayawhip;
+}
+#levels a:active {
+	background: Papayawhip;
+	color: Sienna;
+}
+#levels a.locked {
+	background: Sienna;
+	box-shadow: none;
+	color: Papayawhip;
+	text-shadow: none;
+}
+
 #about {
 	height: 100%;
 	overflow: hidden;

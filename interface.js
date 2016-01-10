@@ -30,7 +30,8 @@ resize();
 // Topbar
 $('#btn-back').click(function()
 {
-	$('#menu').show();
+	$('#btn-play').text(game.level.id ? 'Resume' : 'Play');
+	$('#levels').hide();
 	$('#options').hide();
 	$('#about').hide();
 	$('#topbar').hide();
@@ -39,10 +40,12 @@ $('#btn-back').click(function()
 // Game bar / screen
 $('#btn-menu').click(function()
 {
-	$('#btn-play').text('Resume');
-	$('#menu').show();
-	$('#gamebar').hide();
 	game.pause();
+	$('#level-buttons a').trigger('update');
+	$('#menu').show();
+	$('#levels').show();
+	$('#topbar').show();
+	$('#gamebar').hide();
 });
 
 $('#btn-restart').click(function()
@@ -77,16 +80,16 @@ $('#btn-win-resume').click(function()
 $('#btn-win-menu').click(function()
 {
 	$('#win-screen').hide();
-	game.start(game.level.next);
+	game.stop();
 	$('#btn-menu').click();
 });
 
 // Menu
 $('#btn-play').click(function()
 {
-	$('#menu').hide();
-	$('#gamebar').show();
-	game.resume();
+	$('#level-buttons a').trigger('update');
+	$('#levels').show();
+	$('#topbar').show();
 });
 $('#btn-options').click(function()
 {
@@ -101,7 +104,48 @@ $('#btn-about').click(function()
 });
 $('#btn-exit').click(function()
 {
+	window.open('', '_self', '');
 	window.close();
+});
+
+// Levels
+$(function()
+{
+	function starter(id)
+	{
+		return function()
+		{
+			if (game.data.unlocked[id] !== true) return;
+			if (game.level.id == id)
+				game.resume();
+			else
+				game.start(id);
+			$('#levelheader').text(game.level.name);
+			$('#gamebar').show();
+			$('#menu').hide();
+			$('#levels').hide();
+		}
+	}
+	function updater(id)
+	{
+		return function()
+		{
+			$(this)
+				.toggleClass('locked', game.data.unlocked[id] !== true)
+				.toggleClass('paused', game.level.id == id)
+			;
+		}
+	}
+	for (var i = 1, l = game.levels.length; i < l; ++i)
+	{
+		$('#level-buttons')
+			.append($('<a>')
+				.text(i)
+				.attr('title', game.levels[i].name)
+				.click(starter(i))
+				.on('update', updater(i)))
+		;
+	}
 });
 
 // About

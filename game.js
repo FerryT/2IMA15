@@ -9,6 +9,9 @@ function Game(width, height, rate)
 	height = height || 100;
 	this.rect = new Rectangle(0, 0, width, height);
 	this.levels = [new Level('')];
+	this.data = {
+		unlocked: [true, true],
+	};
 
 	this.level = this.levels[0].clone();
 	this.level.id = 0;
@@ -33,11 +36,20 @@ Game.prototype.addLevel = function addLevel(def)
 Game.prototype.start = function start(level)
 {
 	if (level >= this.levels.length) return;
+	if (this.data.unlocked[level] !== true) return;
 	this.pause();
 	this.level = this.levels[level].clone();
 	this.level.id = level;
 	this.level.next = level + 1 < this.levels.length ? level + 1 : 0;
-	return this.resume();
+	return this.resume().update();
+}
+
+Game.prototype.stop = function stop()
+{
+	this.level = this.levels[0].clone();
+	this.level.id = 0;
+	this.paused = true;
+	return this;
 }
 
 Game.prototype.pause = function pause()
@@ -94,6 +106,7 @@ Game.prototype.update = function update()
 Game.prototype.win = function win()
 {
 	this.pause();
+	this.data.unlocked[this.level.next] = true;
 	this.on.dispatch.win();
 	return this;
 }

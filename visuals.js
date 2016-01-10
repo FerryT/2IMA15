@@ -30,7 +30,6 @@ Field.prototype.updateLevel = function()
 		.datum(this.game.level)
 	;
 	Field.updateField(this);
-	levelheader.innerText = this.game.level.name; // XXX: reference outside
 	return this;
 }
 

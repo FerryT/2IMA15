@@ -6,6 +6,13 @@
 body {
 	margin: 0;
 	overflow: hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: default;
 }
 .page {
 	background: Papayawhip;
@@ -36,6 +43,7 @@ button {
 	border-radius: 5em;
 	background: Papayawhip;
 	padding: .25em .5em;
+	cursor: pointer;
 }
 button.icon {
 	padding: .25em;
@@ -172,6 +180,12 @@ svg.icon {
 	max-height: 100%;
 	margin: 0 15%;
 	font-size: 1.25em;
+	-webkit-touch-callout: all;
+	-webkit-user-select: all;
+	-khtml-user-select: all;
+	-moz-user-select: all;
+	-ms-user-select: all;
+	user-select: all;
 }
 #about section {
 	margin: 1em 0 5em 0;

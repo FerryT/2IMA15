@@ -66,13 +66,15 @@ Behavior.Habit('Coward', function (initialspeed, decayrate)
 		var dx = this.point.x - x;
 		var dy = this.point.y - y;
 
-		var speed = initialspeed / Math.sqrt(dx*dx + dy*dy);
+		var d = Math.sqrt(dx * dx + dy * dy);
 
-		//if(Math.abs(dx) < 50)
-			this.velocity.x = speed/dx;
+		var normalized_dx = dx/d;
+		var normalized_dy = dy/d;
+
+
+		this.velocity.x = normalized_dx*Math.max(initialspeed-d,0);
 		
-		//if(Math.abs(dy) < 50)
-			this.velocity.y = speed/dy;
+		this.velocity.y = normalized_dy*Math.max(initialspeed-d,0);
 
 		return click.next.call(this, x, y) || false;
 	}

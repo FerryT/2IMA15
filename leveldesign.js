@@ -1,8 +1,8 @@
 function InitializeLevels()
 {
-	game.addLevel(LevelOne());
-	game.addLevel(LevelOneB());
-	game.addLevel(LevelThree());
+	//game.addLevel(LevelOne());
+	//game.addLevel(LevelOneB());
+	//game.addLevel(LevelThree());
 	game.addLevel(LevelZero());
 	game.addLevel(LevelTwo());
 	//game.addLevel(LevelFour());
@@ -12,8 +12,8 @@ function InitializeLevels()
 
 function LevelZero()
 {	
-	var behavior1 = new Behavior().Coward(3500, 25).Clamped(game.rect),
-		behavior2 = new Behavior().Coward(2500, 25).Clamped(game.rect),
+	var behavior1 = new Behavior().Coward(50, 25).Clamped(game.rect),
+		behavior2 = new Behavior().Coward(200, 100).Clamped(game.rect),
 		level = new Level('Runaround', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one

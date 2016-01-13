@@ -1,10 +1,12 @@
 // A cubic time algorithm which simply tries all possible lines,
 // and checks whether or not it is a good one.
-function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
+function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
 {
+    returnMostHorizontal = returnMostHorizontal || false;
 	// When there is an even number of points, leave out the last point
     var groupOneLength = PointGroupOne.length + (PointGroupOne.length%2 - 1);
 	var groupTwoLength = PointGroupTwo.length + (PointGroupTwo.length%2 - 1);
+    var candidateList = [];
 
 	for(var i = 0; i < groupOneLength; i++)
 	{		
@@ -62,7 +64,7 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
                 candidateLine = new Line(p1median,p2median);
                 if(NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference))
                 {
-                    return candidateLine;
+                    candidateList.push(candidateLine.clone());
                 }
                 else
                 {
@@ -78,18 +80,30 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
                     if(oldLine.orientation(PointGroupOne[groupOneLength]) == oldLine.orientation(PointGroupTwo[groupTwoLength])
                         && NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference))
                     {
-                        return candidateLine;
+                        candidateList.push(candidateLine.clone());
                     }
                     else
                     {
-                        return new Line(p1,p2);
+                        candidateList.push(new Line(p1,p2));
                     }
                 }
-                candidateLine = new Line(p1,p2);
-                return candidateLine;
+                candidateList.push(new Line(p1,p2));
 			}
+
+            if(!returnMostHorizontal && candidateList.length > 0)
+                return candidateList[0];
 		}
 	}
+
+    var mostHorizontalLine = candidateList[0];
+    for(var i = 1; i < candidateList.length; i++)
+    {
+        if(Math.abs(mostHorizontalLine.slope()) > Math.abs(candidateList[i].slope))
+        {
+            mostHorizontalLine = candidateList[i];
+        }
+    }
+    return mostHorizontalLine;
 }
 
 // A function which checks whether or not the given line divides both

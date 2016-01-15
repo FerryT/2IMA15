@@ -1,0 +1,29 @@
+.about-field {
+	width: 20em;
+	height: 20em;
+	margin: .5em;
+	display: inline-block;
+	background-color: White;
+	fill: Sienna;
+	stroke: Sienna;
+	cursor: crosshair;
+	border: 2px solid Sienna;
+}
+.about-field line {
+	stroke-width: 5;
+	pointer-events: none;
+}
+
+.about-field .points .group0 {
+	fill: SkyBlue;
+}
+.about-field .points .group1 {
+	fill: Tomato;
+}
+
+.about-field .lines .group0 {
+	stroke: SkyBlue;
+}
+.about-field .lines .group1 {
+	stroke: Tomato;
+}

@@ -19,16 +19,16 @@ $('#about-algorithms')
 //------------------------------------------------------------------------------
 // Duality
 
-$.fn.svg = function addSVG(id)
+$.fn.svg = function addSVG(id, cls)
 {
-	d3.selectAll(this).append('svg').attr('id', id);
+	d3.selectAll(this).append('svg').attr('id', id).attr('class', cls);
 	return this;
 }
 
 $('#about-duality')
 	.append($('<h2>').text('Duality'))
-	.svg('about-field1')
-	.svg('about-field2')
+	.svg('about-field1', 'about-field')
+	.svg('about-field2', 'about-field')
 ;
 
 $(function()

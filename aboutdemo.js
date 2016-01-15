@@ -4,6 +4,10 @@
 
 //------------------------------------------------------------------------------
 
+AboutDemo.Rect = new Rectangle(-100, -100, 200, 200);
+AboutDemo.R = 15; // Point radius
+AboutDemo.D = AboutDemo.R * 2; // Point diameter
+
 function AboutDemo(id1, id2)
 {
 	this.field = new AboutField(id1);
@@ -19,6 +23,46 @@ function AboutDemo(id1, id2)
 	this.q3.y += this.q3.h;
 	this.q4 = this.q3.clone();
 	this.q4.x += this.q4.w;
+
+	var self = this;
+
+	this.field.svg.on('click', function ()
+	{
+		if (d3.event.defaultPrevented) return;
+		self.add(new Point(d3.mouse(this)));
+	});
+
+	this.field.behavior.points = d3.behavior.drag()
+		.on('drag', function (d)
+		{
+			d.x = d3.event.x;
+			d.y = d3.event.y;
+
+			var limit = self.rect.shrink(-AboutDemo.R / 2);
+			if (d3.event.x < limit.x || d3.event.x > limit.x + limit.w
+				|| d3.event.y < limit.y || d3.event.y > limit.y + limit.h)
+			{
+				d.outside = true;
+			}
+			else
+			{
+				delete d.outside;
+				d.clamp(self.rect.shrink(AboutDemo.D));
+			}
+			self.findSlice().dualify().update();
+		})
+		.on('dragend', function ()
+		{
+			self.field.points = self.field.points.map(function (points)
+			{
+				return points.filter(function (point)
+				{
+					return !point.outside;
+				});
+			});
+			self.findSlice().dualify().update();
+		})
+	;
 }
 
 AboutDemo.prototype.add = function add(point)
@@ -32,7 +76,12 @@ AboutDemo.prototype.add = function add(point)
 AboutDemo.prototype.findSlice = function findSlice()
 {
 	this.field.clearSlices();
-	var line = NaiveAlgorithm(this.field.points[1], this.field.points[2]);
+	function inside(point) { return !point.outside; }
+	try {
+		var line = NaiveAlgorithm(
+			this.field.points[1].filter(inside),
+			this.field.points[2].filter(inside));
+	} catch (e) {}
 	if (line)
 		this.field.add(line, 0);
 	return this;
@@ -42,11 +91,12 @@ AboutDemo.prototype.dualify = function dualify()
 {
 	var dual = this.dual;
 	dual.clearSlices();
-	this.field.points.forEach(function(x, group)
+	this.field.points.forEach(function(points, group)
 	{
-		x.forEach(function(y)
+		points.forEach(function(point)
 		{
-			dual.add(y.dual(), group);
+			if (!point.outside)
+				dual.add(point.dual(), group);
 		});
 	});
 	return this;
@@ -64,7 +114,7 @@ AboutDemo.prototype.update = function update()
 function AboutField(id)
 {
 	this.svg = d3.select('#' + id);
-	this.rect = new Rectangle(-100, -100, 200, 200);
+	this.rect = AboutDemo.Rect.clone();
 
 	this.svg.selectAll('*').remove();
 	this.svg.attr('viewBox', this.rect + '');
@@ -73,6 +123,11 @@ function AboutField(id)
 
 	this.clearSlices();
 	this.clearPoints();
+
+	this.behavior = {
+		slices: function () {},
+		points: function () {},
+	}
 }
 
 AboutField.prototype.add = function add(ent, group)
@@ -120,7 +175,9 @@ AboutField.prototype.update = function update()
 {
 	var lines = this.svg.select('.lines').selectAll('line')
 		.data(d3.merge(this.slices));
-	lines.enter().append('line');
+	lines.enter().append('line')
+		.call(this.behavior.slices)
+	;
 	lines
 		.attr('class', function (d) { return 'group' + (d.group - 1); })
 		.attr('x1', function (d) { return d.slice.x1; })
@@ -132,8 +189,12 @@ AboutField.prototype.update = function update()
 
 	var points = this.svg.select('.points').selectAll('circle')
 		.data(d3.merge(this.points));
-	points.enter().append('circle').attr('r', 15);
+	points.enter().append('circle')
+		.attr('r', AboutDemo.R)
+		.call(this.behavior.points)
+	;
 	points
+		.style('display', function (d) { return d.outside ? 'none' : null; })
 		.attr('class', function (d) { return 'group' + (d.group - 1); })
 		.attr('cx', function (d) { return d.x; })
 		.attr('cy', function (d) { return d.y; })

@@ -123,11 +123,13 @@ Field.behave = function behave(selection, update)
 		}).on('dragstart', function (d)
 		{
 			d3.event.sourceEvent.stopPropagation();
-			if (d.behavior.dragstart.call(d, d3.event.x, d3.event.y))
+			var mouse = d3.mouse(this);
+			if (d.behavior.dragstart.call(d, mouse[0], mouse[1]))
 				update(this);
 		}).on('dragend', function (d)
 		{
-			if (d.behavior.dragend.call(d, d3.event.x, d3.event.y))
+			var mouse = d3.mouse(this);
+			if (d.behavior.dragend.call(d, mouse[0], mouse[1]))
 				update(this);
 		})
 	;

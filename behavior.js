@@ -37,35 +37,49 @@ Behavior.None = Object.freeze(new Behavior); // No behavior, booooooring!
 //------------------------------------------------------------------------------
 
 // Clicking the level will add points
-Behavior.Habit('Editable', function (behavior)
+Behavior.Habit('Editable', function (behavior, dragignore)
 {
-	this.click = function click(x, y)
+	function edit(x, y)
 	{
 		var group = +(this.groups[0].length > this.groups[1].length);
 		this.add(new Entity(new Point(x, y), group, behavior));
 
-		for(var i = 0; i < this.entities.length; i++)
-		{
-			this.entities[i].behavior.click.call(this.entities[i], x,y);
-		}
+		for(var i = 0, l = this.entities.length; i < l; ++i)
+			this.entities[i].behavior.click.call(this.entities[i], x, y);
+	}
 
+	this.click = function click(x, y)
+	{
+		edit.call(this, x, y);
 		return click.next.call(this, x, y) || true;
+	}
+
+	if (dragignore) return;
+	this.dragend = function dragend(x, y)
+	{
+		edit.call(this, x, y);
+		return dragend.next.call(this, x, y) || true;
 	}
 });
 
 //------------------------------------------------------------------------------
 
 // Clicking the level will notify entities
-Behavior.Habit('Clickable', function ()
+Behavior.Habit('Clickable', function (dragignore)
 {
 	this.click = function click(x, y)
 	{
-		for(var i = 0; i < this.entities.length; i++)
-		{
-			this.entities[i].behavior.click.call(this.entities[i], x,y);
-		}
-
+		for(var i = 0, l = this.entities.length; i < l; ++i)
+			this.entities[i].behavior.click.call(this.entities[i], x, y);
 		return click.next.call(this, x, y) || true;
+	}
+
+	if (dragignore) return;
+	this.dragend = function dragend(x, y)
+	{
+		for(var i = 0, l = this.entities.length; i < l; ++i)
+			this.entities[i].behavior.click.call(this.entities[i], x, y);
+		return dragend.next.call(this, x, y) || true;
 	}
 });
 

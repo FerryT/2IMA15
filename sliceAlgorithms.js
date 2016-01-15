@@ -1,10 +1,12 @@
 // A cubic time algorithm which simply tries all possible lines,
 // and checks whether or not it is a good one.
-function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
+function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
 {
+    returnMostHorizontal = returnMostHorizontal || false;
 	// When there is an even number of points, leave out the last point
-        var groupOneLength = PointGroupOne.length + (PointGroupOne.length%2 - 1);
+    var groupOneLength = PointGroupOne.length + (PointGroupOne.length%2 - 1);
 	var groupTwoLength = PointGroupTwo.length + (PointGroupTwo.length%2 - 1);
+    var candidateList = [];
 
 	for(var i = 0; i < groupOneLength; i++)
 	{		
@@ -23,73 +25,85 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo)
 				// If for both group 1 and group 2, there are as many points left as right of the line,
 				// it is the line we're looking for - and can stop looking.
 
-                                // When there is an even number of points, search the point that is closest to the candidate line (on the side of the left out point)
-                                var minDistOne = 0;
-                                var closestPoint = p1;
-                                var p1median = p1.clone();
-                                if(PointGroupOne.length%2 == 0)
-                                {
-                                        for(var k = 0; k < groupOneLength+1; k++)
-                                        {
-                                             var distanceToLine = candidateLine.distance(PointGroupOne[k])*candidateLine.orientation(PointGroupOne[k])*candidateLine.orientation(PointGroupOne[groupOneLength]);
-                                             if(k != i && (distanceToLine < minDistOne || minDistOne == 0) && distanceToLine > 0) {
-                                                     minDistOne = distanceToLine;
-                                                     closestPoint = PointGroupOne[k];
-                                             }
-                                        }
-                                        p1median.x = (closestPoint.x+p1.x)/2;
-                                        p1median.y = (closestPoint.y+p1.y)/2;
-                                }
-                                
-                                var minDistTwo = 0;
-                                closestPoint = p2;
-                                var p2median = p2.clone();
-                                if(PointGroupTwo.length%2 == 0)
-                                {
-                                        for(var l = 0; l < groupTwoLength+1; l++)
-                                        {
-                                             var distanceToLine = candidateLine.distance(PointGroupTwo[l])*candidateLine.orientation(PointGroupTwo[l])*candidateLine.orientation(PointGroupTwo[groupTwoLength]);
-                                             if(l != j && (distanceToLine < minDistTwo || minDistTwo == 0) && distanceToLine > 0) {
-                                                     minDistTwo = distanceToLine;
-                                                     var closestPoint = PointGroupTwo[l];
-                                             }
-                                        }
-                                        p2median.x = (closestPoint.x+p2.x)/2;
-                                        p2median.y = (closestPoint.y+p2.y)/2;
-                                }
+                // When there is an even number of points, search the point that is closest to the candidate line (on the side of the left out point)
+                var minDistOne = 0;
+                var closestPoint = p1;
+                var p1median = p1.clone();
+                if(PointGroupOne.length%2 == 0)
+                {
+                    for(var k = 0; k < groupOneLength+1; k++)
+                    {
+                         var distanceToLine = candidateLine.distance(PointGroupOne[k])*candidateLine.orientation(PointGroupOne[k])*candidateLine.orientation(PointGroupOne[groupOneLength]);
+                         if(k != i && (distanceToLine < minDistOne || minDistOne == 0) && distanceToLine > 0) {
+                                 minDistOne = distanceToLine;
+                                 closestPoint = PointGroupOne[k];
+                         }
+                    }
+                    p1median.x = (closestPoint.x+p1.x)/2;
+                    p1median.y = (closestPoint.y+p1.y)/2;
+                }
+                
+                var minDistTwo = 0;
+                closestPoint = p2;
+                var p2median = p2.clone();
+                if(PointGroupTwo.length%2 == 0)
+                {
+                    for(var l = 0; l < groupTwoLength+1; l++)
+                    {
+                         var distanceToLine = candidateLine.distance(PointGroupTwo[l])*candidateLine.orientation(PointGroupTwo[l])*candidateLine.orientation(PointGroupTwo[groupTwoLength]);
+                         if(l != j && (distanceToLine < minDistTwo || minDistTwo == 0) && distanceToLine > 0) {
+                                 minDistTwo = distanceToLine;
+                                 var closestPoint = PointGroupTwo[l];
+                         }
+                    }
+                    p2median.x = (closestPoint.x+p2.x)/2;
+                    p2median.y = (closestPoint.y+p2.y)/2;
+                }
 
-                                // First check whether a line through the medians is possible
-                                candidateLine = new Line(p1median,p2median);
-                                if(NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference))
-                                {
-                                        return candidateLine;
-                                }
-                                else
-                                {
-                                        var minDist = Math.min(minDistOne,minDistTwo);
-                                        p1median.x = p1.x+(p1median.x-p1.x)*minDist/minDistOne;
-                                        p1median.y = p1.y+(p1median.y-p1.y)*minDist/minDistOne;
-                                        p2median.x = p2.x+(p2median.x-p2.x)*minDist/minDistTwo;
-                                        p2median.y = p2.y+(p2median.y-p2.y)*minDist/minDistTwo;
+                // First check whether a line through the medians is possible
+                candidateLine = new Line(p1median,p2median);
+                if(NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference))
+                {
+                    candidateList.push(candidateLine.clone());
+                }
+                else
+                {
+                    var minDist = Math.min(minDistOne,minDistTwo);
+                    p1median.x = p1.x+(p1median.x-p1.x)*minDist/minDistOne;
+                    p1median.y = p1.y+(p1median.y-p1.y)*minDist/minDistOne;
+                    p2median.x = p2.x+(p2median.x-p2.x)*minDist/minDistTwo;
+                    p2median.y = p2.y+(p2median.y-p2.y)*minDist/minDistTwo;
 
-                                        // Otherwise check whether the line can be shifted perpendicular to the median with the smallest distance
-                                        var oldLine = new Line(p1,p2);
-                                        candidateLine = new Line(p1median,p2median);
-                                        if(oldLine.orientation(PointGroupOne[groupOneLength]) == oldLine.orientation(PointGroupTwo[groupTwoLength])
-                                        && NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference))
-                                        {
-                                                return candidateLine;
-                                        }
-                                        else
-                                        {
-                                                return new Line(p1,p2);
-                                        }
-                                }
-                                candidateLine = new Line(p1,p2);
-                                return candidateLine;
+                    // Otherwise check whether the line can be shifted perpendicular to the median with the smallest distance
+                    var oldLine = new Line(p1,p2);
+                    candidateLine = new Line(p1median,p2median);
+                    if(oldLine.orientation(PointGroupOne[groupOneLength]) == oldLine.orientation(PointGroupTwo[groupTwoLength])
+                        && NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference))
+                    {
+                        candidateList.push(candidateLine.clone());
+                    }
+                    else
+                    {
+                        candidateList.push(new Line(p1,p2));
+                    }
+                }
+                candidateList.push(new Line(p1,p2));
 			}
+
+            if(!returnMostHorizontal && candidateList.length > 0)
+                return candidateList[0];
 		}
 	}
+
+    var mostHorizontalLine = candidateList[0];
+    for(var i = 1; i < candidateList.length; i++)
+    {
+        if(Math.abs(mostHorizontalLine.slope()) > Math.abs(candidateList[i].slope))
+        {
+            mostHorizontalLine = candidateList[i];
+        }
+    }
+    return mostHorizontalLine;
 }
 
 // A function which checks whether or not the given line divides both

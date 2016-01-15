@@ -67,6 +67,12 @@ function Vector(x, y)
 Vector.prototype.clone = function clone()
 	{ return new Vector(this.x, this.y); }
 
+Vector.prototype.size = function size()
+	{ return Math.sqrt(this.x*this.x + this.y*this.y); }
+
+Vector.prototype.normal = function normal()
+	{ return new Vector(this.x/this.size(), this.y/this.size()); }
+
 //------------------------------------------------------------------------------
 
 function Line(x1, y1, x2, y2)
@@ -149,6 +155,17 @@ Line.prototype.distance = function distance(point)
 
 	var d = Math.abs((this.x2-this.x1)*(this.y1-point.y)-(this.x1-point.x)*(this.y2-this.y1))/Math.sqrt(Math.pow((this.x2-this.x1),2)+Math.pow((this.y2-this.y1),2));
 	return d;
+}
+
+//------------------------------------------------------------------------------
+// Returns the slope of the line. If x2-x1=0, dx will be taken to be 0.01 to avoid divide by 0.
+Line.prototype.slope = function slope()
+{
+	var dx = this.x2 - this.x1;
+	var dy = this.y2 - this.y1;
+
+	if(dx == 0) dx = 0.01;
+	return dy/dx;
 }
 
 //------------------------------------------------------------------------------

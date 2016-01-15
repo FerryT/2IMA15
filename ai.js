@@ -44,11 +44,14 @@ Behavior.Habit('Bounce', function (rate, height)
 //------------------------------------------------------------------------------
 
 // Describes entities moving away from mouse clicks
-Behavior.Habit('Coward', function (initialspeed, decayrate)
+Behavior.Habit('Coward', function (initialspeed, decayrate, attractInstead, sporadic)
 {
-	decayrate = decayrate || 10;
-	var decayRate = 0.05 * decayrate;
 	initialspeed = initialspeed || 100.0;
+	decayrate = decayrate || 10;
+	attractInstead = attractInstead || false;
+	sporadic = sporadic || false;
+
+	var decayRate = 0.05 * decayrate;
 
 	this.update = function update(dt)
 	{
@@ -58,6 +61,12 @@ Behavior.Habit('Coward', function (initialspeed, decayrate)
 		this.point.x += this.velocity.x / dt;
 		this.point.y += this.velocity.y / dt;
 
+		if(sporadic && this.velocity.size() > 4)
+		{
+			this.point.x += Math.random() * 3 - 1.5;
+			this.point.y += Math.random() * 3 - 1.5;			
+		}
+
 		return update.next.call(this, dt) || true;
 	};
 
@@ -66,13 +75,19 @@ Behavior.Habit('Coward', function (initialspeed, decayrate)
 		var dx = this.point.x - x;
 		var dy = this.point.y - y;
 
-		var speed = initialspeed / Math.sqrt(dx*dx + dy*dy);
+		var d = Math.sqrt(dx * dx + dy * dy);
 
-		//if(Math.abs(dx) < 50)
-			this.velocity.x = speed/dx;
-		
-		//if(Math.abs(dy) < 50)
-			this.velocity.y = speed/dy;
+		var normalized_dx = dx/d;
+		var normalized_dy = dy/d;
+
+		this.velocity.x = normalized_dx*Math.max(initialspeed-d,0);		
+		this.velocity.y = normalized_dy*Math.max(initialspeed-d,0);
+
+		if(attractInstead)
+		{			
+			this.velocity.x *= -1;		
+			this.velocity.y *= -1;
+		}
 
 		return click.next.call(this, x, y) || false;
 	}

@@ -75,6 +75,7 @@ $('#btn-win-resume').click(function()
 {
 	$('#win-screen').hide();
 	game.start(game.level.next);
+	$('#levelheader').text(game.level.name);
 });
 
 $('#btn-win-menu').click(function()

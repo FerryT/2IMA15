@@ -115,8 +115,20 @@
 
 			InitializeLevels(game.rect.shrink(20));
 			game.on('update', field.updateLevel.bind(field));
-			game.on('win', function() { $('#win-screen').show() });
+			game.on('win', function()
+			{
+				$('#win-screen').show();
+				localStorage.game = JSON.stringify(game.data);
+			});
+
+			if (localStorage.game)
+				game.data = JSON.parse(localStorage.game);
 		});
+
+		function ResetGame()
+		{
+			delete localStorage.game;
+		}
 	</script>
 	<script src="interface.js"></script>
 </body>

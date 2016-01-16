@@ -48,18 +48,18 @@ Behavior.Habit('Editable', function (behavior, dragignore)
 			this.entities[i].behavior.click.call(this.entities[i], x, y);
 	}
 
-	this.click = function click(x, y)
-	{
-		edit.call(this, x, y);
-		return click.next.call(this, x, y) || true;
-	}
-
-	if (dragignore) return;
-	this.dragend = function dragend(x, y)
-	{
-		edit.call(this, x, y);
-		return dragend.next.call(this, x, y) || true;
-	}
+	if (dragignore)
+		this.click = function click(x, y)
+		{
+			edit.call(this, x, y);
+			return click.next.call(this, x, y) || true;
+		}
+	else
+		this.dragend = function dragend(x, y)
+		{
+			edit.call(this, x, y);
+			return dragend.next.call(this, x, y) || true;
+		}
 });
 
 //------------------------------------------------------------------------------
@@ -67,20 +67,20 @@ Behavior.Habit('Editable', function (behavior, dragignore)
 // Clicking the level will notify entities
 Behavior.Habit('Clickable', function (dragignore)
 {
-	this.click = function click(x, y)
-	{
-		for(var i = 0, l = this.entities.length; i < l; ++i)
-			this.entities[i].behavior.click.call(this.entities[i], x, y);
-		return click.next.call(this, x, y) || true;
-	}
-
-	if (dragignore) return;
-	this.dragend = function dragend(x, y)
-	{
-		for(var i = 0, l = this.entities.length; i < l; ++i)
-			this.entities[i].behavior.click.call(this.entities[i], x, y);
-		return dragend.next.call(this, x, y) || true;
-	}
+	if (dragignore)
+		this.click = function click(x, y)
+		{
+			for(var i = 0, l = this.entities.length; i < l; ++i)
+				this.entities[i].behavior.click.call(this.entities[i], x, y);
+			return click.next.call(this, x, y) || true;
+		}
+	else
+		this.dragend = function dragend(x, y)
+		{
+			for(var i = 0, l = this.entities.length; i < l; ++i)
+				this.entities[i].behavior.click.call(this.entities[i], x, y);
+			return dragend.next.call(this, x, y) || true;
+		}
 });
 
 //------------------------------------------------------------------------------

@@ -12,6 +12,7 @@ function Field(id, game)
 	this.svg.selectAll('*').remove();
 	this.svg.attr('viewBox', this.game.rect + '');
 	this.goals = this.svg.append('g').attr('class', 'goals');
+	this.rects = this.svg.append('g').attr('class', 'rects');
 	this.lines = this.svg.append('g').attr('class', 'lines');
 	this.points = this.svg.append('g').attr('class', 'points');
 
@@ -53,6 +54,34 @@ Field.prototype.updateGoals = function()
 	;
 
 	goals.exit()
+		.remove()
+	;
+
+	return this;
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Field.prototype.updateRects = function()
+{
+	var rects = this.rects.selectAll('rect')
+			.data(this.game.level.structs,
+				function (d) { return d.id; });
+
+	rects.enter()
+		.append('rect')
+		.attr('class', function (d) { return 'cls-' + d.cls; })
+		.call(Field.behave, Field.updateRect)
+	;
+
+	rects
+		.attr('x', function (d) { return d.rect.x; })
+		.attr('y', function (d) { return d.rect.y; })
+		.attr('width', function (d) { return d.rect.w; })
+		.attr('height', function (d) { return d.rect.h; })
+	;
+
+	rects.exit()
 		.remove()
 	;
 
@@ -146,6 +175,16 @@ Field.behave = function behave(selection, update)
 	;
 }
 
+Field.updateRect = function update(rect)
+{
+	d3.select(rect)
+		.attr('x', function (d) { return d.rect.x; })
+		.attr('y', function (d) { return d.rect.y; })
+		.attr('width', function (d) { return d.rect.w; })
+		.attr('height', function (d) { return d.rect.h; })
+	;
+}
+
 Field.updatePoint = function update(point)
 {
 	d3.select(point)
@@ -159,6 +198,7 @@ Field.updateField = function update(field)
 {
 	field
 		.updateGoals()
+		.updateRects()
 		.updateLines()
 		.updatePoints()
 	;

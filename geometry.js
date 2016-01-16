@@ -200,6 +200,29 @@ Rectangle.prototype.clone = function clone()
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+Rectangle.prototype.clamp = function clamp(rect)
+{
+	if (rect.constructor != Rectangle)
+		throw new TypeError('first argument must be a Rectangle.');
+	this.x = Math.min(Math.max(this.x, rect.x), rect.x + rect.w - this.w);
+	this.y = Math.min(Math.max(this.y, rect.y), rect.y + rect.h - this.h);
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Rectangle.prototype.multiply = function multiply(rect)
+{
+	if (rect.constructor != Rectangle)
+		throw new TypeError('first argument must be a Rectangle.');
+	return new Rectangle(
+		 rect.x + rect.w * this.x,
+		 rect.y + rect.h * this.y,
+		 rect.w * this.w,
+		 rect.h * this.h);
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 Rectangle.prototype.shrink = function shrink(amount)
 {
 	return new Rectangle(

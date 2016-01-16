@@ -117,6 +117,7 @@ function Level(name, behavior)
 {
 	this.name = name;
 	this.goals = [];
+	this.structs = [];
 	this.entities = [];
 	this.groups = [];
 	this.behavior = behavior || Behavior.None;
@@ -132,6 +133,10 @@ Level.prototype.add = function(ent)
 		this.entities.push(ent);
 		this.groups[ent.group] = this.groups[ent.group] || [];
 		this.groups[ent.group].push(ent);
+	}
+	else if (ent.constructor == Structure)
+	{
+		this.structs.push(ent);
 	}
 	else if (ent.constructor == Goal)
 	{
@@ -155,6 +160,8 @@ Level.prototype.clone = function clone()
 	var level = new Level(this.name, this.behavior);
 	for (var i = 0, l = this.goals.length; i < l; ++i)
 		level.add(this.goals[i].clone());
+	for (var i = 0, l = this.structs.length; i < l; ++i)
+		level.add(this.structs[i].clone());
 	for (var i = 0, l = this.entities.length; i < l; ++i)
 		level.add(this.entities[i].clone());
 	return level;
@@ -212,6 +219,29 @@ function Slice(line, bb)
 		throw new TypeError('first argument must be a Line.');
 	this.line = line;
 	this.slice = line.extend(bb);
+}
+
+//------------------------------------------------------------------------------
+
+function Structure(rect, behavior, cls, id)
+{
+	if (!rect || rect.constructor != Rectangle)
+		throw new TypeError('first argument must be a Rectangle.');
+
+	this.rect = rect;
+	this.point = rect; // Fake point, duck typing
+	this.cls = cls;
+	this.behavior = behavior || Behavior.None;
+	this.id = id || Structure.id++;
+
+	this.behavior.create.call(this);
+}
+
+Structure.id = 0;
+
+Structure.prototype.clone = function clone()
+{
+	return new Structure(this.rect.clone(), this.behavior, this.cls, this.id);
 }
 
 //------------------------------------------------------------------------------

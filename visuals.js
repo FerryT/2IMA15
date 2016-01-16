@@ -15,6 +15,23 @@ function Field(id, game)
 	this.rects = this.svg.append('g').attr('class', 'rects');
 	this.lines = this.svg.append('g').attr('class', 'lines');
 	this.points = this.svg.append('g').attr('class', 'points');
+	var trim = this.svg.append('g').attr('class', 'trim');
+
+	trim
+		.append('rect')
+		.attr('x', this.game.rect.x - this.game.rect.w)
+		.attr('y', this.game.rect.y)
+		.attr('width', this.game.rect.w)
+		.attr('height', this.game.rect.h)
+	;
+
+	trim
+		.append('rect')
+		.attr('x', this.game.rect.x + this.game.rect.w)
+		.attr('y', this.game.rect.y)
+		.attr('width', this.game.rect.w)
+		.attr('height', this.game.rect.h)
+	;
 
 	this.svg
 		.datum(this.game.level)

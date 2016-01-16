@@ -2,7 +2,6 @@
 #field {
 	position: relative;
 	top: 2.5%;
-	max-width: 95%;
 	max-height: 82.5%;
 	margin: auto auto;
 	display: block;
@@ -10,7 +9,13 @@
 	fill: Sienna;
 	stroke: Sienna;
 	cursor: crosshair;
-	box-shadow: 0 0 .5em .25em NavajoWhite;
+}
+
+.trim rect {
+	fill: Papayawhip;
+	fill-opacity: .9;
+	stroke-width: 0;
+	cursor: default;
 }
 
 .goals {

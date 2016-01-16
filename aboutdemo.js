@@ -35,12 +35,12 @@ function AboutDemo(id1, id2)
 	this.field.behavior.points = d3.behavior.drag()
 		.on('drag', function (d)
 		{
-			d.x += d3.event.dx;
-			d.y += d3.event.dy;
+			d.x = d3.event.x;
+			d.y = d3.event.y;
 
 			var limit = self.rect.shrink(-AboutDemo.R / 2);
-			if (d.x < limit.x || d.x > limit.x + limit.w
-				|| d.y < limit.y || d.y > limit.y + limit.h)
+			if (d3.event.x < limit.x || d3.event.x > limit.x + limit.w
+				|| d3.event.y < limit.y || d3.event.y > limit.y + limit.h)
 			{
 				d.outside = true;
 			}

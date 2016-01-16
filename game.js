@@ -181,7 +181,7 @@ Goal.prototype.check = function check()
 
 //------------------------------------------------------------------------------
 
-function Entity(point, group, behavior, id)
+function Entity(point, group, behavior, cls, id)
 {
 	if (!point || point.constructor != Point)
 		throw new TypeError('first argument must be a Point.');
@@ -189,6 +189,7 @@ function Entity(point, group, behavior, id)
 	this.point = point;
 	this.size = 10;
 	this.group = +group || 0;
+	this.cls = cls;
 	this.behavior = behavior || Behavior.None;
 	this.id = id || Entity.id++;
 	this.velocity = new Vector(0, 0);
@@ -200,7 +201,7 @@ Entity.id = 0;
 
 Entity.prototype.clone = function clone()
 {
-	return new Entity(this.point.clone(), this.group, this.behavior, this.id);
+	return new Entity(this.point.clone(), this.group, this.behavior, this.cls, this.id);
 }
 
 //------------------------------------------------------------------------------

@@ -69,7 +69,7 @@ Field.prototype.updatePoints = function()
 
 	points.enter()
 		.append('circle')
-		.attr('class', function (d) { return 'group' + d.group; })
+		.attr('class', function (d) { return 'group'+d.group+' cls-'+d.cls; })
 		.call(Field.behave, Field.updatePoint)
 	;
 

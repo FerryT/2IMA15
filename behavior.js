@@ -87,7 +87,7 @@ Behavior.Habit('Clickable', function (dragignore)
 
 
 // Makes entities movable by dragging them
-Behavior.Habit('Draggable', function ()
+Behavior.Habit('Draggable', function (centering)
 {
 	this.create = function create()
 	{
@@ -95,11 +95,31 @@ Behavior.Habit('Draggable', function ()
 		return create.next.call(this) || true;
 	}
 
-	this.drag = function drag(x, y, dx, dy)
+	if (centering)
+		this.drag = function drag(x, y, dx, dy)
+		{
+			this.point.x = x;
+			this.point.y = y;
+			return drag.next.call(this, x, y, dx, dy) || true;
+		}
+	else
+		this.drag = function drag(x, y, dx, dy)
+		{
+			this.point.x += dx;
+			this.point.y += dy;
+			return drag.next.call(this, x, y, dx, dy) || true;
+		}
+
+	this.dragstart = function dragstart(x, y)
 	{
-		this.point.x += dx;
-		this.point.y += dy;
-		return drag.next.call(this, x, y, dx, dy) || true;
+		this.captured = true;
+		return dragstart.next.call(this, x, y) || false;
+	}
+
+	this.dragend = function dragend(x, y)
+	{
+		delete this.captured;
+		return dragend.next.call(this, x, y) || false;
 	}
 });
 

@@ -31,7 +31,8 @@ Behavior.Habit('Bounce', function (rate, height)
 
 	this.update = function update(dt)
 	{
-		if(this.velocity.y >= height)
+		if (this.captured) return;
+		if (this.velocity.y >= height)
 			this.velocity.y = -height;
 
 		this.velocity.y += rate * dt / 1000;

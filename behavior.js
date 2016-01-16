@@ -95,11 +95,11 @@ Behavior.Habit('Draggable', function ()
 		return create.next.call(this) || true;
 	}
 
-	this.drag = function drag(x, y)
+	this.drag = function drag(x, y, dx, dy)
 	{
-		this.point.x = x;
-		this.point.y = y;
-		return drag.next.call(this, x, y) || true;
+		this.point.x += dx;
+		this.point.y += dy;
+		return drag.next.call(this, x, y, dx, dy) || true;
 	}
 });
 
@@ -136,9 +136,9 @@ Behavior.Habit('Clamped', function (rect)
 		}
 
 	if (this.drag.next)
-		this.drag = function drag(x, y)
+		this.drag = function drag(x, y, dx, dy)
 		{
-			var ret = drag.next.call(this, x, y);
+			var ret = drag.next.call(this, x, y, dx, dy);
 			this.point.clamp(rect);
 			return ret;
 		}

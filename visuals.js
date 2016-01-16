@@ -147,7 +147,7 @@ Field.behave = function behave(selection, update)
 	var drag = d3.behavior.drag()
 		.on('drag', function (d)
 		{
-			if (d.behavior.drag.call(d, d3.event.x, d3.event.y))
+			if (d.behavior.drag.call(d, d3.event.x, d3.event.y, d3.event.dx, d3.event.dy))
 				update(this);
 		}).on('dragstart', function (d)
 		{

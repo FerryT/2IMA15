@@ -84,9 +84,13 @@ Game.prototype.frame = function frame()
 		ent.behavior.update.call(ent, this.rate);
 	}
 
-	for (var i = 0, l = this.level.goals.length; i < l; ++i)
-		if (this.level.goals[i].check())
+	for (var i = 0, l = this.level.goals.length, goal; i < l; ++i)
+	{
+		goal = this.level.goals[i];
+		goal.update(this.rate / 1000);
+		if (goal.check())
 			this.win();
+	}
 
 	this.level.behavior.update.call(this.level, this.rate);
 	return this.update();
@@ -170,14 +174,17 @@ Level.prototype.clone = function clone()
 
 //------------------------------------------------------------------------------
 
-function Goal(line, width)
+function Goal(line, width, time, score)
 {
 	this.line = line;
 	this.width = width;
+	this.time = time || 20;
+	this.score = score || 2000;
+	this.value = score / time;
 }
 
 Goal.prototype.clone = function clone()
-	{ return new Goal(this.line.clone(), this.width); }
+	{ return new Goal(this.line.clone(), this.width, this.time, this.score); }
 
 Goal.prototype.check = function check()
 {
@@ -185,6 +192,12 @@ Goal.prototype.check = function check()
 	var gameGroupTwo = game.level.points(1);
 	var goalAchieved = NaiveCheckIfLineIsProperCut(this.line, gameGroupOne, gameGroupTwo);
 	return goalAchieved;
+}
+
+Goal.prototype.update = function update(dt)
+{
+	this.time = Math.max(this.time - dt, 0);
+	this.score = Math.max(0, this.score - this.value * dt);
 }
 
 //------------------------------------------------------------------------------

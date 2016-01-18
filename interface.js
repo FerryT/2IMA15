@@ -41,6 +41,7 @@ $('#btn-back').click(function()
 $('#btn-menu').click(function()
 {
 	game.pause();
+	GameUpdater.stop();
 	$('#level-buttons a').trigger('update');
 	$('#menu').show();
 	$('#levels').show();
@@ -51,11 +52,13 @@ $('#btn-menu').click(function()
 $('#btn-restart').click(function()
 {
 	game.start(game.level.id);
+	GameUpdater.start();
 });
 
 $('#btn-pause').click(function()
 {
 	game.pause();
+	GameUpdater.stop();
 	$('#pause-screen').show();
 });
 
@@ -63,18 +66,21 @@ $('#pause-screen').click(function()
 {
 	$('#pause-screen').hide();
 	game.resume();
+	GameUpdater.start();
 });
 
 $('#btn-win-restart').click(function()
 {
 	$('#win-screen').hide();
 	game.start(game.level.id);
+	GameUpdater.start();
 });
 
 $('#btn-win-resume').click(function()
 {
 	$('#win-screen').hide();
 	game.start(game.level.next);
+	GameUpdater.start();
 	$('#levelheader').text(game.level.name);
 	$('#leveltext').text(game.level.desc);
 });
@@ -83,8 +89,32 @@ $('#btn-win-menu').click(function()
 {
 	$('#win-screen').hide();
 	game.stop();
+	GameUpdater.stop();
 	$('#btn-menu').click();
 });
+
+var GameUpdater = {
+	start: function()
+	{
+		if (GameUpdater.timer) return;
+		GameUpdater.update();
+		GameUpdater.timer = setInterval(GameUpdater.update, 1000);
+	},
+	stop: function()
+	{
+		if (!GameUpdater.timer) return;
+		clearInterval(GameUpdater.timer);
+		delete GameUpdater.timer;
+	},
+	update: function()
+	{
+		var score = 0;
+		for (var i = game.level.goals.length - 1; i >= 0; --i)
+			score += game.level.goals[i].score << 0;
+		$('#game-score').text(score);
+		console.log('meep')
+	}
+}
 
 // Menu
 $('#btn-play').click(function()
@@ -122,6 +152,7 @@ $(function()
 				game.resume();
 			else
 				game.start(id);
+			GameUpdater.start();
 			$('#levelheader').text(game.level.name);
 			$('#leveltext').text(game.level.desc);
 			$('#gamebar').show();

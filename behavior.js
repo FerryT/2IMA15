@@ -125,6 +125,81 @@ Behavior.Habit('Draggable', function (centering)
 
 //------------------------------------------------------------------------------
 
+// Makes entities collide
+Behavior.Habit('Colliding', function (game)
+{
+	if (game.constructor != Game)
+		throw new TypeError('first argument must be a Game.');
+
+	function collide(ent1)
+	{
+		for (var i = 0, l = game.level.entities.length, ent, v, n, dist; i < l; ++i)
+		{
+			ent2 = game.level.entities[i];
+			if (ent1 == ent2) continue;
+
+			v = new Vector(ent2.point.x-ent1.point.x, ent2.point.y-ent1.point.y);
+			n = v.size();
+			dist = n - ent1.size - ent2.size;
+			if (dist < 0)
+			{
+				ent1.point.x += v.x / n * dist;
+				ent1.point.y += v.y / n * dist;
+			}
+		}
+	}
+
+	if (this.create.next)
+		this.create = function create()
+		{
+			var ret = create.next.call(this);
+			collide(this);
+			return ret;
+		}
+
+	if (this.update.next)
+		this.update = function update(dt)
+		{
+			var ret = update.next.call(this, dt);
+			collide(this);
+			return ret;
+		}
+
+	if (this.click.next)
+		this.click = function click(x, y)
+		{
+			var ret = click.next.call(this, x, y);
+			collide(this);
+			return ret;
+		}
+
+	if (this.drag.next)
+		this.drag = function drag(x, y, dx, dy)
+		{
+			var ret = drag.next.call(this, x, y, dx, dy);
+			collide(this);
+			return ret;
+		}
+
+	if (this.dragstart.next)
+		this.dragstart = function dragstart(x, y)
+		{
+			var ret = dragstart.next.call(this, x, y);
+			collide(this);
+			return ret;
+		}
+
+	if (this.dragend.next)
+		this.dragend = function dragend(x, y)
+		{
+			var ret = dragend.next.call(this, x, y);
+			collide(this);
+			return ret;
+		}
+});
+
+//------------------------------------------------------------------------------
+
 // Keeps the entities within a rectangle
 Behavior.Habit('Clamped', function (rect)
 {

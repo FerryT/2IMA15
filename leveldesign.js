@@ -29,7 +29,7 @@ function DragMe()
 
 function DragUs()
 {
-	var draggable = new Behavior().Draggable().Clamped(game.rect),
+	var draggable = new Behavior().Draggable().Colliding(game).Clamped(game.rect),
 		behavior = new Behavior(),
 		level = new Level('Drag us!', 'Add description here...')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
@@ -100,8 +100,8 @@ function Cowards()
 
 function Magnets()
 {	
-	var behavior1 = new Behavior().Coward(100, 100, true).Clamped(game.rect),
-		behavior2 = new Behavior().Coward(100, 100, true).Clamped(game.rect),
+	var behavior1 = new Behavior().Coward(100, 100, true).Colliding(game).Clamped(game.rect),
+		behavior2 = new Behavior().Coward(100, 100, true).Colliding(game).Clamped(game.rect),
 		level = new Level('Runaround', 'Add description here...', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one

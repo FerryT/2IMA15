@@ -112,7 +112,6 @@ var GameUpdater = {
 		for (var i = game.level.goals.length - 1; i >= 0; --i)
 			score += game.level.goals[i].score << 0;
 		$('#game-score').text(score);
-		console.log('meep')
 	}
 }
 

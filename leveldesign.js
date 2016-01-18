@@ -15,7 +15,7 @@ function DragMe()
 {
 	var draggable = new Behavior().Draggable().Clamped(game.rect),
 		behavior = new Behavior(),
-		level = new Level('Drag me!')
+		level = new Level('Drag me!', 'Add description here...')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.25, 0.75).multiply(game.rect), 0, behavior))
@@ -31,7 +31,7 @@ function DragUs()
 {
 	var draggable = new Behavior().Draggable().Clamped(game.rect),
 		behavior = new Behavior(),
-		level = new Level('Drag us!')
+		level = new Level('Drag us!', 'Add description here...')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.25, 0.35).multiply(game.rect), 0, draggable))
@@ -47,7 +47,7 @@ function PlaceUs()
 {	
 	var behavior = new Behavior().Clamped(game.rect),
 		behaviorL = new Behavior().Editable(behavior),
-		level = new Level('Put me down!', behaviorL)
+		level = new Level('Put me down!', 'Add description here...', behaviorL)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.25).multiply(game.rect), 0, behavior))
@@ -66,7 +66,7 @@ function GiveUsCompany()
 {	
 	var behavior = new Behavior().Clamped(game.rect),
 		behaviorL = new Behavior().Editable(behavior),
-		level = new Level('Give us company!', behaviorL)
+		level = new Level('Give us company!', 'Add description here...', behaviorL)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.75).multiply(game.rect), 0, behavior))
@@ -82,7 +82,7 @@ function Cowards()
 {	
 	var behavior1 = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
 		behavior2 = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
-		level = new Level('Runaround', new Behavior().Clickable())
+		level = new Level('Runaround', 'Add description here...', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.4).multiply(game.rect), 0, behavior1))
@@ -102,7 +102,7 @@ function Magnets()
 {	
 	var behavior1 = new Behavior().Coward(100, 100, true).Clamped(game.rect),
 		behavior2 = new Behavior().Coward(100, 100, true).Clamped(game.rect),
-		level = new Level('Runaround', new Behavior().Clickable())
+		level = new Level('Runaround', 'Add description here...', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.4).multiply(game.rect), 0, behavior1))
@@ -122,7 +122,7 @@ function ClickMe()
 {	
 	var behavior1 = new Behavior().Coward(500, 100).Clamped(game.rect),
 		behavior2 = new Behavior().Coward(500, 100).Clamped(game.rect),
-		level = new Level('Click me', new Behavior().Clickable())
+		level = new Level('Click me', 'Add description here...', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.4).multiply(game.rect), 0, behavior1))
@@ -143,7 +143,7 @@ function HoldMe()
 	var bounce = new Behavior().Bounce(20,40).Clamped(game.rect),
 		bounceDrag = new Behavior().Bounce(20,40).Draggable().Clamped(game.rect),
 		stay = new Behavior(),
-		level = new Level('Hold me', new Behavior().Clickable())
+		level = new Level('Hold me', 'Add description here...', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.15, 0.25).multiply(game.rect), 0, bounce))
@@ -164,7 +164,7 @@ function HoldMe()
 function DragPoints()
 {	
 	var behavior = new Behavior().Draggable().Clamped(game.rect),
-		level = new Level('I\'ll wait')
+		level = new Level('I\'ll wait', 'Add description here...')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.2, 0.1).multiply(game.rect), 0, behavior))
@@ -184,7 +184,7 @@ function DragBouncingPoints()
 {	
 	var behavior = new Behavior().Bounce(20,40).Draggable().Clamped(game.rect),
 		behavior2 = new Behavior().Clamped(game.rect),
-		level = new Level('Jump!')
+		level = new Level('Jump!', 'Add description here...')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.4, 0.3).multiply(game.rect), 0, behavior))
@@ -204,7 +204,7 @@ function DragMovingPoints()
 {	
 	var behavior1 = Behavior.None,
 		behavior2 = new Behavior().Pieter(2.5).Draggable().Clamped(game.rect),
-		level = new Level('Runnin\' with the devil!')
+		level = new Level('Runnin\' with the devil!', 'Add description here...')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(new Point(0.1, 0.1).multiply(game.rect), 0, behavior1))
@@ -223,7 +223,7 @@ function DragMovingPoints()
 function LevelFour()
 {	
 	var behavior = new Behavior().Pieter(0.5).Clamped(game.rect),
-		level = new Level('Somebody get me a doctor')
+		level = new Level('Somebody get me a doctor', 'Add description here...')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40))
 			// Group one
 			.add(new Entity(game.rect.randomPoint(), 0, behavior))

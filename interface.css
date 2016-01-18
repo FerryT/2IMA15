@@ -60,6 +60,17 @@ svg.icon {
 	padding: .25em;
 }
 
+#game h1 {
+	margin: .5em auto .25em auto;
+	text-align: center;
+}
+#game h2 {
+	margin: 0 11em;
+	text-align: center;
+	font-size: 1em;
+	height: 2em;
+}
+
 #pause-screen, #win-screen {
 	display: none;
 }

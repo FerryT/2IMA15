@@ -76,6 +76,7 @@ $('#btn-win-resume').click(function()
 	$('#win-screen').hide();
 	game.start(game.level.next);
 	$('#levelheader').text(game.level.name);
+	$('#leveltext').text(game.level.desc);
 });
 
 $('#btn-win-menu').click(function()
@@ -122,6 +123,7 @@ $(function()
 			else
 				game.start(id);
 			$('#levelheader').text(game.level.name);
+			$('#leveltext').text(game.level.desc);
 			$('#gamebar').show();
 			$('#menu').hide();
 			$('#levels').hide();

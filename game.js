@@ -113,9 +113,10 @@ Game.prototype.win = function win()
 
 //------------------------------------------------------------------------------
 
-function Level(name, behavior)
+function Level(name, desc, behavior)
 {
 	this.name = name;
+	this.desc = desc || ' ';
 	this.goals = [];
 	this.structs = [];
 	this.entities = [];
@@ -157,7 +158,7 @@ Level.prototype.points = function(group)
 
 Level.prototype.clone = function clone()
 {
-	var level = new Level(this.name, this.behavior);
+	var level = new Level(this.name, this.desc, this.behavior);
 	for (var i = 0, l = this.goals.length; i < l; ++i)
 		level.add(this.goals[i].clone());
 	for (var i = 0, l = this.structs.length; i < l; ++i)

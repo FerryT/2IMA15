@@ -55,6 +55,7 @@
 	</header>
 	<div id="game" class="page">
 		<h1 id="levelheader">&nbsp;</h1>
+		<h2 id="leveltext">&nbsp;</h2>
 		<svg id="field"></svg>
 	</div>
 	<nav id="menu" class="page">
@@ -125,6 +126,14 @@
 
 			if (localStorage.game)
 				game.data = JSON.parse(localStorage.game);
+
+			/** /
+			$(function(){$(function()
+			{
+				$('#btn-play').click();
+				$($('#level-buttons a')[0]).click();
+			})});
+			/**/
 		});
 
 		function ResetGame()

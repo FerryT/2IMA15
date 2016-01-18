@@ -1,21 +1,25 @@
 function InitializeLevels()
 {
-	game.addLevel(DragMe());
-	game.addLevel(DragUs());
-	game.addLevel(PlaceUs());
+	game.addLevel(LiuetenantsTraining());
+	game.addLevel(WhoHiredTheseMen());
+	game.addLevel(StrategicalPlacement());
 	game.addLevel(GiveUsCompany());
-	game.addLevel(HoldMe());
+	game.addLevel(StopRightThere());
 	game.addLevel(Cowards());
-	game.addLevel(Magnets());
+	game.addLevel(IronSpaceships());
 	game.addLevel(ClickMe());
-	//game.addLevel(LevelFour());
+	game.addLevel(Special());
+	game.addLevel(SoManyCowards());
+	game.addLevel(TwoGroups());
+	game.addLevel(GainingStrength());
+	game.addLevel(Irrational());
 }
 
-function DragMe()
+function LiuetenantsTraining()
 {
 	var draggable = new Behavior().Draggable().Clamped(game.rect),
 		behavior = new Behavior(),
-		level = new Level('Drag me!', 'Add description here...')
+		level = new Level('Liuetenant\'s training', 'Some cadets are so stubborn, you have to drag them yourself.')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20 /* time limit */, 2000 /* max score */))
 			// Group one
 			.add(new Entity(new Point(0.25, 0.75).multiply(game.rect), 0, behavior))
@@ -27,11 +31,11 @@ function DragMe()
 	return level;
 }
 
-function DragUs()
+function WhoHiredTheseMen()
 {
 	var draggable = new Behavior().Draggable().Colliding(game).Clamped(game.rect),
 		behavior = new Behavior(),
-		level = new Level('Drag us!', 'Add description here...')
+		level = new Level('Who hired these men?', 'And why am I the one who has to drag them around?')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
 			.add(new Entity(new Point(0.25, 0.35).multiply(game.rect), 0, draggable))
@@ -43,11 +47,11 @@ function DragUs()
 	return level;
 }
 
-function PlaceUs()
+function StrategicalPlacement()
 {	
 	var behavior = new Behavior().Clamped(game.rect),
 		behaviorL = new Behavior().Editable(behavior),
-		level = new Level('Put me down!', 'Add description here...', behaviorL)
+		level = new Level('Strategical placement', 'Sometimes you\'re allowed to determine placement yourself.', behaviorL)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.25).multiply(game.rect), 0, behavior))
@@ -66,7 +70,7 @@ function GiveUsCompany()
 {	
 	var behavior = new Behavior().Clamped(game.rect),
 		behaviorL = new Behavior().Editable(behavior),
-		level = new Level('Give us company!', 'Add description here...', behaviorL)
+		level = new Level('Give us company', 'Our crew called in for reinforcements on the other side of the warphole.', behaviorL)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.75).multiply(game.rect), 0, behavior))
@@ -82,7 +86,7 @@ function Cowards()
 {	
 	var behavior1 = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
 		behavior2 = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
-		level = new Level('Runaround', 'Add description here...', new Behavior().Clickable())
+		level = new Level('Cowards', 'Some men are motivated by fear.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.4).multiply(game.rect), 0, behavior1))
@@ -98,11 +102,11 @@ function Cowards()
 	return level;
 }
 
-function Magnets()
+function IronSpaceships()
 {	
 	var behavior1 = new Behavior().Coward(100, 100, true).Colliding(game).Clamped(game.rect),
 		behavior2 = new Behavior().Coward(100, 100, true).Colliding(game).Clamped(game.rect),
-		level = new Level('Runaround', 'Add description here...', new Behavior().Clickable())
+		level = new Level('Iron spaceships', 'Great against bullets, bad against magnets.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.4).multiply(game.rect), 0, behavior1))
@@ -122,7 +126,7 @@ function ClickMe()
 {	
 	var behavior1 = new Behavior().Coward(500, 100).Clamped(game.rect),
 		behavior2 = new Behavior().Coward(500, 100).Clamped(game.rect),
-		level = new Level('Click me', 'Add description here...', new Behavior().Clickable())
+		level = new Level('Click on the space ships', 'We have the warphole to worry about. We\'ll repair the fourth wall later.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
 			.add(new Entity(new Point(0.40, 0.4).multiply(game.rect), 0, behavior1))
@@ -138,12 +142,12 @@ function ClickMe()
 	return level;
 }
 
-function HoldMe()
+function StopRightThere()
 {	
 	var bounce = new Behavior().Bounce(20,40).Clamped(game.rect),
 		bounceDrag = new Behavior().Bounce(20,40).Draggable().Clamped(game.rect),
 		stay = new Behavior(),
-		level = new Level('Hold me', 'Add description here...', new Behavior().Clickable())
+		level = new Level('Stop right there', 'You can drag big spaceships, even when they are moving.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
 			.add(new Entity(new Point(0.15, 0.25).multiply(game.rect), 0, bounce))
@@ -161,84 +165,158 @@ function HoldMe()
 	return level;
 }
 
-function DragPoints()
-{	
-	var behavior = new Behavior().Draggable().Clamped(game.rect),
-		level = new Level('I\'ll wait', 'Add description here...')
+function Special()
+{
+	// This level freezes sometimes?
+	var draggable = new Behavior().Draggable().Colliding(game).Clamped(game.rect),
+		coward = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
+		push = new Behavior().Coward(150, 100, false, false).Clamped(game.rect),
+		pull = new Behavior().Coward(150, 100, true, false).Clamped(game.rect),
+		wigglypull = new Behavior().Coward(150, 100, true, true).Clamped(game.rect),
+		bounce = new Behavior().Bounce(20,40).Clamped(game.rect),
+		donothing = new Behavior(),
+		level = new Level('Everyone is unique!', 'They were arguing over who has the best ship. Just put them in line.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
-			.add(new Entity(new Point(0.2, 0.1).multiply(game.rect), 0, behavior))
-			.add(new Entity(new Point(0.4, 0.1).multiply(game.rect), 0, behavior))
-			.add(new Entity(new Point(0.6, 0.1).multiply(game.rect), 0, behavior))
-			.add(new Entity(new Point(0.8, 0.1).multiply(game.rect), 0, behavior))
+			.add(new Entity(new Point(0.15, 0.75).multiply(game.rect), 0, donothing))
+			.add(new Entity(new Point(0.30, 0.75).multiply(game.rect), 0, draggable))
+			.add(new Entity(new Point(0.45, 0.75).multiply(game.rect), 0, coward))
+			.add(new Entity(new Point(0.60, 0.75).multiply(game.rect), 0, push))
+			.add(new Entity(new Point(0.75, 0.75).multiply(game.rect), 0, wigglypull))
+			.add(new Entity(new Point(0.85, 0.65).multiply(game.rect), 0, bounce))
 			//Group two
-			.add(new Entity(new Point(0.2, 0.9).multiply(game.rect), 1, behavior))
-			.add(new Entity(new Point(0.4, 0.9).multiply(game.rect), 1, behavior))
-			.add(new Entity(new Point(0.6, 0.9).multiply(game.rect), 1, behavior))
-			.add(new Entity(new Point(0.8, 0.9).multiply(game.rect), 1, behavior))
+			.add(new Entity(new Point(0.90, 0.75).multiply(game.rect), 1, donothing))
+			.add(new Entity(new Point(0.90, 0.90).multiply(game.rect), 1, donothing))
+			.add(new Entity(new Point(0.75, 0.90).multiply(game.rect), 1, donothing))
+			.add(new Entity(new Point(0.25, 0.10).multiply(game.rect), 1, donothing))
+			.add(new Entity(new Point(0.10, 0.10).multiply(game.rect), 1, donothing))
+			.add(new Entity(new Point(0.10, 0.25).multiply(game.rect), 1, donothing))
 		;
 	return level;
 }
 
-function DragBouncingPoints()
-{	
-	var behavior = new Behavior().Bounce(20,40).Draggable().Clamped(game.rect),
-		behavior2 = new Behavior().Clamped(game.rect),
-		level = new Level('Jump!', 'Add description here...')
+function TwoGroups()
+{
+	var draggable = new Behavior().Draggable().Colliding(game).Clamped(game.rect),
+		coward = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
+		donothing = new Behavior(),
+		level = new Level('Break is over', 'Scare them back to work.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
-			.add(new Entity(new Point(0.4, 0.3).multiply(game.rect), 0, behavior))
-			.add(new Entity(new Point(0.3, 0.1).multiply(game.rect), 0, behavior2))
-			.add(new Entity(new Point(0.5, 0.9).multiply(game.rect), 0, behavior2))
-			.add(new Entity(new Point(0.7, 0.1).multiply(game.rect), 0, behavior2))
+			.add(new Entity(new Point(0.15, 0.25).multiply(game.rect), 0, draggable))
+			.add(new Entity(new Point(0.30, 0.25).multiply(game.rect), 0, draggable))
+			.add(new Entity(new Point(0.45, 0.25).multiply(game.rect), 0, draggable))
+			.add(new Entity(new Point(0.60, 0.25).multiply(game.rect), 0, donothing))
+			.add(new Entity(new Point(0.75, 0.25).multiply(game.rect), 0, donothing))
+			.add(new Entity(new Point(0.90, 0.25).multiply(game.rect), 0, donothing))
 			//Group two
-			.add(new Entity(new Point(0.6, 0.3).multiply(game.rect), 1, behavior))
-			.add(new Entity(new Point(0.3, 0.9).multiply(game.rect), 1, behavior2))
-			.add(new Entity(new Point(0.5, 0.1).multiply(game.rect), 1, behavior2))
-			.add(new Entity(new Point(0.7, 0.9).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.90, 0.75).multiply(game.rect), 1, coward))
+			.add(new Entity(new Point(0.75, 0.75).multiply(game.rect), 1, coward))
+			.add(new Entity(new Point(0.60, 0.75).multiply(game.rect), 1, coward))
+			.add(new Entity(new Point(0.45, 0.75).multiply(game.rect), 1, donothing))
+			.add(new Entity(new Point(0.30, 0.75).multiply(game.rect), 1, donothing))
+			.add(new Entity(new Point(0.15, 0.75).multiply(game.rect), 1, donothing))
 		;
 	return level;
 }
 
-function DragMovingPoints()
+function SoManyCowards()
 {	
-	var behavior1 = Behavior.None,
-		behavior2 = new Behavior().Pieter(2.5).Draggable().Clamped(game.rect),
-		level = new Level('Runnin\' with the devil!', 'Add description here...')
+	var behavior1 = new Behavior().Coward(130, 120, false, true).Clamped(game.rect),
+		behavior2 = new Behavior().Coward(130, 120, false, true).Clamped(game.rect),
+		level = new Level('So many cowards', 'No, seriously, who hired these men?', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			// Group one
-			.add(new Entity(new Point(0.1, 0.1).multiply(game.rect), 0, behavior1))
-			.add(new Entity(new Point(0.1, 0.9).multiply(game.rect), 0, behavior1))
-			.add(new Entity(new Point(0.9, 0.1).multiply(game.rect), 0, behavior1))
-			.add(new Entity(new Point(0.9, 0.9).multiply(game.rect), 0, behavior1))
-			// Group two
-			.add(new Entity(new Point(0.2, 0.3).multiply(game.rect), 1, behavior2))
-			.add(new Entity(new Point(0.4, 0.3).multiply(game.rect), 1, behavior2))
-			.add(new Entity(new Point(0.6, 0.3).multiply(game.rect), 1, behavior2))
-			.add(new Entity(new Point(0.8, 0.3).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.20, 0.2).multiply(game.rect), 0, behavior1))
+			//Group two
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.80, 0.8).multiply(game.rect), 1, behavior2))
+	;
+	return level;
+}
+
+function Cowards()
+{	
+	var behavior1 = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
+		behavior2 = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
+		level = new Level('Cowards', 'Some cadets are afraid of you. Use it to get them to the right location.', new Behavior().Clickable())
+			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
+			// Group one
+			.add(new Entity(new Point(0.20, 0.1).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.25, 0.2).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.35, 0.3).multiply(game.rect), 0, behavior1))
+			.add(new Entity(new Point(0.25, 0.1).multiply(game.rect), 0, behavior1))
+			//Group two
+			.add(new Entity(new Point(0.40, 0.6).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.45, 0.7).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.55, 0.7).multiply(game.rect), 1, behavior2))
+			.add(new Entity(new Point(0.60, 0.6).multiply(game.rect), 1, behavior2))
+	;
+	return level;
+}
+
+function GainingStrength()
+{	
+	var behavior = new Behavior().Clamped(game.rect),
+		behaviorL = new Behavior().Editable(behavior),
+		level = new Level('Gaining strength', 'We need at least double the forces to guarantee a stable area.', behaviorL)
+			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
+			// Group one
+			.add(new Entity(new Point(0.40, 0.75).multiply(game.rect), 0, behavior))
+			.add(new Entity(new Point(0.20, 0.75).multiply(game.rect), 0, behavior))
+			.add(new Entity(new Point(0.10, 0.75).multiply(game.rect), 0, behavior))
+			.add(new Entity(new Point(0.30, 0.75).multiply(game.rect), 0, behavior))
+			.add(new Entity(new Point(0.50, 0.75).multiply(game.rect), 0, behavior))
+			.add(new Entity(new Point(0.60, 0.75).multiply(game.rect), 0, behavior))
+			//Group two
+			.add(new Entity(new Point(0.40, 0.25).multiply(game.rect), 1, behavior))
+			.add(new Entity(new Point(0.20, 0.25).multiply(game.rect), 1, behavior))
+			.add(new Entity(new Point(0.10, 0.25).multiply(game.rect), 1, behavior))
+			.add(new Entity(new Point(0.30, 0.25).multiply(game.rect), 1, behavior))
+			.add(new Entity(new Point(0.50, 0.25).multiply(game.rect), 1, behavior))
+			.add(new Entity(new Point(0.60, 0.25).multiply(game.rect), 1, behavior))
 		;
 	return level;
 }
 
-function LevelFour()
+function Irrational()
 {	
-	var behavior = new Behavior().Pieter(0.5).Clamped(game.rect),
-		level = new Level('Somebody get me a doctor', 'Add description here...')
-			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
+	var standStill = new Behavior().Clamped(game.rect),
+		clickAndAdd = new Behavior().Clickable().Editable(standStill),
+		coward = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
+		level = new Level('Irrational', 'The veterans are scared of the young ones', clickAndAdd)
+			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 40, 2000))
 			// Group one
-			.add(new Entity(game.rect.randomPoint(), 0, behavior))
-			.add(new Entity(game.rect.randomPoint(), 0, behavior))
-			.add(new Entity(game.rect.randomPoint(), 0, behavior))
-			.add(new Entity(game.rect.randomPoint(), 0, behavior))
-			.add(new Entity(game.rect.randomPoint(), 0, behavior))
-			.add(new Entity(game.rect.randomPoint(), 0, behavior))
-			// Group two
-			.add(new Entity(game.rect.randomPoint(), 1, behavior))
-			.add(new Entity(game.rect.randomPoint(), 1, behavior))
-			.add(new Entity(game.rect.randomPoint(), 1, behavior))
-			.add(new Entity(game.rect.randomPoint(), 1, behavior))
-			.add(new Entity(game.rect.randomPoint(), 1, behavior))
-			.add(new Entity(game.rect.randomPoint(), 1, behavior))
+			.add(new Entity(new Point(0.40, 0.75).multiply(game.rect), 0, coward))
+			.add(new Entity(new Point(0.45, 0.75).multiply(game.rect), 0, coward))
+			.add(new Entity(new Point(0.55, 0.75).multiply(game.rect), 0, coward))
+			.add(new Entity(new Point(0.60, 0.75).multiply(game.rect), 0, coward))
+			//Group two
+			.add(new Entity(new Point(0.40, 0.25).multiply(game.rect), 1, coward))
+			.add(new Entity(new Point(0.45, 0.25).multiply(game.rect), 1, coward))
+			.add(new Entity(new Point(0.60, 0.25).multiply(game.rect), 1, coward))
+			.add(new Entity(new Point(0.55, 0.25).multiply(game.rect), 1, coward))
 		;
 	return level;
 }

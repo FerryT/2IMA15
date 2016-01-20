@@ -69,6 +69,13 @@ $('#pause-screen').click(function()
 	GameUpdater.start();
 });
 
+$('#lose-screen').click(function()
+{
+	$('#lose-screen').hide();
+	game.start(game.level.id);
+	GameUpdater.start();
+});
+
 $('#btn-win-restart').click(function()
 {
 	$('#win-screen').hide();

@@ -20,7 +20,7 @@ function Game(width, height, rate)
 	this.slices = [];
 	this.rate = rate || 1000;
 
-	var dispatch = d3.dispatch('update', 'win');
+	var dispatch = d3.dispatch('update', 'win', 'lose');
 	this.on = dispatch.on.bind(dispatch);
 	this.on.dispatch = dispatch;
 }
@@ -90,13 +90,17 @@ Game.prototype.frame = function frame()
 		struct.behavior.update.call(struct, this.rate);
 	}
 
+	var lost = true;
 	for (var i = 0, l = this.level.goals.length, goal; i < l; ++i)
 	{
 		goal = this.level.goals[i];
 		goal.update(this.rate / 1000);
 		if (goal.check())
 			this.win();
+		lost = lost && goal.time <= 0;
 	}
+	if (lost)
+		this.lose();
 
 	this.level.behavior.update.call(this.level, this.rate);
 	return this.update();
@@ -120,6 +124,13 @@ Game.prototype.win = function win()
 	this.pause();
 	this.data.unlocked[this.level.next] = true;
 	this.on.dispatch.win();
+	return this;
+}
+
+Game.prototype.lose = function lose()
+{
+	this.pause();
+	this.on.dispatch.lose();
 	return this;
 }
 

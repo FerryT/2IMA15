@@ -81,21 +81,21 @@ svg.icon {
 	height: 2em;
 }
 
-#pause-screen, #win-screen {
+#pause-screen, #lose-screen, #win-screen {
 	display: none;
 }
-#pause-screen {
+#pause-screen, #lose-screen {
 	background: rgba(192, 192, 192, .5);
 	z-index: 200;
 }
-#pause-screen h1 {
+#pause-screen, #lose-screen h1 {
 	color: White;
 	font-size: 5em;
 	text-shadow: 0 0 .5em Black;
 	position: relative;
 	top: 25%;
 }
-#pause-screen p {
+#pause-screen, #lose-screen p {
 	color: White;
 	font-size: 2em;
 	text-shadow: 0 0 .5em Black;

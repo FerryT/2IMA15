@@ -20,7 +20,7 @@ function Game(width, height, rate)
 	this.slices = [];
 	this.rate = rate || 1000;
 
-	var dispatch = d3.dispatch('update', 'win', 'lose');
+	var dispatch = d3.dispatch('update', 'win', 'lose', 'pause', 'resume');
 	this.on = dispatch.on.bind(dispatch);
 	this.on.dispatch = dispatch;
 }
@@ -48,14 +48,14 @@ Game.prototype.stop = function stop()
 {
 	this.level = this.levels[0].clone();
 	this.level.id = 0;
-	this.paused = true;
-	return this;
+	return this.pause();
 }
 
 Game.prototype.pause = function pause()
 {
 	if (this.paused) return;
 	this.paused = true;
+	this.on.dispatch.pause();
 	clearInterval(this.interval);
 	return this;
 }
@@ -64,6 +64,7 @@ Game.prototype.resume = function resume()
 {
 	if (!this.paused) return;
 	this.paused = false;
+	this.on.dispatch.resume();
 	this.interval = setInterval(this.frame.bind(this), this.rate);
 	return this;
 }

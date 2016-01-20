@@ -33,7 +33,7 @@ body {
 #gamebar .group2 {
 	float: right;
 }
-#game-score {
+#game-score, #win-score {
 	display: inline-block;
 	padding: .25em;
 	text-align: right;
@@ -126,6 +126,9 @@ svg.icon {
 	text-align: center;
 	position: relative;
 	top: 15%;
+}
+#win-screen .label {
+	font-size: 2em;
 }
 #win-screen button {
 	margin: .5em;

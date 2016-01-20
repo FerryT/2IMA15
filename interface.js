@@ -85,6 +85,19 @@ $('#btn-win-resume').click(function()
 	$('#leveltext').text(game.level.desc);
 });
 
+$('#win-screen').on('score', function()
+{
+	d3.select('#win-score').transition()
+		.duration(5000)
+		.ease(d3.ease('circle-in-out'))
+		.tween("text", function()
+		{
+			var score = d3.interpolateRound(0, game.level.score());
+			return function(t) { this.textContent = score(t); };
+		})
+	;
+});
+
 $('#btn-win-menu').click(function()
 {
 	$('#win-screen').hide();
@@ -109,10 +122,7 @@ var GameUpdater = {
 	},
 	update: function()
 	{
-		var score = 0;
-		for (var i = game.level.goals.length - 1; i >= 0; --i)
-			score += game.level.goals[i].score << 0;
-		$('#game-score').text(score);
+		$('#game-score').text(game.level.score());
 	}
 }
 

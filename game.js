@@ -185,6 +185,14 @@ Level.prototype.points = function(group)
 	return (this.groups[group] || []).map(function (ent) { return ent.point; });
 }
 
+Level.prototype.score = function score()
+{
+	var score = 0;
+	for (var i = this.goals.length - 1; i >= 0; --i)
+		score += this.goals[i].score;
+	return score << 0;
+}
+
 Level.prototype.clone = function clone()
 {
 	var level = new Level(this.name, this.desc, this.behavior);

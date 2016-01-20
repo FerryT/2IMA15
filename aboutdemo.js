@@ -192,6 +192,7 @@ AboutField.prototype.update = function update()
 	points.enter().append('circle')
 		.attr('r', AboutDemo.R)
 		.call(this.behavior.points)
+		.on('click', function () { d3.event.stopPropagation(); })
 	;
 	points
 		.style('display', function (d) { return d.outside ? 'none' : null; })

@@ -146,14 +146,6 @@ Behavior.Habit('Colliding', function (game)
 		}
 	}
 
-	if (this.create.next)
-		this.create = function create()
-		{
-			var ret = create.next.call(this);
-			collide(this);
-			return ret;
-		}
-
 	this.update = function update(dt)
 	{
 		var ret = update.next.call(this, dt);

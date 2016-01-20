@@ -22,6 +22,10 @@
 	stroke: DarkKhaki ;
 }
 
+.rects rect {
+	fill: SpringGreen;
+}
+
 .points .group0 {
 	fill: SkyBlue;
 }

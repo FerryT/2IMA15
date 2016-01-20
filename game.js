@@ -84,6 +84,12 @@ Game.prototype.frame = function frame()
 		ent.behavior.update.call(ent, this.rate);
 	}
 
+	for (var i = 0, l = this.level.structs.length, struct; i < l; ++i)
+	{
+		struct = this.level.structs[i];
+		struct.behavior.update.call(struct, this.rate);
+	}
+
 	for (var i = 0, l = this.level.goals.length, goal; i < l; ++i)
 	{
 		goal = this.level.goals[i];
@@ -128,6 +134,11 @@ function Level(name, desc, behavior)
 	this.behavior = behavior || Behavior.None;
 
 	this.behavior.create.call(this);
+}
+
+Level.prototype.call = function(func)
+{
+	return func.call(this, Array.prototype.slice.call(arguments,1));
 }
 
 Level.prototype.add = function(ent)

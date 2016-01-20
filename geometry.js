@@ -37,7 +37,7 @@ Point.prototype.dual = function dual() // *IMPORTANT* do not use in algorithms!
 	return new Line(0, -this.y, 1, this.x - this.y);
 }
 
-//------------------------------------------------------------------------------
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 Point.prototype.multiply = function multiply(rect)
 {
@@ -46,6 +46,44 @@ Point.prototype.multiply = function multiply(rect)
 	return new Point(
 		 rect.x + rect.w * this.x,
 		 rect.y + rect.h * this.y);
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Point.prototype.collidePoint = function collidePoint(point, dist)
+{
+	v = new Vector(point.x - this.x, point.y - this.y);
+	norm = v.size();
+	dist = norm - dist;
+	if (dist >= 0)
+		return false;
+	this.x += v.x / norm * dist;
+	this.y += v.y / norm * dist;
+	return true;
+}
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Point.prototype.collideRectangle = function collideRectangle(rect, dist)
+{
+	var x1 = rect.x, x2 = x1 + rect.w, y1 = rect.y, y2 = y1 + rect.h,
+		state = (this.x < x1 ? 0 : (this.x > x2 ? 2 : 1))
+		+ (this.y < y1 ? 0 : (this.y > y2 ? 6 : 3)),
+		cx = this.x - rect.x - rect.w / 2,
+		cy = this.y - rect.y - rect.h / 2;
+	if (state == 4)
+		state = cx < cy ? (-cx < cy ? 7 : 3) : (-cx < cy ? 5 : 1);
+	switch (state)
+	{
+		case 0: return this.collidePoint(new Point(x1, y1), dist);
+		case 1: return this.y > y1 - dist ? (this.y = y1 - dist, true) : false;
+		case 2: return this.collidePoint(new Point(x2, y1), dist);
+		case 3: return this.x > x1 - dist ? (this.x = x1 - dist, true) : false;
+		case 5: return this.x < x2 + dist ? (this.x = x2 + dist, true) : false;
+		case 6: return this.collidePoint(new Point(x1, y2), dist);
+		case 7: return this.y < y2 + dist ? (this.y = y2 + dist, true) : false;
+		case 8: return this.collidePoint(new Point(x2, y2), dist);
+	}
+	return false;
 }
 
 //------------------------------------------------------------------------------

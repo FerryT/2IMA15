@@ -133,19 +133,16 @@ Behavior.Habit('Colliding', function (game)
 
 	function collide(ent1)
 	{
-		for (var i = 0, l = game.level.entities.length, ent, v, n, dist; i < l; ++i)
+		for (var i = 0, l = game.level.entities.length, ent2; i < l; ++i)
 		{
 			ent2 = game.level.entities[i];
-			if (ent1 == ent2) continue;
-
-			v = new Vector(ent2.point.x-ent1.point.x, ent2.point.y-ent1.point.y);
-			n = v.size();
-			dist = n - ent1.size - ent2.size;
-			if (dist < 0)
-			{
-				ent1.point.x += v.x / n * dist;
-				ent1.point.y += v.y / n * dist;
-			}
+			if (ent1 != ent2)
+				ent1.point.collidePoint(ent2.point, ent1.size + ent2.size);
+		}
+		for (var i = 0, l = game.level.structs.length, struct; i < l; ++i)
+		{
+			struct = game.level.structs[i];
+			ent1.point.collideRectangle(struct.rect, ent1.size);
 		}
 	}
 
@@ -157,13 +154,12 @@ Behavior.Habit('Colliding', function (game)
 			return ret;
 		}
 
-	if (this.update.next)
-		this.update = function update(dt)
-		{
-			var ret = update.next.call(this, dt);
-			collide(this);
-			return ret;
-		}
+	this.update = function update(dt)
+	{
+		var ret = update.next.call(this, dt);
+		collide(this);
+		return ret;
+	}
 
 	if (this.click.next)
 		this.click = function click(x, y)

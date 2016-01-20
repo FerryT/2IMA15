@@ -13,6 +13,11 @@ function AboutDemo(id1, id2)
 	this.field = new AboutField(id1);
 	this.dual = new AboutField(id2);
 	this.rect = this.field.rect;
+
+	this.dual.xscale = d3.scale.linear()
+		.domain([1, -1])
+		.range([-50,50])
+	;
 	
 	this.q1 = this.rect.clone();
 	this.q1.w /= 2;
@@ -32,37 +37,52 @@ function AboutDemo(id1, id2)
 		self.add(new Point(d3.mouse(this)));
 	});
 
-	this.field.behavior.points = d3.behavior.drag()
-		.on('drag', function (d)
-		{
-			d.x = d3.event.x;
-			d.y = d3.event.y;
+	this.field.behavior.points = function ()
+	{
+		(d3.behavior.drag()
+			.on('drag', function (d)
+			{
+				d.x = d3.event.x;
+				d.y = d3.event.y;
 
-			var limit = self.rect.shrink(-AboutDemo.R / 2);
-			if (d3.event.x < limit.x || d3.event.x > limit.x + limit.w
-				|| d3.event.y < limit.y || d3.event.y > limit.y + limit.h)
-			{
-				d.outside = true;
-			}
-			else
-			{
-				delete d.outside;
-				d.clamp(self.rect.shrink(AboutDemo.D));
-			}
-			self.findSlice().dualify().update();
-		})
-		.on('dragend', function ()
-		{
-			self.field.points = self.field.points.map(function (points)
-			{
-				return points.filter(function (point)
+				var limit = self.rect.shrink(-AboutDemo.R / 2);
+				if (d3.event.x < limit.x || d3.event.x > limit.x + limit.w
+					|| d3.event.y < limit.y || d3.event.y > limit.y + limit.h)
 				{
-					return !point.outside;
+					d.outside = true;
+				}
+				else
+				{
+					delete d.outside;
+					d.clamp(self.rect.shrink(AboutDemo.D));
+				}
+				self.findSlice().dualify().update();
+			})
+			.on('dragend', function ()
+			{
+				self.field.points = self.field.points.map(function (points)
+				{
+					return points.filter(function (point)
+					{
+						return !point.outside;
+					});
 				});
-			});
-			self.findSlice().dualify().update();
-		})
-	;
+				self.findSlice().dualify().update();
+			})
+		).call(this);
+		this
+			.on('mouseover', function (d)
+			{
+				d.selected = true;
+				self.dualify().update();
+			})
+			.on('mouseout', function (d)
+			{
+				delete d.selected;
+				self.dualify().update();
+			})
+		;
+	}
 }
 
 AboutDemo.prototype.add = function add(point)
@@ -95,8 +115,10 @@ AboutDemo.prototype.dualify = function dualify()
 	{
 		points.forEach(function(point)
 		{
-			if (!point.outside)
-				dual.add(point.dual(), group);
+			if (point.outside) return;
+			var line = point.dual();
+			line.selected = point.selected;
+			dual.add(line, group);
 		});
 	});
 	return this;
@@ -115,6 +137,8 @@ function AboutField(id)
 {
 	this.svg = d3.select('#' + id);
 	this.rect = AboutDemo.Rect.clone();
+	this.xscale = undefined;
+	this.yscale = undefined;
 
 	this.svg.selectAll('*').remove();
 	this.svg.attr('viewBox', this.rect + '');
@@ -143,6 +167,10 @@ AboutField.prototype.addSlice = function add(line, group)
 {
 	if (typeof group == 'undefined')
 		group = +(this.slices[1].length > this.slices[2].length) + 1;
+	if (this.xscale)
+		{ line.x1 = this.xscale(line.x1); line.x2 = this.xscale(line.x2); }
+	if (this.yscale)
+		{ line.y1 = this.yscale(line.y1); line.y2 = this.yscale(line.y2); }
 	var slice = new Slice(line, this.rect.shrink(-10));
 	slice.group = group;
 	this.slices[group].push(slice);
@@ -154,6 +182,10 @@ AboutField.prototype.addPoint = function add(point, group)
 	if (typeof group == 'undefined')
 		group = +(this.points[1].length > this.points[2].length) + 1;
 	point = point.clone();
+	if (this.xscale)
+		point.x = this.xscale(point.x);
+	if (this.yscale)
+		point.y = this.yscale(point.y);
 	point.group = group;
 	this.points[group].push(point);
 	return this;
@@ -184,6 +216,7 @@ AboutField.prototype.update = function update()
 		.attr('y1', function (d) { return d.slice.y1; })
 		.attr('x2', function (d) { return d.slice.x2; })
 		.attr('y2', function (d) { return d.slice.y2; })
+		.style('opacity', function (d) { return d.line.selected ? .7 : null; })
 	;
 	lines.exit().remove();
 
@@ -199,6 +232,7 @@ AboutField.prototype.update = function update()
 		.attr('class', function (d) { return 'group' + (d.group - 1); })
 		.attr('cx', function (d) { return d.x; })
 		.attr('cy', function (d) { return d.y; })
+		.style('opacity', function (d) { return d.selected ? .7 : null; })
 	;
 	points.exit().remove();
 

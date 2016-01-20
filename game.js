@@ -104,12 +104,14 @@ Game.prototype.frame = function frame()
 
 Game.prototype.update = function update()
 {
-	var line = NaiveAlgorithm(this.level.points(0), this.level.points(1));
-	if (line)
-	{
+	try {
+		var line = NaiveAlgorithm(this.level.points(0), this.level.points(1));
 		this.slice(line);
-		this.on.dispatch.update();
+	} catch (e)
+	{
+		this.slices = [];
 	}
+	this.on.dispatch.update();
 	return this;
 }
 

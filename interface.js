@@ -80,9 +80,17 @@ $('#btn-win-restart').click(function()
 $('#btn-win-resume').click(function()
 {
 	$('#win-screen').hide();
-	game.start(game.level.next);
-	$('#levelheader').text(game.level.name);
-	$('#leveltext').text(game.level.desc);
+	if (game.level.next)
+		game.start(game.level.next);
+	else
+		$('#btn-win-menu').click();
+});
+
+$('#btn-win-menu').click(function()
+{
+	$('#win-screen').hide();
+	game.stop();
+	$('#btn-menu').click();
 });
 
 $('#win-screen').on('score', function()
@@ -98,17 +106,12 @@ $('#win-screen').on('score', function()
 	;
 });
 
-$('#btn-win-menu').click(function()
-{
-	$('#win-screen').hide();
-	game.stop();
-	$('#btn-menu').click();
-});
-
 // Game
 var GameUpdater = {
 	start: function()
 	{
+		$('#levelheader').text(game.level.name);
+		$('#leveltext').text(game.level.desc);
 		if (GameUpdater.timer) return;
 		GameUpdater.update();
 		GameUpdater.timer = setInterval(GameUpdater.update, 1000);
@@ -162,8 +165,6 @@ $(function()
 				game.resume();
 			else
 				game.start(id);
-			$('#levelheader').text(game.level.name);
-			$('#leveltext').text(game.level.desc);
 			$('#gamebar').show();
 			$('#menu').hide();
 			$('#levels').hide();

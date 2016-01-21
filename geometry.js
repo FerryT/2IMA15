@@ -207,24 +207,33 @@ Line.prototype.slope = function slope()
 }
 
 //------------------------------------------------------------------------------
-// Returns the slope of the line. If x2-x1=0, dx will be taken to be 0.01 to avoid divide by 0.
+// Returns the Y value of the line at x.
+Line.prototype.atX = function atX(x)
+{
+	var a = this.slope();
+	var b = this.y1 - a * this.x1;
+	return a*x + b;
+}
+
+//------------------------------------------------------------------------------
+// Finds the point of intersection between two non-parallel lines
 Line.prototype.intersectionWith = function intersectionWith(line)
 {
 	if (line.constructor != Line)
 		throw new TypeError('first argument must be a Line.');
 	// Transform both lines to the form y=ax+b
-	a1 = this.slope();
-	a2 = line.slope();
+	var a1 = this.slope();
+	var a2 = line.slope();
 	if (a1 == a2)
 		throw new Error('Lines are parallel');
 
-	b1 = this.y1 - a1 * this.x1;
-	b2 = line.y1 - a2 * line.x1;
+	var b1 = this.y1 - a1 * this.x1;
+	var b2 = line.y1 - a2 * line.x1;
 
 	// Find the x of intersection  
 	// (a1*x+b1 = a2*x + b2) ->
-	x = (b2 - b1) / (a2 - a1);
-	y = a1*x+b1;
+	var x = (b2 - b1) / (a1 - a2);
+	var y = a1*x+b1;
 	return new Point(x, y);
 }
 

@@ -70,8 +70,8 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
             // they are median lines when they intersect, and thus found our point!
             medianIntersect = currentMedianLine1.intersectionWith(currentMedianLine2);
             if(     xOfLastIntersect < medianIntersect.x 
-                && (medianIntersect.x < nextIntersect1[0].x || nextIntersect1 == undefined)
-                && (medianIntersect.x < nextIntersect2[0].x || nextIntersect2 == undefined))
+                && (nextIntersect1 == undefined || medianIntersect.x < nextIntersect1[0].x)
+                && (nextIntersect2 == undefined || medianIntersect.x < nextIntersect2[0].x))
             {
                 return medianIntersect.dual();
             }

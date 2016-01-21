@@ -35,7 +35,7 @@ function Field(id, game)
 
 	this.svg
 		.datum(this.game.level)
-		.call(Field.behave, Field.updateField.bind(this, this))
+		.call(Field.behave(this.game), Field.updateField.bind(this, this), this)
 		.on('contextmenu', function() { d3.event.preventDefault(); })
 	;
 }
@@ -88,7 +88,7 @@ Field.prototype.updateRects = function()
 	rects.enter()
 		.append('rect')
 		.attr('class', function (d) { return 'cls-' + d.cls; })
-		.call(Field.behave, Field.updateRect)
+		.call(Field.behave(this.game), Field.updateRect)
 	;
 
 	rects
@@ -116,7 +116,7 @@ Field.prototype.updatePoints = function()
 	points.enter()
 		.append('circle')
 		.attr('class', function (d) { return 'group'+d.group+' cls-'+d.cls; })
-		.call(Field.behave, Field.updatePoint)
+		.call(Field.behave(this.game), Field.updatePoint)
 	;
 
 	points
@@ -159,23 +159,26 @@ Field.prototype.updateLines = function()
 
 //------------------------------------------------------------------------------
 
-Field.behave = function behave(selection, update)
+Field.behave = function (game) { return function behave(selection, update)
 {
 	var drag = d3.behavior.drag()
 		.on('drag', function (d)
 		{
-			if (d.behavior.drag.call(d, d3.event.x, d3.event.y, d3.event.dx, d3.event.dy))
+			if (!game.paused
+			&& d.behavior.drag.call(d, d3.event.x, d3.event.y, d3.event.dx, d3.event.dy))
 				update(this);
 		}).on('dragstart', function (d)
 		{
 			d3.event.sourceEvent.stopPropagation();
 			var mouse = d3.mouse(this);
-			if (d.behavior.dragstart.call(d, mouse[0], mouse[1]))
+			if (!game.paused
+			&& d.behavior.dragstart.call(d, mouse[0], mouse[1]))
 				update(this);
 		}).on('dragend', function (d)
 		{
 			var mouse = d3.mouse(this);
-			if (d.behavior.dragend.call(d, mouse[0], mouse[1]))
+			if (!game.paused
+			&& d.behavior.dragend.call(d, mouse[0], mouse[1]))
 				update(this);
 		})
 	;
@@ -185,12 +188,13 @@ Field.behave = function behave(selection, update)
 		{
 			if (d3.event.defaultPrevented) return;
 			var mouse = d3.mouse(this);
-			if (d.behavior.click.call(d, mouse[0], mouse[1]))
+			if (!game.paused
+			&& d.behavior.click.call(d, mouse[0], mouse[1]))
 				update(this);
 			d3.event.stopPropagation();
 		})
 	;
-}
+};}
 
 Field.updateRect = function update(rect)
 {

@@ -42,6 +42,39 @@ function Walls()
 	return this;
 }
 
+function Winimation(end)
+{
+	d3.transition()
+		.duration(500)
+		.ease('cubic-out')
+		.tween('game', function ()
+		{
+			var time = 0;
+			for (var i = game.level.goals.length - 1; i >= 0; --i)
+				time = Math.max(time, game.level.goals[i].time);
+
+			var last = time *= 1000,
+				pipedown = d3.interpolateRound(time, 0);
+
+			return function (t)
+			{
+				time = pipedown(t);
+				var rate = last - time;
+				last = time;
+				for (var i = 0, l = game.level.structs.length, struct; i < l; ++i)
+				{
+					struct = game.level.structs[i];
+					if (struct.wall)
+						struct.behavior.update.call(struct, rate);
+				}
+				game.level.behavior.update.call(game.level, rate);
+				game.update();
+			}
+		})
+		.each('end', end)
+	;
+}
+
 function LiuetenantsTraining()
 {
 	var draggable = new Behavior().Draggable().Clamped(game.rect),

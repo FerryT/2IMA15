@@ -127,11 +127,11 @@
 
 			InitializeLevels(game.rect.shrink(20));
 			game.on('update', field.updateLevel.bind(field));
-			game.on('win', function()
+			game.on('win', Winimation.bind(this, function()
 			{
 				$('#win-screen').show().trigger('score');
 				localStorage.game = JSON.stringify(game.data);
-			});
+			}));
 			game.on('lose', function()
 			{
 				$('#lose-screen').show();

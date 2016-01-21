@@ -76,15 +76,22 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
                 return medianIntersect.dual();
             }
         }
-
-        if((nextIntersect2 == undefined && nextIntersect1 != undefined) || nextIntersect1[0].x <= nextIntersect2[0].x)
+        if(nextIntersect1 == undefined  && nextIntersect2 == undefined)
+        {
+            // Median lines won't change anymore, should've found an error.
+            console.log("No median line found.");
+            return;
+        }
+        if((nextIntersect2 == undefined && nextIntersect1 != undefined) 
+            || (nextIntersect1 != undefined && nextIntersect1[0].x <= nextIntersect2[0].x))
         {
             // intersect point + slope!=
             xOfLastIntersect = nextIntersect1[0].x;
             indexOfMedianLine1 = nextIntersect1[1];
 
         }
-        if((nextIntersect1 == undefined && nextIntersect2 != undefined) || nextIntersect1[0].x > nextIntersect2[0].x )
+        if((nextIntersect1 == undefined && nextIntersect2 != undefined)
+            || (nextIntersect2 != undefined && nextIntersect1[0].x > nextIntersect2[0].x))
         {
             // intersect point + slope!=
             xOfLastIntersect = nextIntersect2[0].x;

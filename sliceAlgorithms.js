@@ -1,3 +1,105 @@
+function DualityAlgorithm(pointGroupOne, pointGroupTwo)
+{
+    // Extract one point from even-sized groups
+    // ~later
+
+    // Convert to dual represenation
+    // WARNING: It says not to use dual() for the algorithm - why not?
+    dualGroupOne = pointGroupOne.map(function(obj){return obj.dual();});
+    dualGroupTwo = pointGroupTwo.map(function(obj){return obj.dual();});
+    //console.log(dualGroupOne[0].x1, dualGroupOne[0].y1, dualGroupOne[0].x2, dualGroupOne[0].y2)
+
+    // Find intersections of n-level
+    var findAllIntersections = function(obj, lines)
+    { 
+        var intersections = [];
+        for(var i = 0; i < lines.length; i++)
+        {
+            // Only non-paralle 
+            if(obj.slope() != lines[i].slope())
+            {
+                intersections.push([obj.intersectionWith(lines[i]),i]);
+            }
+        }
+        return intersections;
+    };
+    intersectionGroupOne = dualGroupOne.map(function(obj){return findAllIntersections(obj, dualGroupOne);});
+    intersectionGroupTwo = dualGroupTwo.map(function(obj){return findAllIntersections(obj, dualGroupTwo);});
+    crossGroupIntersections = dualGroupOne.map(function(obj){return findAllIntersections(obj, dualGroupTwo);});
+
+    // Find the left-most intersection for both groups, and determine the median line
+    // just to the left of that intersection.
+    x1s = [].concat(...intersectionGroupOne).map(function(obj){return obj[0].x;});
+    x2s = [].concat(...intersectionGroupTwo).map(function(obj){return obj[0].x;});
+    xCross = [].concat(...crossGroupIntersections).map(function(obj){return obj[0].x;});
+    smallestX1 = Math.min(...x1s);
+    smallestX2 = Math.min(...x2s);
+    smallestCrossX = Math.min(...xCross);
+
+    indexOfMedianY1 = Math.floor(dualGroupOne.length/2); // floor, because of 0-indexing
+    indexOfMedianY2 = Math.floor(dualGroupTwo.length/2);
+    y1s =  dualGroupOne.map(function(obj){return obj.atX(smallestX1 - 0.5);});
+    y2s = dualGroupTwo.map(function(obj){return obj.atX(smallestX2 - 0.5);});
+
+    compareNumbers = function(a,b){return a-b;};
+    mediany1 = y1s.slice().sort(compareNumbers)[indexOfMedianY1];
+    mediany2 = y2s.slice().sort(compareNumbers)[indexOfMedianY2];
+
+    indexOfMedianLine1 = y1s.indexOf(mediany1);
+    indexOfMedianLine2 = y2s.indexOf(mediany2);
+
+    // Trace the median line along intersections, until the two medians intersect
+    triedAllIntersections = false;
+    // Include cross-group intersections
+    xOfLastIntersect = Math.min(smallestX1, smallestX2, smallestCrossX) - 0.5;
+    while(!triedAllIntersections)
+    {
+        currentMedianLine1 = dualGroupOne[indexOfMedianLine1];
+        currentMedianLine2 = dualGroupTwo[indexOfMedianLine2];
+        nextIntersect1 = intersectionGroupOne[indexOfMedianLine1]
+                            .sort(function(a,b){return a[0].x - b[0].x;})
+                            .find(function(obj){return obj[0].x > xOfLastIntersect});
+        nextIntersect2 = intersectionGroupTwo[indexOfMedianLine2]
+                            .sort(function(a,b){return a[0].x - b[0].x;})
+                            .find(function(obj){return obj[0].x > xOfLastIntersect});
+
+        if(currentMedianLine1.slope() != currentMedianLine2.slope())
+        {
+            // If the medians are non-parallel, they will intersect
+            // if they intersect before they intersect with another line in their group
+            // they are median lines when they intersect, and thus found our point!
+            medianIntersect = currentMedianLine1.intersectionWith(currentMedianLine2);
+            if(     xOfLastIntersect < medianIntersect.x 
+                && (medianIntersect.x < nextIntersect1[0].x || nextIntersect1 == undefined)
+                && (medianIntersect.x < nextIntersect2[0].x || nextIntersect2 == undefined))
+            {
+                return medianIntersect.dual();
+            }
+        }
+
+        if((nextIntersect2 == undefined && nextIntersect1 != undefined) || nextIntersect1[0].x <= nextIntersect2[0].x)
+        {
+            // intersect point + slope!=
+            xOfLastIntersect = nextIntersect1[0].x;
+            indexOfMedianLine1 = nextIntersect1[1];
+
+        }
+        if((nextIntersect1 == undefined && nextIntersect2 != undefined) || nextIntersect1[0].x > nextIntersect2[0].x )
+        {
+            // intersect point + slope!=
+            xOfLastIntersect = nextIntersect2[0].x;
+            indexOfMedianLine2 = nextIntersect2[1];
+        }
+        if(nextIntersect1 == undefined && nextIntersect2 != undefined)
+        {
+            triedAllIntersections = true;
+        }
+    }
+
+    // Convert intersection back to normal level
+    return new Line(0,0,0,0);
+}
+
 // A cubic time algorithm which simply tries all possible lines,
 // and checks whether or not it is a good one.
 function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)

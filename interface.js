@@ -96,8 +96,8 @@ $('#btn-win-menu').click(function()
 $('#win-screen').on('score', function()
 {
 	d3.select('#win-score').transition()
-		.duration(5000)
-		.ease(d3.ease('circle-in-out'))
+		.duration(3000)
+		.ease(d3.ease('exp-in-out'))
 		.tween("text", function()
 		{
 			var score = d3.interpolateRound(0, game.level.score());

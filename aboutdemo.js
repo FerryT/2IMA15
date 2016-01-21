@@ -121,6 +121,16 @@ AboutDemo.prototype.dualify = function dualify()
 			dual.add(line, group);
 		});
 	});
+	dual.clearPoints();
+	this.field.slices.forEach(function(slices, group)
+	{
+		slices.forEach(function(slice)
+		{
+			var point = slice.line.dual();
+			point.selected = slice.selected;
+			dual.add(point, group);
+		});
+	});
 	return this;
 }
 

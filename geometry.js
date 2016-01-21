@@ -162,6 +162,15 @@ Line.prototype.extend = function extend(rect)
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+Line.prototype.dual = function dual() // *IMPORTANT* do not use in algorithms!
+{
+	var y0 = this.atX(0),
+		y1 = this.atX(1);
+	return new Point(y1 - y0, -y0);
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 Line.prototype.multiply = function multiply(rect)
 {
 	if (rect.constructor != Rectangle)

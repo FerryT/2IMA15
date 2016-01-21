@@ -98,7 +98,7 @@ AboutDemo.prototype.findSlice = function findSlice()
 	this.field.clearSlices();
 	function inside(point) { return !point.outside; }
 	try {
-		var line = NaiveAlgorithm(
+		var line = DualityAlgorithm(
 			this.field.points[1].filter(inside),
 			this.field.points[2].filter(inside));
 	} catch (e) {}

@@ -300,6 +300,7 @@ function Cowards()
 		behavior2 = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
 		level = new Level('Cowards', 'Some cadets are afraid of you. Use it to get them to the right location.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
+			.call(Walls)
 			// Group one
 			.add(new Entity(new Point(0.20, 0.1).multiply(game.rect), 0, behavior1))
 			.add(new Entity(new Point(0.25, 0.2).multiply(game.rect), 0, behavior1))
@@ -346,6 +347,7 @@ function Irrational()
 		coward = new Behavior().Coward(150, 100, false, true).Clamped(game.rect),
 		level = new Level('Irrational', 'The veterans are scared of the young ones', clickAndAdd)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 40, 2000))
+			.call(Walls)
 			// Group one
 			.add(new Entity(new Point(0.40, 0.75).multiply(game.rect), 0, coward))
 			.add(new Entity(new Point(0.45, 0.75).multiply(game.rect), 0, coward))

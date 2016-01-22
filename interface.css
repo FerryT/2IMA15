@@ -214,8 +214,21 @@ svg.icon {
 	background: Papayawhip;
 	color: Sienna;
 }
+#levels a.gold {
+	background: Peru url('images/goldstar.svg');
+	background-size: contain;
+	color: DarkGoldenrod;
+	font-weight: bold;
+}
+#levels a.silver {
+	background: Peru url('images/silverstar.svg');
+	background-size: contain;
+	color: Slategray;
+	font-weight: bold;
+}
 #levels a.locked {
-	background: Sienna;
+	background: Sienna url('images/padlock.svg');
+	background-size: contain;
 	box-shadow: none;
 	color: Papayawhip;
 	text-shadow: none;

@@ -36,6 +36,18 @@ Behavior.None = Object.freeze(new Behavior); // No behavior, booooooring!
 
 //------------------------------------------------------------------------------
 
+Behavior.Habit('Class', function (cls, size)
+{
+	this.create = function create()
+	{
+		this.cls = cls;
+		if (size) this.size = size;
+		return create.next.call(this) || true;
+	}
+})
+
+//------------------------------------------------------------------------------
+
 // Clicking the level will add points
 Behavior.Habit('Editable', function (behavior, dragignore)
 {

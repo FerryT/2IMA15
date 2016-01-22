@@ -94,14 +94,14 @@ svg.icon {
 	background: rgba(192, 192, 192, .5);
 	z-index: 200;
 }
-#pause-screen, #lose-screen h1 {
+#pause-screen h1, #lose-screen h1 {
 	color: White;
 	font-size: 5em;
 	text-shadow: 0 0 .5em Black;
 	position: relative;
 	top: 25%;
 }
-#pause-screen, #lose-screen p {
+#pause-screen p, #lose-screen p {
 	color: White;
 	font-size: 2em;
 	text-shadow: 0 0 .5em Black;

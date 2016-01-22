@@ -81,6 +81,7 @@ function LiuetenantsTraining()
 		behavior = new Behavior(),
 		level = new Level('Liuetenant\'s training', 'Some cadets are so stubborn, you have to drag them yourself.')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20 /* time limit */, 2000 /* max score */))
+			.star(1900 /* gold */, 1800 /* silver */)
 			.call(Walls)
 			// Group one
 			.add(new Entity(new Point(0.25, 0.75).multiply(game.rect), 0, behavior))

@@ -184,6 +184,8 @@ $(function()
 		{
 			$(this)
 				.toggleClass('locked', game.data.unlocked[id] !== true)
+				.toggleClass('gold', game.data.star[id] !== 1)
+				.toggleClass('silver', game.data.star[id] !== 2)
 				.toggleClass('paused', game.level.id == id)
 			;
 		}

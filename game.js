@@ -11,6 +11,7 @@ function Game(width, height, rate)
 	this.levels = [new Level('')];
 	this.data = {
 		unlocked: [true, true],
+		star: [0],
 	};
 
 	this.level = this.levels[0].clone();
@@ -124,6 +125,12 @@ Game.prototype.win = function win()
 {
 	this.pause();
 	this.data.unlocked[this.level.next] = true;
+	var score = this.level.score();
+	if (this.level.gold && score >= this.level.gold)
+		this.data.star[this.level.id] = 1;
+	else if (this.level.silver && score >= this.level.silver
+	&& this.data.star[this.level.id] !== 1)
+		this.data.star[this.level.id] = 2;
 	this.on.dispatch.win();
 	return this;
 }
@@ -180,6 +187,13 @@ Level.prototype.add = function(ent)
 	return this;
 }
 
+Level.prototype.star = function(gold, silver)
+{
+	this.gold = gold;
+	this.silver = silver;
+	return this;
+}
+
 Level.prototype.points = function(group)
 {
 	return (this.groups[group] || []).map(function (ent) { return ent.point; });
@@ -202,7 +216,7 @@ Level.prototype.clone = function clone()
 		level.add(this.structs[i].clone());
 	for (var i = 0, l = this.entities.length; i < l; ++i)
 		level.add(this.entities[i].clone());
-	return level;
+	return level.star(this.gold, this.silver);
 }
 
 //------------------------------------------------------------------------------

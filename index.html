@@ -143,7 +143,7 @@
 			});
 
 			if (localStorage.game)
-				game.data = JSON.parse(localStorage.game);
+				$.extend(true, game.data, JSON.parse(localStorage.game));
 
 			/** /
 			$(function(){$(function()

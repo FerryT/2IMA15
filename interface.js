@@ -15,17 +15,25 @@ $('button.icon').each(function()
 	;
 });
 
-setTimeout(function () { window.scrollTo(0, 1); }, 1);
+$('#game-title, #orient-guard h1').text(document.title);
 
 function resize()
 {
-	var isTouchScreen = 'ontouchstart' in window;
+	var isTouchScreen = 'ontouchstart' in window,
+		isLandscape = window.innerHeight <= window.innerWidth;
+
 	$('body')
 		.css('font-size', Math.max(screen.height / 50, 5) * (isTouchScreen ? 1 : 0.8))
 	;
-}
 
+	if (!isTouchScreen) return;
+	if (isLandscape)
+		$('#orient-guard').hide();
+	else
+		$('#orient-guard').show();
+}
 resize();
+$(window).resize(resize);
 
 // Topbar
 $('#btn-back').click(function()
@@ -216,6 +224,7 @@ $(function()
 	game.on('resume', GameUpdater.start);
 	$('#btn-back').click();
 	$('#loader').hide();
+	setTimeout(function () { window.scrollTo(0, 1); }, 1);
 });
 
 //------------------------------------------------------------------------------

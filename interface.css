@@ -1,5 +1,8 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
+@import url(https://fonts.googleapis.com/css?family=Fascinate);
+
 * {
-	font-family: sans-serif;
+	font-family: 'Roboto', sans-serif;
 	color: Sienna;
 	fill: Sienna;
 }
@@ -44,11 +47,14 @@ body {
 }
 
 h1 {
+	font-family: 'Fascinate', cursive;
+	text-shadow: 1px 1px Peru;
 	margin: 1em auto;
 	text-align: center;
 }
 button {
 	border: .25em solid Sienna;
+	text-shadow: 1px 1px Peru;
 	font-size: 2em;
 	border-radius: 5em;
 	background: Papayawhip;
@@ -81,7 +87,7 @@ svg.icon {
 	height: 2em;
 }
 
-#pause-screen, #lose-screen, #win-screen {
+#pause-screen, #lose-screen, #win-screen, #orient-guard {
 	display: none;
 }
 #pause-screen, #lose-screen {
@@ -135,14 +141,35 @@ svg.icon {
 	width: 5em;
 }
 
+#orient-guard {
+	z-index: 200;
+}
+#orient-guard h1 {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 20em;
+	margin: 0 0;
+	font-size: 5em;
+	text-align: center;
+	transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+}
+#orient-guard h2 {
+	text-align: center;
+}
+
+#menu h1 {
+	font-size: 3em;
+}
 #menu a {
 	display: block;
-	margin: 2em auto;
+	margin: 1.75em auto;
 	width: 10em;
 	background: Sienna;
 	text-align: center;
 	padding: 1em;
 	font-size: 2em;
+	font-family: 'Fascinate', cursive;
 	text-decoration: none;
 	color: Papayawhip;
 	border-radius: 1em;
@@ -198,11 +225,15 @@ svg.icon {
 	height: 100%;
 	overflow: hidden;
 }
+#about h2 {
+	font-family: 'Fascinate', cursive;
+	text-shadow: 1px 1px Peru;
+}
 #about article {
 	height: calc(100% - 4.5em);
 	overflow: auto;
 	max-height: 100%;
-	margin: 0 15%;
+	margin: 0 10%;
 	font-size: 1.25em;
 	-webkit-touch-callout: all;
 	-webkit-user-select: all;
@@ -212,8 +243,9 @@ svg.icon {
 	user-select: all;
 }
 #about section {
-	margin: 1em 0 5em 0;
+	margin: 1em 5% 5em 5%;
 	min-height: 100%;
+	text-align: justify;
 }
 #about-tabs {
 	text-align: center;

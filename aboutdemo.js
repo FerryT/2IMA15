@@ -16,7 +16,7 @@ function AboutDemo(id1, id2)
 
 	this.dual.xscale = d3.scale.linear()
 		.domain([1, -1])
-		.range([-50,50])
+		.range([-100,100])
 	;
 	
 	this.q1 = this.rect.clone();

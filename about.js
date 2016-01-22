@@ -13,7 +13,7 @@ $('#about-algorithms')
 		.append('There are several algorithms that, given two set of points, find \
 			a line which cuts all of those sets in half. The fastest algorithm can do this in \
 			O(n) time, but is very complex. We will discuss two algorithms we implemented ourselves, \
-			a O(n<sup>3</sup>) algorithm and a O(n log n) algorithm. For the O(n) algorithm, we refer to a good \
+			a O(n<sup>3</sup>) algorithm and a O(n<sup>2</sup>) algorithm. For the O(n) algorithm, we refer to a good \
 			explanation by Danielle MacNevin ')
 		.append('<a href=http://cgm.cs.mcgill.ca/~athens/cs507/Projects/2002/DanielleMacNevin/algorithm-pg3.html>over here</a>.<br>')
 		.append('The most simple algorithm is the O(n<sup>3</sup>) algorithm. It works on two groups that are both of odd size.\
@@ -24,7 +24,7 @@ $('#about-algorithms')
 			to the right of the line. By this counting, one can determine whether or not the line is a hamsandwich cut. \
 			This algorithm runs in O(n<sup>3</sup>) time, because it will check for O(n<sup>2</sup>) combination of points whether or not it is a \
 			hamsandwich cut in O(n) time.<br>')
-		.append('The O(n log n) algorithm is not only a lot faster, but also more advanced. It makes use of a concept called duality. \
+		.append('The O(n<sup>2</sup>) algorithm is not only a lot faster, but also more advanced. It makes use of a concept called duality. \
 			We refer to the section on duality for a more thorough explanation, but in short it means that there is a second representation of the problem. This second \
 			representation sees the points in the original problems as lines, and the hamsandwich line as a point. TODO<br>')
 	)

@@ -101,11 +101,11 @@ function WhoHiredTheseMen()
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
 			// Group one
-			.add(new Entity(new Point(0.25, 0.35).multiply(game.rect), 0, draggable))
-			.add(new Entity(new Point(0.25, 0.25).multiply(game.rect), 0, behavior))
+			.add(new Entity(new Point(0.25, 0.35).multiply(game.rect), 0, draggable, 'Dfrigate'))
+			.add(new Entity(new Point(0.25, 0.25).multiply(game.rect), 0, behavior, 'Dcruiser'))
 			//Group two
-			.add(new Entity(new Point(0.75, 0.60).multiply(game.rect), 1, draggable))
-			.add(new Entity(new Point(0.75, 0.75).multiply(game.rect), 1, behavior))
+			.add(new Entity(new Point(0.75, 0.60).multiply(game.rect), 1, draggable, 'Dfrigate'))
+			.add(new Entity(new Point(0.75, 0.75).multiply(game.rect), 1, behavior, 'Dcruiser'))
 		;
 	return level;
 }

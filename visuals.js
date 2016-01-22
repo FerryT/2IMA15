@@ -9,7 +9,7 @@ function Field(id, game)
 	this.svg = d3.select('#'+id);
 	this.game = game;
 
-	this.svg.selectAll('*').remove();
+	//this.svg.selectAll('*').remove();
 	this.svg.attr('viewBox', this.game.rect + '');
 	this.goals = this.svg.append('g').attr('class', 'goals');
 	this.rects = this.svg.append('g').attr('class', 'rects');

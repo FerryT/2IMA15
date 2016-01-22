@@ -10,7 +10,6 @@
 	stroke: Sienna;
 	cursor: crosshair;
 }
-
 .trim rect {
 	fill: Papayawhip;
 	fill-opacity: .9;
@@ -21,19 +20,42 @@
 .goals {
 	stroke: DarkKhaki ;
 }
-
 .rects rect {
 	fill: SpringGreen;
 }
-
 .points .group0 {
 	fill: SkyBlue;
 }
-
 .points .group1 {
 	fill: Tomato;
 }
-
 .lines line {
 	stroke-width: 5;
 }
+
+.points .group0.cls-Dfrigate {
+	fill: url(#frigate-blue) SkyBlue;
+	stroke: none;
+}
+.points .group1.cls-Dfrigate {
+	fill: url(#frigate-red) Tomato;
+	stroke: none;
+}
+.points .group0.cls-Dcruiser {
+	fill: url(#cruiser-blue) SkyBlue;
+	stroke: none;
+}
+.points .group1.cls-Dcruiser {
+	fill: url(#cruiser-red) Tomato;
+	stroke: none;
+}
+.points .group0.cls-Dfighter {
+	fill: url(#fighter-blue) SkyBlue;
+	stroke: none;
+}
+.points .group1.cls-Dfighter {
+	fill: url(#fighter-red) Tomato;
+	stroke: none;
+}
+
+

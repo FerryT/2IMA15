@@ -48,11 +48,10 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
     indexOfMedianLine1 = y1s.indexOf(mediany1);
     indexOfMedianLine2 = y2s.indexOf(mediany2);
 
-    // Trace the median line along intersections, until the two medians intersect
-    triedAllIntersections = false;
     // Include cross-group intersections
     xOfLastIntersect = Math.min(smallestX1, smallestX2, smallestCrossX) - 0.5;
-    while(!triedAllIntersections)
+    hamsandwichpoints = [];
+    while(true)
     {
         currentMedianLine1 = dualGroupOne[indexOfMedianLine1];
         currentMedianLine2 = dualGroupTwo[indexOfMedianLine2];
@@ -73,14 +72,14 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
                 && (nextIntersect1 == undefined || medianIntersect.x < nextIntersect1[0].x)
                 && (nextIntersect2 == undefined || medianIntersect.x < nextIntersect2[0].x))
             {
-                return medianIntersect.dual();
+                hamsandwichpoints.push(medianIntersect);
+                //return medianIntersect.dual();
             }
         }
         if(nextIntersect1 == undefined  && nextIntersect2 == undefined)
         {
-            // Median lines won't change anymore, should've found an error.
-            console.log("No median line found.");
-            return;
+            // Median lines won't change anymore.
+            break;
         }
         if((nextIntersect2 == undefined && nextIntersect1 != undefined) 
             || (nextIntersect1 != undefined && nextIntersect1[0].x <= nextIntersect2[0].x))
@@ -97,12 +96,16 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
             xOfLastIntersect = nextIntersect2[0].x;
             indexOfMedianLine2 = nextIntersect2[1];
         }
-        if(nextIntersect1 == undefined && nextIntersect2 != undefined)
-        {
-            triedAllIntersections = true;
-        }
     }
 
+    if(hamsandwichpoints.length>0)
+    {
+        return hamsandwichpoints.sort(function(a,b){ return Math.abs(a.x) - Math.abs(b.x); })[0].dual();
+    }
+    else
+    {
+        console.log("No median line found.");
+    }
     // Convert intersection back to normal level
     return new Line(0,0,0,0);
 }

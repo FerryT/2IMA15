@@ -82,12 +82,14 @@ $('#lose-screen').click(function()
 $('#btn-win-restart').click(function()
 {
 	$('#win-screen').hide();
+	d3.select('#win-score').transition();
 	game.start(game.level.id);
 });
 
 $('#btn-win-resume').click(function()
 {
 	$('#win-screen').hide();
+	d3.select('#win-score').transition();
 	if (game.level.next)
 		game.start(game.level.next);
 	else
@@ -97,6 +99,7 @@ $('#btn-win-resume').click(function()
 $('#btn-win-menu').click(function()
 {
 	$('#win-screen').hide();
+	d3.select('#win-score').transition();
 	game.stop();
 	$('#btn-menu').click();
 });

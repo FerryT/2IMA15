@@ -43,20 +43,40 @@ $('#about-duality')
 	.append($('<h2>').text('Duality'))
 	.svg('about-field1', 'about-field')
 	.svg('about-field2', 'about-field')
-	.append('Duality is a different way to interpret geometric problems with points and lines. \
-		Where the original problem considers a point, the dual representation will consider a line, and vice versa. \
-		')
+	.append($('<p>')
+		.append($('<label>').text('Algorithm: '))
+		.append($('<select>')
+			.attr('id', 'about-alg')
+			.append($('<option>').text('None').val('none'))
+			.append($('<option>').text('Naive').val('naive'))
+			.append($('<option>').text('Duality').val('dual'))))
+	.append($('<p>')
+		.append('Duality is a different way to interpret geometric problems with points and lines. \
+			Where the original problem considers a point, the dual representation will consider a line, and vice versa. \
+			'))
 ;
 
 $(function()
 {
-	var demo = new AboutDemo('about-field1', 'about-field2');
+	var demo = new AboutDemo('about-field1', 'about-field2', DualityAlgorithm);
 
 	demo
 		.add(demo.q1.shrink(30).randomPoint())
 		.add(demo.q2.shrink(30).randomPoint())
 		.add(demo.q3.shrink(30).randomPoint())
 		.add(demo.q4.shrink(30).randomPoint())
+	;
+
+	$('#about-alg')
+		.change(function()
+		{
+			demo.algorithm = ({
+				naive: NaiveAlgorithm,
+				duality: DualityAlgorithm,
+			})[$(this).val()];
+			demo.findSlice().dualify().update();
+		})
+		.val('dual')
 	;
 });
 

@@ -8,11 +8,12 @@ AboutDemo.Rect = new Rectangle(-100, -100, 200, 200);
 AboutDemo.R = 15; // Point radius
 AboutDemo.D = AboutDemo.R * 2; // Point diameter
 
-function AboutDemo(id1, id2)
+function AboutDemo(id1, id2, algorithm)
 {
 	this.field = new AboutField(id1);
 	this.dual = new AboutField(id2);
 	this.rect = this.field.rect;
+	this.algorithm = algorithm;
 
 	this.dual.xscale = d3.scale.linear()
 		.domain([1, -1])
@@ -98,7 +99,7 @@ AboutDemo.prototype.findSlice = function findSlice()
 	this.field.clearSlices();
 	function inside(point) { return !point.outside; }
 	try {
-		var line = DualityAlgorithm(
+		var line = this.algorithm(
 			this.field.points[1].filter(inside),
 			this.field.points[2].filter(inside));
 	} catch (e) {}

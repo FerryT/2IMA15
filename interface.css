@@ -140,6 +140,23 @@ svg.icon {
 	margin: .5em;
 	width: 5em;
 }
+.star-effect {
+	position: absolute;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: .75;
+}
+.star-effect.gold {
+	background: url('images/goldstar.svg') no-repeat center;
+	background-size: 1%;
+}
+.star-effect.silver {
+	background: url('images/silverstar.svg') no-repeat center;
+	background-size: 1%;
+}
 
 #orient-guard {
 	z-index: 200;

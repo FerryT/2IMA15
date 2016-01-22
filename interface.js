@@ -101,6 +101,16 @@ $('#btn-win-menu').click(function()
 	$('#btn-menu').click();
 });
 
+function stareffect(type)
+{
+	d3.select('body').append('div')
+		.attr('class', 'star-effect ' + type)
+		.transition().duration(1500)
+		.style({ 'background-size': '100%', opacity: 0 })
+		.each('end', function () { d3.select(this).remove(); })
+	;
+}
+
 $('#win-screen').on('score', function()
 {
 	d3.select('#win-score').transition()
@@ -108,8 +118,18 @@ $('#win-screen').on('score', function()
 		.ease(d3.ease('exp-in-out'))
 		.tween("text", function()
 		{
-			var score = d3.interpolateRound(0, game.level.score());
-			return function(t) { this.textContent = score(t); };
+			var score = d3.interpolateRound(0, game.level.score()),
+				effect = { gold: game.level.gold, silver: game.level.silver };
+			return function(t)
+			{
+				var value = score(t);
+				this.textContent = value;
+				for (var type in effect) if (value >= effect[type])
+				{
+					delete effect[type];
+					stareffect(type);
+				}
+			};
 		})
 	;
 });

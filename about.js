@@ -32,7 +32,7 @@ $('#about-algorithms')
 			of the median line of a group, if of that group there are as many lines above as below it. In the figure below, for the set of red lines, \
 			the median line is accentuated by pink, and for the blue line by dark blue. One can see that there is always exactly one line above and below the median line \
 			for the given group.')		
-		.append('<br><img src="MedianLine.gif" alt="Shows the median lines of in the dual representation." height="480" width="480" style="margin:0px auto;display:block"><br>')
+		.append('<br><img src="about/MedianLine.gif" class="figure" alt="Shows the median lines of in the dual representation."><br>')
 		.append('After determining the median line, the intersections of the two median lines are determined (the green and brown circles in the figure). The point of intersection between the \
 			two median lines represents the cut-line in the original representation. This is the case, because when the median lines intersect, that \
 			means there are as many lines on both sides of that intersection (which correspond to points in the original representation).<br> \
@@ -117,8 +117,8 @@ $('#about-info')
 				 Below, you can see two figures with two point sets, divided by lines. The line in the left image is not a hamsandwich-cut, because \
 				 the set of red points is not split in half by the cut (there are two below the line, and none above). The right image does have a \
 				 hamsandwich-cut, because for both the red and blue points, there are as many above as below the line.')
-		.append('<br><img src="SliceFail.gif" alt="A bad cut" height="480" width="480" style="float:left">')
-		.append('<img src="SliceGood.gif" alt="A correct cut" height="480" width="480" style="float:right"><br>')
+		.append('<br><img src="about/SliceFail.gif" class="floater" alt="A bad cut">')
+		.append('<img src="about/SliceGood.gif" class="floater" alt="A correct cut"><br>')
 		.append(' In this game, every level has two groups of points, represented by colored space ships. \
 				 The goal is to move or add points so that the groups are exactly divided by the goal line.')
 	)
@@ -141,7 +141,7 @@ $('#about-instructions')
 			the medics and armed forces into two groups of equal size. For this task, you will be using a console, of which the \
 			user interface is shown in the following figure.<br>')
 		// TODO (?) Put this image in index.html and scale the content based on size of the context.
-		.append('<img src="game.gif" alt="An overview of UI elements." height="470" width="900" style="margin:0px auto;display:block"><br>')
+		.append('<img src="about/game.gif" alt="An overview of UI elements."><br>')
 		.append('There will be a small briefing at the top of the screen (1). \
 			The green band indicates where the rift is going to develop (2). \
 			You have to make sure both sides of the rift \

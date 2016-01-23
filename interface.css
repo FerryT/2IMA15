@@ -157,6 +157,10 @@ svg.icon {
 	background: url('images/silverstar.svg') no-repeat center;
 	background-size: 1%;
 }
+.star-effect.bronze {
+	background: url('images/bronzestar.svg') no-repeat center;
+	background-size: 1%;
+}
 
 #orient-guard {
 	z-index: 200;
@@ -239,6 +243,12 @@ svg.icon {
 }
 #levels a.silver {
 	background: Peru url('images/silverstar.svg');
+	background-size: contain;
+	color: Slategray;
+	font-weight: bold;
+}
+#levels a.bronze {
+	background: Peru url('images/bronzestar.svg');
 	background-size: contain;
 	color: Slategray;
 	font-weight: bold;

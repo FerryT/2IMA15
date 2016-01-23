@@ -122,7 +122,7 @@ $('#win-screen').on('score', function()
 		.tween("text", function()
 		{
 			var score = d3.interpolateRound(0, game.level.score()),
-				effect = { gold: game.level.gold, silver: game.level.silver };
+				effect = { gold: game.level.gold, silver: game.level.silver, bronze: game.level.bronze };
 			return function(t)
 			{
 				var value = score(t);
@@ -209,6 +209,7 @@ $(function()
 				.toggleClass('locked', game.data.unlocked[id] !== true)
 				.toggleClass('gold', game.data.star[id] === 1)
 				.toggleClass('silver', game.data.star[id] === 2)
+				.toggleClass('bronze', game.data.star[id] === 3)
 				.toggleClass('paused', game.level.id == id)
 			;
 		}

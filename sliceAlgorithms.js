@@ -29,12 +29,19 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
 
     // Find the left-most intersection for both groups, and determine the median line
     // just to the left of that intersection.
-    x1s = [].concat(...intersectionGroupOne).map(function(obj){return obj[0].x;});
-    x2s = [].concat(...intersectionGroupTwo).map(function(obj){return obj[0].x;});
-    xCross = [].concat(...crossGroupIntersections).map(function(obj){return obj[0].x;});
-    smallestX1 = Math.min(...x1s);
-    smallestX2 = Math.min(...x2s);
-    smallestCrossX = Math.min(...xCross);
+    intersectionGroupOne.reduceRight(function(a,b){return a.concat(b);}, [])
+    x1s = intersectionGroupOne
+            .reduceRight(function(a,b){return a.concat(b);}, [])
+            .map(function(obj){return obj[0].x;});
+    x2s = intersectionGroupTwo
+            .reduceRight(function(a,b){return a.concat(b);}, [])
+            .map(function(obj){return obj[0].x;});
+    xCross = crossGroupIntersections
+                .reduceRight(function(a,b){return a.concat(b);}, [])
+                .map(function(obj){return obj[0].x;});
+    smallestX1 = x1s.reduceRight(function(a, b) { return Math.min(a,b);} , Infinity);
+    smallestX2 = x2s.reduceRight(function(a, b) { return Math.min(a,b);} , Infinity);
+    smallestCrossX = xCross.reduceRight(function(a, b) { return Math.min(a,b);} , Infinity);
 
     indexOfMedianY1 = Math.floor(dualGroupOne.length/2); // floor, because of 0-indexing
     indexOfMedianY2 = Math.floor(dualGroupTwo.length/2);

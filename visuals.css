@@ -35,27 +35,68 @@
 
 .points .group0.cls-Dfrigate {
 	fill: url(#frigate-blue) SkyBlue;
-	stroke: none;
+	stroke-opacity: .33;
+	stroke: SkyBlue;
+}
+.points .group0.cls-Dfrigate.thrust {
+	fill: url(#frigate-blue-thrust) SkyBlue;
+	stroke-opacity: .33;
+	stroke: SkyBlue;
 }
 .points .group1.cls-Dfrigate {
 	fill: url(#frigate-red) Tomato;
-	stroke: none;
+	stroke-opacity: .33;
+	stroke: Tomato;
+}
+.points .group1.cls-Dfrigate.thrust {
+	fill: url(#frigate-red-thrust) Tomato;
+	stroke-opacity: .33;
+	stroke: Tomato;
 }
 .points .group0.cls-Dcruiser {
 	fill: url(#cruiser-blue) SkyBlue;
-	stroke: none;
+	stroke-opacity: .33;
+	stroke: SkyBlue;
+}
+.points .group0.cls-Dcruiser.thrust {
+	fill: url(#cruiser-blue-thrust) SkyBlue;
+	stroke-opacity: .33;
+	stroke: SkyBlue;
 }
 .points .group1.cls-Dcruiser {
 	fill: url(#cruiser-red) Tomato;
-	stroke: none;
+	stroke-opacity: .33;
+	stroke: Tomato;
+}
+.points .group1.cls-Dcruiser.thrust {
+	fill: url(#cruiser-red-thrust) Tomato;
+	stroke-opacity: .33;
+	stroke: Tomato;
 }
 .points .group0.cls-Dfighter {
 	fill: url(#fighter-blue) SkyBlue;
-	stroke: none;
+	stroke-opacity: .33;
+	stroke: SkyBlue;
+}
+.points .group0.cls-Dfighter.thrust {
+	fill: url(#fighter-blue-thrust) SkyBlue;
+	stroke-opacity: .33;
+	stroke: SkyBlue;
 }
 .points .group1.cls-Dfighter {
 	fill: url(#fighter-red) Tomato;
-	stroke: none;
+	stroke-opacity: .33;
+	stroke: Tomato;
+}
+.points .group1.cls-Dfighter.thrust {
+	fill: url(#fighter-red-thrust) Tomato;
+	stroke-opacity: .33;
+	stroke: Tomato;
 }
 
-
+.points .group0.shield {
+	stroke-opacity: 1;
+}
+.points .group1.shield {
+	stroke-opacity: 1;
+}

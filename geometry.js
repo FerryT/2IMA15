@@ -19,6 +19,9 @@ function Point(x, y)
 Point.prototype.clone = function clone()
 	{ return new Point(this.x, this.y); }
 
+Point.prototype.is = function is(point)
+	{ return this.x == point.x && this.y == point.y; }
+
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 Point.prototype.clamp = function clamp(rect)

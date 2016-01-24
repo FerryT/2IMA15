@@ -123,6 +123,10 @@ Field.prototype.updatePoints = function()
 		.attr('cx', function (d) { return d.point.x; })
 		.attr('cy', function (d) { return d.point.y; })
 		.attr('r', function (d) { return d.size; })
+		.attr('transform', function (d)
+			{ return 'rotate('+d.rotation+' '+d.point.x+' '+d.point.y+')'; })
+		.classed('thrust', function (d) { return d.thrust; })
+		.classed('shield', function (d) { return d.colliding; })
 	;
 
 	points.exit()
@@ -187,7 +191,7 @@ Field.behave = function (game) { return function behave(selection, update)
 		.on('click', function (d)
 		{
 			if (d3.event.defaultPrevented) return;
-			var mouse = d3.mouse(this);
+			var mouse = d3.mouse(this.parentNode);
 			if (!game.paused
 			&& d.behavior.click.call(d, mouse[0], mouse[1]))
 				update(this);
@@ -212,6 +216,10 @@ Field.updatePoint = function update(point)
 		.attr('cx', function (d) { return d.point.x; })
 		.attr('cy', function (d) { return d.point.y; })
 		.attr('r', function (d) { return d.size; })
+		.attr('transform', function (d)
+			{ return 'rotate('+d.rotation+' '+d.point.x+' '+d.point.y+')'; })
+		.classed('thrust', function (d) { return d.thrust; })
+		.classed('shield', function (d) { return d.colliding; })
 	;
 }
 

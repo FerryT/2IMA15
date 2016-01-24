@@ -77,8 +77,8 @@ function Winimation(end)
 
 function LiuetenantsTraining()
 {
-	var draggable = new Behavior().Class('Dfrigate', 20).Draggable().Clamped(game.rect),
-		behavior = new Behavior().Class('Dcruiser'),
+	var draggable = new Behavior().Ship('Dfrigate', 20).Draggable().Clamped(game.rect),
+		behavior = new Behavior().Ship('Dcruiser'),
 		level = new Level('Liuetenant\'s training', 'Some cadets are so stubborn, you have to drag them yourself.')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20 /* time limit */, 2000 /* max score */))
 			.star(1900 /* gold */, 1800 /* silver */)
@@ -95,8 +95,8 @@ function LiuetenantsTraining()
 
 function WhoHiredTheseMen()
 {
-	var draggable = new Behavior().Class('Dfrigate', 20).Draggable().Colliding(game).Clamped(game.rect),
-		behavior = new Behavior().Class('Dcruiser'),
+	var draggable = new Behavior().Ship('Dfrigate', 20).Draggable().Colliding(game).Clamped(game.rect),
+		behavior = new Behavior().Ship('Dcruiser'),
 		level = new Level('Who hired these men?', 'And why am I the one who has to drag them around?')
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -112,7 +112,7 @@ function WhoHiredTheseMen()
 
 function StrategicalPlacement()
 {	
-	var behavior = new Behavior().Class('Dcruiser').Clamped(game.rect),
+	var behavior = new Behavior().Ship('Dcruiser').Clamped(game.rect),
 		behaviorL = new Behavior().Editable(behavior),
 		level = new Level('Strategical placement', 'Sometimes you\'re allowed to determine placement yourself.', behaviorL)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
@@ -132,7 +132,7 @@ function StrategicalPlacement()
 
 function GiveUsCompany()
 {	
-	var behavior = new Behavior().Class('Dcruiser').Clamped(game.rect),
+	var behavior = new Behavior().Ship('Dcruiser').Clamped(game.rect),
 		behaviorL = new Behavior().Editable(behavior),
 		level = new Level('Give us company', 'Our crew called in for reinforcements on the other side of the warphole.', behaviorL)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
@@ -149,8 +149,8 @@ function GiveUsCompany()
 
 function Cowards()
 {	
-	var behavior1 = new Behavior().Class('Dcruiser').Coward(150, 100, false, true).Clamped(game.rect),
-		behavior2 = new Behavior().Class('Dcruiser').Coward(150, 100, false, true).Clamped(game.rect),
+	var behavior1 = new Behavior().Ship('Dfighter').Coward(150, 100, false, true).Clamped(game.rect),
+		behavior2 = new Behavior().Ship('Dfighter').Coward(150, 100, false, true).Clamped(game.rect),
 		level = new Level('Cowards', 'Some men are motivated by fear.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -170,8 +170,8 @@ function Cowards()
 
 function IronSpaceships()
 {	
-	var behavior1 = new Behavior().Class('Dcruiser').Coward(100, 100, true).Colliding(game).Clamped(game.rect),
-		behavior2 = new Behavior().Class('Dcruiser').Coward(100, 100, true).Colliding(game).Clamped(game.rect),
+	var behavior1 = new Behavior().Ship('Dfighter').Coward(100, 100, true).Colliding(game).Clamped(game.rect),
+		behavior2 = new Behavior().Ship('Dfighter').Coward(100, 100, true).Colliding(game).Clamped(game.rect),
 		level = new Level('Iron spaceships', 'Great against bullets, bad against magnets.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -191,8 +191,8 @@ function IronSpaceships()
 
 function ClickMe()
 {	
-	var behavior1 = new Behavior().Class('Dcruiser').Coward(500, 100).Clamped(game.rect),
-		behavior2 = new Behavior().Class('Dcruiser').Coward(500, 100).Clamped(game.rect),
+	var behavior1 = new Behavior().Ship('Dfighter').Coward(500, 100).Clamped(game.rect),
+		behavior2 = new Behavior().Ship('Dfighter').Coward(500, 100).Clamped(game.rect),
 		level = new Level('Click on the space ships', 'We have the warphole to worry about. We\'ll repair the fourth wall later.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -212,9 +212,9 @@ function ClickMe()
 
 function StopRightThere()
 {	
-	var bounce = new Behavior().Class('Dcruiser').Bounce(20,40).Clamped(game.rect),
-		bounceDrag = new Behavior().Class('Dfrigate', 20).Bounce(20,40).Draggable().Clamped(game.rect),
-		stay = new Behavior().Class('Dcruiser'),
+	var bounce = new Behavior().Ship('Dcruiser').Bounce(20,40).Clamped(game.rect),
+		bounceDrag = new Behavior().Ship('Dfrigate', 20).Bounce(20,40).Draggable().Clamped(game.rect),
+		stay = new Behavior().Ship('Dcruiser'),
 		level = new Level('Stop right there', 'You can drag big spaceships, even when they are moving.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -237,13 +237,13 @@ function StopRightThere()
 function Special()
 {
 	// This level freezes sometimes?
-	var draggable = new Behavior().Class('Dfrigate', 20).Draggable().Colliding(game).Clamped(game.rect),
-		coward = new Behavior().Class('Dcruiser').Coward(150, 100, false, true).Clamped(game.rect),
-		push = new Behavior().Class('Dcruiser').Coward(150, 100, false, false).Clamped(game.rect),
-		pull = new Behavior().Class('Dcruiser').Coward(150, 100, true, false).Clamped(game.rect),
-		wigglypull = new Behavior().Class('Dcruiser').Coward(150, 100, true, true).Clamped(game.rect),
-		bounce = new Behavior().Class('Dcruiser').Bounce(20,40).Clamped(game.rect),
-		donothing = new Behavior().Class('Dcruiser'),
+	var draggable = new Behavior().Ship('Dfrigate', 20).Draggable().Colliding(game).Clamped(game.rect),
+		coward = new Behavior().Ship('Dfighter').Coward(150, 100, false, true).Clamped(game.rect),
+		push = new Behavior().Ship('Dfighter').Coward(150, 100, false, false).Clamped(game.rect),
+		pull = new Behavior().Ship('Dfighter').Coward(150, 100, true, false).Clamped(game.rect),
+		wigglypull = new Behavior().Ship('Dfighter').Coward(150, 100, true, true).Clamped(game.rect),
+		bounce = new Behavior().Ship('Dcruiser').Bounce(20,40).Clamped(game.rect),
+		donothing = new Behavior().Ship('Dcruiser'),
 		level = new Level('Everyone is unique!', 'They were arguing over who has the best ship. Just put them in line.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -267,9 +267,9 @@ function Special()
 
 function TwoGroups()
 {
-	var draggable = new Behavior().Class('Dfrigate', 20).Draggable().Colliding(game).Clamped(game.rect),
-		coward = new Behavior().Class('Dcruiser').Coward(150, 100, false, true).Clamped(game.rect),
-		donothing = new Behavior().Class('Dcruiser'),
+	var draggable = new Behavior().Ship('Dfrigate', 20).Draggable().Colliding(game).Clamped(game.rect),
+		coward = new Behavior().Ship('Dfighter').Coward(150, 100, false, true).Clamped(game.rect),
+		donothing = new Behavior().Ship('Dcruiser'),
 		level = new Level('Break is over', 'Scare them back to work.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -293,8 +293,8 @@ function TwoGroups()
 
 function SoManyCowards()
 {	
-	var behavior1 = new Behavior().Class('Dcruiser').Coward(130, 120, false, true).Clamped(game.rect),
-		behavior2 = new Behavior().Class('Dcruiser').Coward(130, 120, false, true).Clamped(game.rect),
+	var behavior1 = new Behavior().Ship('Dfighter').Coward(130, 120, false, true).Clamped(game.rect),
+		behavior2 = new Behavior().Ship('Dfighter').Coward(130, 120, false, true).Clamped(game.rect),
 		level = new Level('So many cowards', 'No, seriously, who hired these men?', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -330,8 +330,8 @@ function SoManyCowards()
 
 function Cowards()
 {	
-	var behavior1 = new Behavior().Class('Dcruiser').Coward(150, 100, false, true).Clamped(game.rect),
-		behavior2 = new Behavior().Class('Dcruiser').Coward(150, 100, false, true).Clamped(game.rect),
+	var behavior1 = new Behavior().Ship('Dfighter').Coward(150, 100, false, true).Clamped(game.rect),
+		behavior2 = new Behavior().Ship('Dfighter').Coward(150, 100, false, true).Clamped(game.rect),
 		level = new Level('Cowards', 'Some cadets are afraid of you. Use it to get them to the right location.', new Behavior().Clickable())
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
 			.call(Walls)
@@ -351,7 +351,7 @@ function Cowards()
 
 function GainingStrength()
 {	
-	var behavior = new Behavior().Class('Dcruiser').Clamped(game.rect),
+	var behavior = new Behavior().Ship('Dcruiser').Clamped(game.rect),
 		behaviorL = new Behavior().Editable(behavior),
 		level = new Level('Gaining strength', 'We need at least double the forces to guarantee a stable area.', behaviorL)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 20, 2000))
@@ -376,9 +376,9 @@ function GainingStrength()
 
 function Irrational()
 {	
-	var standStill = new Behavior().Class('Dcruiser').Clamped(game.rect),
+	var standStill = new Behavior().Ship('Dcruiser').Clamped(game.rect),
 		clickAndAdd = new Behavior().Clickable().Editable(standStill),
-		coward = new Behavior().Class('Dcruiser').Coward(150, 100, false, true).Clamped(game.rect),
+		coward = new Behavior().Ship('Dfighter').Coward(150, 100, false, true).Clamped(game.rect),
 		level = new Level('Irrational', 'The veterans are scared of the young ones', clickAndAdd)
 			.add(new Goal(new Line(0, .5, 1, .5).multiply(game.rect), 40, 40, 2000))
 			.call(Walls)

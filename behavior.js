@@ -36,13 +36,61 @@ Behavior.None = Object.freeze(new Behavior); // No behavior, booooooring!
 
 //------------------------------------------------------------------------------
 
-Behavior.Habit('Class', function (cls, size)
+Behavior.Habit('Ship', function (cls, size)
 {
+	function SMM(length, point)
+	{
+		this.length = length;
+		this.sx = point.x * length;
+		this.sy = point.y * length;
+		this.add = function(point)
+		{
+			this.sx += point.x - this.sx / this.length;
+			this.sy += point.y - this.sy / this.length;
+		}
+		this.mean = function()
+			{ return new Point(this.sx / this.length, this.sy / this.length) }
+	}
+
+	function threshold(p1, p2, threshold)
+	{
+		var vx = p1.x - p2.x,
+			vy = p1.y - p2.y,
+			n = (vx * vx + vy * vy);
+		return n > (threshold * threshold);
+	}
+
 	this.create = function create()
 	{
 		this.cls = cls;
 		if (size) this.size = size;
+		this.pointsMean = new SMM(10, this.point);
+		this.lastPoint = this.point.clone();
+		this.thrust = false;
+		this.rotation = this.point.y > game.rect.h / 2 ? 0 : 180; // XXX: hardcoded
 		return create.next.call(this) || true;
+	}
+
+	this.update = function update(dt)
+	{
+		var mean = this.pointsMean.mean();
+		this.pointsMean.add(this.point);
+
+		if (this.point.is(mean) && !this.thrust)
+			return update.next.call(this, dt);
+
+		var t = dt * .01;
+		this.thrust = threshold(this.point, this.lastPoint, t);
+		this.lastPoint = this.point.clone();
+
+		if (threshold(this.point, mean, t))
+		{
+			var vx = this.point.x - mean.x,
+				vy = this.point.y - mean.y;
+			this.rotation = Math.atan2(vy, vx) * 180 / Math.PI + 90;
+		}
+
+		return update.next.call(this, dt) || true;
 	}
 })
 
@@ -145,16 +193,19 @@ Behavior.Habit('Colliding', function (game)
 
 	function collide(ent1)
 	{
+		ent1.colliding = false;
 		for (var i = 0, l = game.level.entities.length, ent2; i < l; ++i)
 		{
 			ent2 = game.level.entities[i];
 			if (ent1 != ent2)
-				ent1.point.collidePoint(ent2.point, ent1.size + ent2.size);
+				if (ent1.point.collidePoint(ent2.point, ent1.size + ent2.size))
+					ent1.colliding = true;
 		}
 		for (var i = 0, l = game.level.structs.length, struct; i < l; ++i)
 		{
 			struct = game.level.structs[i];
-			ent1.point.collideRectangle(struct.rect, ent1.size);
+			if (ent1.point.collideRectangle(struct.rect, ent1.size))
+				ent1.colliding = true;
 		}
 	}
 

@@ -131,6 +131,10 @@ Game.prototype.win = function win()
 	else if (this.level.silver && score >= this.level.silver
 	&& this.data.star[this.level.id] !== 1)
 		this.data.star[this.level.id] = 2;
+	else if (this.level.bronze && score >= this.level.bronze
+	&& this.data.star[this.level.id] !== 1 && this.data.star[this.level.id] !== 2)
+		this.data.star[this.level.id] = 3;
+	
 	this.on.dispatch.win();
 	return this;
 }
@@ -187,10 +191,11 @@ Level.prototype.add = function(ent)
 	return this;
 }
 
-Level.prototype.star = function(gold, silver)
+Level.prototype.star = function(gold, silver, bronze)
 {
 	this.gold = gold;
 	this.silver = silver;
+	this.bronze = bronze;
 	return this;
 }
 
@@ -216,7 +221,7 @@ Level.prototype.clone = function clone()
 		level.add(this.structs[i].clone());
 	for (var i = 0, l = this.entities.length; i < l; ++i)
 		level.add(this.entities[i].clone());
-	return level.star(this.gold, this.silver);
+	return level.star(this.gold, this.silver, this.bronze);
 }
 
 //------------------------------------------------------------------------------

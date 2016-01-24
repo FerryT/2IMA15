@@ -157,6 +157,10 @@ svg.icon {
 	background: url('images/silverstar.svg') no-repeat center;
 	background-size: 1%;
 }
+.star-effect.bronze {
+	background: url('images/bronzestar.svg') no-repeat center;
+	background-size: 1%;
+}
 
 #orient-guard {
 	z-index: 200;
@@ -243,6 +247,12 @@ svg.icon {
 	color: Slategray;
 	font-weight: bold;
 }
+#levels a.bronze {
+	background: Peru url('images/bronzestar.svg');
+	background-size: contain;
+	color: Slategray;
+	font-weight: bold;
+}
 #levels a.locked {
 	background: Sienna url('images/padlock.svg');
 	background-size: contain;
@@ -311,4 +321,19 @@ svg.icon {
 	padding: .1em .5em;
 	margin: 0 .5em;
 	width: 7em;
+}
+#about img {
+	width: 100%;
+	margin: 2em auto;
+	display: block;
+}
+#about img.figure {
+	width: 50%;
+}
+#about img.floater {
+	width: 45%;
+	padding: 0;
+	margin: 2em 2%;
+	display: inline-block;
+	border: 2px solid Sienna;
 }

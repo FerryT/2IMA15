@@ -16,12 +16,17 @@
 	stroke-width: 0;
 	cursor: default;
 }
+#backdrop circle {
+	fill: BurlyWood;
+	stroke: none;
+}
 
 .goals {
 	stroke: url(#hazardlines) DarkKhaki;
 }
 .rects rect {
 	fill: SpringGreen;
+	stroke: none;
 }
 .points .group0 {
 	fill: SkyBlue;

@@ -100,6 +100,7 @@
 					<image xlink:href="images/hazardlines.svg" width="40" height="40"></image>
 				</pattern>
 			</defs>
+			<g id="backdrop"></g>
 		</svg>
 	</div>
 	<nav id="menu" class="page">
@@ -186,6 +187,16 @@
 
 			if (localStorage.game)
 				$.extend(true, game.data, JSON.parse(localStorage.game));
+
+			var stars = Array.apply(null, Array(200))
+				.map(function() { return game.rect.randomPoint(); })
+			;
+			d3.select('#backdrop').selectAll('circle').data(stars).enter()
+				.append('circle')
+				.attr('cx', function (d) { return d.x; })
+				.attr('cy', function (d) { return d.y; })
+				.attr('r', function (d) { return Math.random() * 2; })
+			;
 
 			/** /
 			$(function(){$(function()

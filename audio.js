@@ -36,6 +36,11 @@ MusicPlayer.prototype.loop = function loop(start, end)
 	}
 	setTimeout(function()
 	{
+		if (!self.audio.currentTime)
+		{
+			self.playing = false;
+			return;
+		}
 		self.audio.currentTime = 0;
 		self.timer = setTimeout(repeat, end * 1000 - 25);
 	}, 1000);

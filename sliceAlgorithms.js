@@ -1,4 +1,4 @@
-function DualityAlgorithm(pointGroupOne, pointGroupTwo)
+function DualityAlgorithm(pointGroupOne, pointGroupTwo, goalPoint)
 {
     // Convert to dual represenation
     dualGroupOne = pointGroupOne.map(function(obj){return obj.dual();});
@@ -37,9 +37,13 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
     // Find the intersection of the two median lines
     intersections = FindMedianIntersections(dualGroupOne, dualGroupTwo, medianIndexG1, medianIndexG2, intersectionGroupOne, intersectionGroupTwo, xBeforeAnyIntersection);
     
-    if(intersections.length>0)
+    if(intersections.length>0 && goalPoint == undefined)
     {
         return intersections.sort(function(a,b){ return Math.abs(a.x) - Math.abs(b.x); })[0].dual();
+    }
+    else if(intersections.length>0 && goalPoint != undefined)
+    {
+        return intersections.sort(function(a,b){ return goalPoint.EuclideanDistance(a) - goalPoint.EuclideanDistance(b); })[0].dual();
     }
     else
     {

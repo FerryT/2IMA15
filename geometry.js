@@ -34,6 +34,15 @@ Point.prototype.clamp = function clamp(rect)
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+Point.prototype.EuclideanDistance = function EuclideanDistance(point)
+{
+	if (point.constructor != Point)
+		throw new TypeError('first argument must be a Point.');
+	return Math.sqrt( Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y, 2));
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 Point.prototype.dual = function dual() // *IMPORTANT* do not use in algorithms!
 {
 	//return new Line(0, -this.y, this.y / this.x, 0);

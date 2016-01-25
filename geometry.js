@@ -24,6 +24,18 @@ Point.prototype.is = function is(point)
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+Point.prototype.distance = function distance(point)
+{
+	if (point.constructor != Point)
+		throw new TypeError('first argument must be a point.');
+
+	var vx = this.x - point.x,
+		vy = this.y - point.y;
+	return Math.sqrt(vx * vx + vy * vy);
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 Point.prototype.clamp = function clamp(rect)
 {
 	if (rect.constructor != Rectangle)

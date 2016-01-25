@@ -67,6 +67,7 @@ $('#about-duality')
 			.attr('id', 'about-alg')
 			.append($('<option>').text('None').val('none'))
 			.append($('<option>').text('Naive').val('naive'))
+			.append($('<option>').text('Alternative').val('alt'))
 			.append($('<option>').text('Duality').val('dual'))))
 	.append($('<p>')
 		.append('Duality is a different way to interpret geometric problems with points and lines. \
@@ -98,6 +99,9 @@ $(function()
 		{
 			demo.algorithm = ({
 				naive: NaiveAlgorithm,
+				alt: function alt(P1, P2)
+				{ return AlternativeAlgorithm(P1, P2,
+					new Line(-100, 0, 100, 0)); },
 				dual: DualityAlgorithm,
 			})[$(this).val()];
 			demo.findSlice().dualify().update();

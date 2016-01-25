@@ -111,7 +111,7 @@ Game.prototype.frame = function frame()
 Game.prototype.update = function update()
 {
 	try {
-		var line = DualityAlgorithm(this.level.points(0), this.level.points(1));
+		var line = AlternativeAlgorithm(this.level.points(0), this.level.points(1), this.level.goals[0].line);
 		this.slice(line);
 	} catch (e)
 	{

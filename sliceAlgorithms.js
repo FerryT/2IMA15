@@ -113,6 +113,8 @@ function FindMedianIntersections(dualGroupOne, dualGroupTwo, indexOfMedianLine1,
     return intersections;
 }
 
+//------------------------------------------------------------------------------
+
 // A cubic time algorithm which simply tries all possible lines,
 // and checks whether or not it is a good one.
 function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
@@ -273,3 +275,80 @@ function NaiveCheckIfLineIsProperCut(line, pointGroupOne, pointGroupTwo, allowOn
 	// If for both group 1 and group 2, there are as many points left as right of the line, it is a proper cut
 	return groupOneWellSplit && groupTwoWellSplit;
 }
+
+//------------------------------------------------------------------------------
+
+// A very inefficient algorithm but calculates a slice close to a specified
+// goal line. Uses a dual representation and calculates a y-solution for each x coordinate.
+// In then selects the closest using euclidian distance.
+function AlternativeAlgorithm(P1, P2, goal)
+{
+	var goal = goal.dual(),
+		solution = FindSolutionY(P1, P2, goal.x);
+	if (solution)
+	{
+		goal.y = Math.max(Math.min(goal.y, solution[1]), solution[0]);
+		return goal.dual();
+	}
+
+	var X = FindAllXIntersections(P1, P2),
+		point = undefined,
+		dist = Infinity;
+	for (var i = 0, l = X.length, p, d; i < l; ++i)
+	{
+		solution = FindSolutionY(P1, P2, X[i]);
+		if (!solution) continue;
+		p = new Point(
+				X[i],
+				Math.max(Math.min(goal.y, solution[1]), solution[0])
+			);
+		d = Math.abs(p.x - goal.x) + Math.abs(p.y - goal.y);
+		if (d < dist)
+		{
+			point = p;
+			dist = d;
+		}
+	}
+	if (point)
+		return point.dual();
+}
+
+function FindAllXIntersections(P1, P2)
+{
+	var P = [].concat(P1).concat(P2),
+		X = [];
+	while (P.length)
+	{
+		var p = P.pop();
+		for (var i = P.length - 1, q; i >= 0; --i)
+		{
+			q = P[i];
+			if (p.x != q.x)
+				X.push((p.y-q.y) / (p.x-q.x));
+		}
+	}
+	return X;
+}
+
+function FindSolutionY(P1, P2, x)
+{
+	var Y1 = FindMedianY(P1, x),
+		Y2 = FindMedianY(P2, x),
+		Ymin = Math.max(Y1[0],Y2[0]),
+		Ymax = Math.min(Y1[1],Y2[1]);
+	if (Ymin > Ymax)
+		return undefined;
+	return [Ymin, Ymax];
+}
+
+function FindMedianY(P, x)
+{
+	var Y = [];
+	for (var i = P.length - 1, p; i >= 0; --i)
+		Y.push((P[i].x * x - P[i].y) << 0); // Prevent rounding errors
+	Y.sort(function(a, b) { return a - b; });
+	var pivot = (Y.length - 1) / 2;
+	return [Y[Math.floor(pivot)], Y[Math.ceil(pivot)]];
+}
+
+//------------------------------------------------------------------------------

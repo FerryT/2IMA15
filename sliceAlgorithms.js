@@ -31,21 +31,37 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
                             .reduceRight(function(a, b) { return Math.min(a,b);} , Infinity); // Find minimal x-value
 
     xBeforeAnyIntersection = leftMostIntersection - 1;
-    medianIndexG1 = FindIndexOfNthHighestLineAtX(dualGroupOne, Math.floor(dualGroupOne.length/2), xBeforeAnyIntersection);
-    medianIndexG2 = FindIndexOfNthHighestLineAtX(dualGroupTwo, Math.floor(dualGroupTwo.length/2), xBeforeAnyIntersection);
-    
-    // Find the intersection of the two median lines
-    intersections = FindMedianIntersections(dualGroupOne, dualGroupTwo, medianIndexG1, medianIndexG2, intersectionGroupOne, intersectionGroupTwo, xBeforeAnyIntersection);
-    
-    if(intersections.length>0)
+
+    // At this point, we need to check if group sizes are odd or even.
+    isOddSized = function(arr) { return arr.length % 2 == 1; }    
+    isEvenSized = function(arr) { return arr.length % 2 == 0; }
+    if(isOddSized(dualGroupOne) && isOddSized(dualGroupTwo))
     {
-        return intersections.sort(function(a,b){ return Math.abs(a.x) - Math.abs(b.x); })[0].dual();
+        // If both groups are of odd size, the slice will be defined by an intersection of medianlines
+        medianIndexG1 = FindIndexOfNthHighestLineAtX(dualGroupOne, Math.floor(dualGroupOne.length/2), xBeforeAnyIntersection);
+        medianIndexG2 = FindIndexOfNthHighestLineAtX(dualGroupTwo, Math.floor(dualGroupTwo.length/2), xBeforeAnyIntersection);
+        intersections = FindMedianIntersections(dualGroupOne, dualGroupTwo, medianIndexG1, medianIndexG2, intersectionGroupOne, intersectionGroupTwo, xBeforeAnyIntersection);
+        if(intersections.length>0)
+        {
+            return intersections.sort(function(a,b){ return Math.abs(a.x) - Math.abs(b.x); })[0].dual();
+        }
+    }
+    else if(isEvenSized(dualGroupOne)  && isEvenSized(dualGroupTwo))
+    {
+        // If both groups are of even size, the slice will be defined by an area between the two 'median lines'
+        medianIndexG1 = FindIndexOfNthHighestLineAtX(dualGroupOne, Math.floor(dualGroupOne.length/2) - 1, xBeforeAnyIntersection);
+        medianIndexG2 = FindIndexOfNthHighestLineAtX(dualGroupOne, Math.floor(dualGroupOne.length/2), xBeforeAnyIntersection);
+        intersectionsG1 = FindMedianIntersections(dualGroupOne, dualGroupOne, medianIndexG1, medianIndexG2, intersectionGroupOne, intersectionGroupOne, xBeforeAnyIntersection);
+        
+        medianIndexG1 = FindIndexOfNthHighestLineAtX(dualGroupTwo, Math.floor(dualGroupTwo.length/2) - 1, xBeforeAnyIntersection);
+        medianIndexG2 = FindIndexOfNthHighestLineAtX(dualGroupTwo, Math.floor(dualGroupTwo.length/2), xBeforeAnyIntersection);
+        intersectionsG2 = FindMedianIntersections(dualGroupTwo, dualGroupTwo, medianIndexG1, medianIndexG2, intersectionGroupTwo, intersectionGroupTwo, xBeforeAnyIntersection);
+        FindSliceEven(dualGroupOne, dualGroupTwo, intersectionGroupOne, intersectionGroupTwo, xBeforeAnyIntersection);
     }
     else
     {
-        console.log("No median line found.");
+
     }
-    // Convert intersection back to normal level
     return new Line(0,0,0,0);
 }
 
@@ -59,6 +75,129 @@ function FindIndexOfNthHighestLineAtX(lineGroup, n, x)
 
     // Then look up at which index of the unsorted array it is located
     return yValues.indexOf(mediany1);
+}
+
+function FindMedianPolygons(lines, intersections, xOfLeftIntersect)
+{
+    xOfLastIntersect = xOfLeftIntersect;
+
+     // If both groups are of even size, the slice will be defined by an area between the two 'median lines'
+    median1G1 = FindIndexOfNthHighestLineAtX(lines, Math.floor(lines.length/2) - 1, xOfLastIntersect);
+    median2G1 = FindIndexOfNthHighestLineAtX(lines, Math.floor(lines.length/2), xOfLastIntersect);
+
+    medianPolygons = [];
+    intersects = [];
+
+    while(true)
+    {
+        ni1 = intersections[median1G1]
+                        .sort(function(a,b){return a[0].x - b[0].x;})
+                        .find(function(obj){return obj[0].x > xOfLastIntersect});
+        ni2 = intersections[median2G1]
+                        .sort(function(a,b){return a[0].x - b[0].x;})
+                        .find(function(obj){return obj[0].x > xOfLastIntersect});
+        commonIntersect = false;
+
+        if(ni1 == undefined || ni2 == undefined)
+            break;
+
+        // Checking whether or not the two median lines are intersecting
+        // We do not check whether the two intersection points are exactly
+        // equal, because that gave floating point rounding errors, thus we
+        // look at which lines are intersecting.
+        if(ni1[1] == median2G1)
+        {
+            intersects.push(ni1);
+            xOfLastIntersect = ni1[0].x;
+            commonIntersect = true;
+        }
+        else if(ni1[0].x < ni2[0].x)
+        {
+            currentMedianLine1G1 = ni1[1];
+            xOfLastIntersect = ni1[0].x;
+            intersects.push(ni1);
+        }
+        else if(ni2[0].x < ni1[0].x)
+        {
+            currentMedianLine2G1 = ni2[1];
+            xOfLastIntersect = ni2[0].x;
+            intersects.push(ni2);
+        }
+
+        if(commonIntersect)
+        {
+            if(intersects.length != 4)
+            {
+                // Next to nicely enclosed polygons, median-areas to the
+                // left and right of the problem also exist. But we ignore
+                // them for now.
+                intersects = [intersects[intersects.length - 1]];
+            }
+            else
+            {                
+                // Swap the last two elements of the array to order the points
+                // to form a polygon.
+                swap = intersects[intersects.length - 1];
+                intersects[intersects.length - 1] = intersects[intersects.length - 2];
+                intersects[intersects.length - 2] = swap;
+                medianPolygons.push(intersects);
+
+                // add the last intersect also to the next polygon
+                intersects = [swap];
+            }
+        }
+    }
+    return medianPolygons; 
+}
+
+function FindSliceEven(dualGroupOne, dualGroupTwo, intersectionGroupOne, intersectionGroupTwo, xOfLastIntersect)
+{
+    g1poly = FindMedianPolygons(dualGroupOne, intersectionGroupOne, xOfLastIntersect);
+    g2poly = FindMedianPolygons(dualGroupTwo, intersectionGroupTwo, xOfLastIntersect);
+    for(var i = 0; i<g1poly.length; i++)
+    {
+        for(var j = 0; j<g2poly.length; j++)
+        {
+            if(PolygonsOverlap(g1poly[i], g2poly[j]))
+            {
+                console.log('found a poly')
+            }
+        }
+    }
+    return new Point(0,0);
+}
+
+function PolygonsOverlap(poly1, poly2)
+{
+    // based on http://stackoverflow.com/questions/753140/how-do-i-determine-if-two-convex-polygons-intersect
+    return !(PolygonOverlapCheck(poly1, poly2) && PolygonOverlapCheck(poly2, poly1));
+}
+
+function PolygonOverlapCheck(poly1, poly2)
+{
+    for(var i = 0; i < poly1.length; i++)
+    {
+        i2 = (i < poly1.length - 1) ? i + 1 : 0;
+        candidateLine = new Line(poly[i], poly[i2]);
+        isSplitLine = true;
+
+        sideOfP2 = candidateLine.orientation(poly[0]);
+
+        for(var j = 1; j < poly2.length; j++)
+        {
+            if(candidateLine.orientation(poly[j]) != sideOfP2)
+            {
+                isSplitLine = false;
+                break;
+            }
+        }
+
+        if(isSplitLine)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 function FindMedianIntersections(dualGroupOne, dualGroupTwo, indexOfMedianLine1, indexOfMedianLine2, intersectionGroupOne, intersectionGroupTwo, xOfLastIntersect)
@@ -86,7 +225,22 @@ function FindMedianIntersections(dualGroupOne, dualGroupTwo, indexOfMedianLine1,
                 && (nextIntersect2 == undefined || medianIntersect.x < nextIntersect2[0].x))
             {
                 intersections.push(medianIntersect);
-                //return medianIntersect.dual();
+            }
+
+            // In case both median lines are from the same group,
+            // whenever the median lines intersect, it coincides with their own in-group intersection
+            // If this is the case, we still have to add it to intersections and advance indices accordingly
+            if(xOfLastIntersect < medianIntersect.x
+                && nextIntersect1 != undefined
+                && nextIntersect2 != undefined
+                && nextIntersect1[0].x == nextIntersect2[0].x
+                && nextIntersect1[0].y == nextIntersect2[0].y)
+            {
+                intersections.push(medianIntersect);
+
+                xOfLastIntersect = nextIntersect1[0].x;
+                indexOfMedianLine1 = nextIntersect1[1];
+                indexOfMedianLine2 = nextIntersect2[1];
             }
         }
         if(nextIntersect1 == undefined  && nextIntersect2 == undefined)
@@ -112,6 +266,7 @@ function FindMedianIntersections(dualGroupOne, dualGroupTwo, indexOfMedianLine1,
     }
     return intersections;
 }
+
 
 // A cubic time algorithm which simply tries all possible lines,
 // and checks whether or not it is a good one.

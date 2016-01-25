@@ -13,6 +13,7 @@
 	<script src="visuals.js"></script>
 	<script src="sliceAlgorithms.js"></script>
 	<script src="leveldesign.js"></script>
+	<script src="audio.js"></script>
 	<link rel="stylesheet" type="text/css" href="interface.css">
 	<link rel="stylesheet" type="text/css" href="visuals.css">
 	<link rel="stylesheet" type="text/css" href="aboutvisuals.css">
@@ -41,6 +42,7 @@
 			</symbol>
 		</defs>
 	</svg>
+	<audio id="music" src="audio/Vibe Ace.mp3"></audio>
 
 	<header id="topbar">
 		<button class="icon" id="btn-back">chevron-left</button>
@@ -197,6 +199,12 @@
 				.attr('cy', function (d) { return d.y; })
 				.attr('r', function (d) { return Math.random() * 2; })
 			;
+
+			try {
+				var music = new MusicPlayer('music')
+					.loop(14.774, 59.097)
+				;
+			} catch (err) { console.warn('[Music] ' + err) }
 
 			/** /
 			$(function(){$(function()

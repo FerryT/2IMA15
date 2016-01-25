@@ -167,10 +167,13 @@ $('#about-instructions')
 $('#about-credits')
 	.append($('<h2>').text('Credits'))
 	.append($('<p>')
-		.append('This game was made by Ferry Timmers, Yannick van Ballegooie and Pieter Gijsbers.<br>')
-		.append('As instructor of the course, Kevin Buchin has been our support.<br>')
-		.append('The icons are from Open Iconic used under the MIT license.')
-	)
+		.append('This game was made by Ferry Timmers and Pieter Gijsbers.<br>')
+		.append('As instructor of the course, Kevin Buchin has been our support.<br>'))
+	.append($('<p>')
+		.append('The icons are from Open Iconic used under the MIT license.'))
+	.append($('<p>')
+		.append('Music: "Vibe Ace" Kevin MacLeod (incompetech.com)<br>') 
+		.append('Licensed under Creative Commons: <a href="http://creativecommons.org/licenses/by/3.0/">By Attribution 3.0</a>'))
 ;
 
 //------------------------------------------------------------------------------

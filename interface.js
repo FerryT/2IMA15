@@ -43,6 +43,7 @@ $('#btn-back').click(function()
 	$('#options').hide();
 	$('#about').hide();
 	$('#topbar').hide();
+	if (window.musicplayer) musicplayer.setModal(false);
 });
 
 // Game bar / screen
@@ -177,6 +178,7 @@ $('#btn-about').click(function()
 	$('#about').show();
 	$('#topbar').show();
 	Waypoint.refreshAll();
+	if (window.musicplayer) musicplayer.setModal(true);
 });
 $('#btn-exit').click(function()
 {

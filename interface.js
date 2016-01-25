@@ -226,6 +226,29 @@ $(function()
 	}
 });
 
+// Options
+$('#btn-reset-game').click(function()
+{
+	game.stop();
+	ResetGame();
+	$('#btn-back').click();
+});
+
+$('#btn-music-off').click(function()
+{
+	if (window.musicplayer)
+		window.musicplayer.stop();
+	localStorage.music = 'off';
+});
+
+$('#btn-music-on').click(function()
+{
+	if (window.musicplayer)
+		window.musicplayer.stop();
+	StartMusic();
+	delete localStorage.music;
+});
+
 // About
 $('#about-tabs a').click(function()
 {

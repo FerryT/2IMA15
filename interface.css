@@ -52,6 +52,13 @@ h1 {
 	margin: 1em auto;
 	text-align: center;
 }
+hr {
+	margin: 3em auto;
+	width: 20em;
+	border: solid .25em Peru;
+	border-radius: .5em;
+	box-shadow: 0 0 1em Coral;
+}
 button {
 	border: .25em solid Sienna;
 	text-shadow: 1px 1px Peru;
@@ -259,6 +266,10 @@ svg.icon {
 	box-shadow: none;
 	color: Papayawhip;
 	text-shadow: none;
+}
+
+#options p {
+	text-align: center;
 }
 
 #about {

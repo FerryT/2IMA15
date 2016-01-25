@@ -40,6 +40,15 @@
 			<symbol id="arrow-thick-right" viewBox="0 0 8 8">
 				<path d="M5 0v2h-5v2h5v2l3-3.031-3-2.969z" transform="translate(0 1)"></path>
 			</symbol>
+			<symbol id="volume-high" viewBox="0 0 8 8">
+				<path d="M3.344 0l-1.344 2h-2v4h2l1.344 2h.656v-8h-.656zm1.656 1v1c.152 0 .313.026.469.063h.031c.86.215 1.5.995 1.5 1.938 0 .942-.64 1.722-1.5 1.938-.166.041-.338.063-.5.063v1c.258 0 .516-.035.75-.094 1.3-.325 2.25-1.508 2.25-2.906 0-1.398-.95-2.581-2.25-2.906-.234-.059-.492-.094-.75-.094zm0 2v2c.04 0 .134-.002.25-.031.433-.118.75-.507.75-.969 0-.446-.325-.819-.75-.938v-.031c-.005-.001-.025.002-.031 0-.043-.011-.111-.031-.219-.031z"></path>
+			</symbol>
+			<symbol id="volume-off" viewBox="0 0 8 8">
+				<path d="M3.344 0l-1.344 2h-2v4h2l1.344 2h.656v-8h-.656z" transform="translate(2)"></path>
+			</symbol>
+			<symbol id="trash" viewBox="0 0 8 8">
+				<path d="M3 0c-.55 0-1 .45-1 1h-1c-.55 0-1 .45-1 1h7c0-.55-.45-1-1-1h-1c0-.55-.45-1-1-1h-1zm-2 3v4.813c0 .11.077.188.188.188h4.625c.11 0 .188-.077.188-.188v-4.813h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1z"></path>
+			</symbol>
 		</defs>
 	</svg>
 	<audio id="music" src="audio/Vibe Ace.mp3"></audio>
@@ -118,6 +127,17 @@
 	</div>
 	<div id="options" class="page">
 		<h1>Options</h1>
+		<hr>
+		<h1>Reset game</h1>
+		<p>
+			<button id="btn-reset-game" class="icon">trash</button>
+		</p>
+		<hr>
+		<h1>Music</h1>
+		<p>
+			<button id="btn-music-off" class="icon">volume-off</button>
+			<button id="btn-music-on" class="icon">volume-high</button>
+		</p>
 	</div>
 	<div id="about" class="page">
 		<nav id="about-tabs">
@@ -188,7 +208,10 @@
 			});
 
 			if (localStorage.game)
+			{
+				game.olddata = $.extend(true, {}, game.data);
 				$.extend(true, game.data, JSON.parse(localStorage.game));
+			}
 
 			var stars = Array.apply(null, Array(200))
 				.map(function() { return game.rect.randomPoint(); })
@@ -200,11 +223,8 @@
 				.attr('r', function (d) { return Math.random() * 2; })
 			;
 
-			try {
-				var music = new MusicPlayer('music')
-					.loop(14.774, 59.097)
-				;
-			} catch (err) { console.warn('[Music] ' + err) }
+			if (localStorage.music != 'off')
+				StartMusic();
 
 			/** /
 			$(function(){$(function()
@@ -218,6 +238,16 @@
 		function ResetGame()
 		{
 			delete localStorage.game;
+			game.data = $.extend(true, {}, game.olddata);
+		}
+
+		function StartMusic()
+		{
+			try {
+				window.musicplayer = new MusicPlayer('music')
+					.loop(14.774, 59.097)
+				;
+			} catch (err) { console.warn('[Music] ' + err) }
 		}
 	</script>
 	<script src="interface.js"></script>

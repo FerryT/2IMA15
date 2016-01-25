@@ -158,9 +158,9 @@ $('#about-instructions')
 			Both the techs (red) and armed forces (blue) have the same type of ships, here are a few, but not all, ships:<br><dl>\
 			<dt>Frigate (3)</dt><dd>This is the biggest ship the army has. It has a strong hierarchy and loyal crew. \
 			You can order them directly by dragging them around on your screen.</dd>\
-			<dt>Cruiser (5)</dt><dd>These ships are part of special task forces hence can not be ordered directly. \
+			<dt>Cruiser (4)</dt><dd>These ships are part of special task forces hence can not be ordered directly. \
 			They can be summoned though which makes them appear almost instantaneously due to its powerful translocation unit.</dd> \
-			<dt>Fighter/scout (4)</dt><dd>These ships feature the most independent (and even slightly volatile) crew of the army. \
+			<dt>Fighter/scout (5)</dt><dd>These ships feature the most independent (and even slightly volatile) crew of the army. \
 			Depending on the pilot, they either tend to move towards your mouse clicks, or they will flee from it.</dd></dl>\
 			The president is a man of time. He will evaluate your performance solely based on time spent to move the ships. This evaluation \
 			can be seen in the top left corner while commanding your fleets (6). But do not worry, if you need some time, \

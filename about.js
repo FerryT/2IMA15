@@ -154,7 +154,7 @@ $('#about-instructions')
 			the techs and armed forces into two groups of equal size. For this task, you will be using a console, of which the \
 			user interface is shown in the following figure.<br>')
 		// TODO (?) Put this image in index.html and scale the content based on size of the context.
-		.append('<img src="about/game.gif" alt="An overview of UI elements."><br>')
+		.append('<img src="about/game.png" alt="An overview of UI elements."><br>')
 		.append('There will be a small briefing at the top of the screen (1). \
 			The green band indicates where the rift is going to develop (2). \
 			You have to make sure both sides of the rift \

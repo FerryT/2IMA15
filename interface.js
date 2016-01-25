@@ -162,6 +162,11 @@ var GameUpdater = {
 }
 
 // Menu
+$('#menu').one('click', function() // Android fix
+{
+	if (localStorage.music != 'off' && !musicplayer.playing)
+		StartMusic();
+})
 $('#btn-play').click(function()
 {
 	$('#level-buttons a').trigger('update');

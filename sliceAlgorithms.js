@@ -35,15 +35,20 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo, goalPoint)
     medianIndexG2 = FindIndexOfNthHighestLineAtX(dualGroupTwo, Math.floor(dualGroupTwo.length/2), xBeforeAnyIntersection);
     
     // Find the intersection of the two median lines
-    intersections = FindMedianIntersections(dualGroupOne, dualGroupTwo, medianIndexG1, medianIndexG2, intersectionGroupOne, intersectionGroupTwo, xBeforeAnyIntersection);
-    
+    intersections = FindMedianIntersections(dualGroupOne, dualGroupTwo, 
+                                            medianIndexG1, medianIndexG2, 
+                                            intersectionGroupOne, intersectionGroupTwo, 
+                                            xBeforeAnyIntersection);
+
+    // Intersections of median lines correspond to a proper pizza cut
     if(intersections.length>0 && goalPoint == undefined)
     {
         return intersections.sort(function(a,b){ return Math.abs(a.x) - Math.abs(b.x); })[0].dual();
     }
     else if(intersections.length>0 && goalPoint != undefined)
     {
-        return intersections.sort(function(a,b){ return goalPoint.EuclideanDistance(a) - goalPoint.EuclideanDistance(b); })[0].dual();
+        distanceToGoal = function(point) { return point.EuclideanDistance(goalPoint);};
+        return intersections.sort(function(a,b){ return distanceToGoal(a) - distanceToGoal(b); })[0].dual();
     }
     else
     {
@@ -136,77 +141,14 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
 			var candidateLine = new Line(p1, p2);
 
 			// We allow for a difference of one if the groups are of even size
-			// the naive algorithm could be expanded to not need this.
-			var allowOneDifference = false;
-			var isProperCut = NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne.slice(0,groupOneLength), PointGroupTwo.slice(0,groupTwoLength), allowOneDifference);
+			var allowOneDifference = true;
+			var isProperCut = NaiveCheckIfLineIsProperCut(candidateLine,
+                                                         PointGroupOne.slice(0,groupOneLength),
+                                                         PointGroupTwo.slice(0,groupTwoLength),
+                                                         allowOneDifference);
 			if(isProperCut)
 			{
-				// If for both group 1 and group 2, there are as many points left as right of the line,
-				// it is the line we're looking for - and can stop looking.
-
-                // When there is an even number of points, search the point that is closest to the candidate line (on the side of the left out point)
-                var minDistOne = 0;
-                var closestPoint = p1;
-                var p1median = p1.clone();
-                if(PointGroupOne.length%2 == 0)
-                {
-                    for(var k = 0; k < groupOneLength+1; k++)
-                    {
-                         var distanceToLine = candidateLine.distance(PointGroupOne[k])*candidateLine.orientation(PointGroupOne[k])*candidateLine.orientation(PointGroupOne[groupOneLength]);
-                         if(k != i && (distanceToLine < minDistOne || minDistOne == 0) && distanceToLine > 0) {
-                                 minDistOne = distanceToLine;
-                                 closestPoint = PointGroupOne[k];
-                         }
-                    }
-                    p1median.x = (closestPoint.x+p1.x)/2;
-                    p1median.y = (closestPoint.y+p1.y)/2;
-                }
-                
-                var minDistTwo = 0;
-                closestPoint = p2;
-                var p2median = p2.clone();
-                if(PointGroupTwo.length%2 == 0)
-                {
-                    for(var l = 0; l < groupTwoLength+1; l++)
-                    {
-                         var distanceToLine = candidateLine.distance(PointGroupTwo[l])*candidateLine.orientation(PointGroupTwo[l])*candidateLine.orientation(PointGroupTwo[groupTwoLength]);
-                         if(l != j && (distanceToLine < minDistTwo || minDistTwo == 0) && distanceToLine > 0) {
-                                 minDistTwo = distanceToLine;
-                                 var closestPoint = PointGroupTwo[l];
-                         }
-                    }
-                    p2median.x = (closestPoint.x+p2.x)/2;
-                    p2median.y = (closestPoint.y+p2.y)/2;
-                }
-
-                // First check whether a line through the medians is possible
-                candidateLine = new Line(p1median,p2median);
-                if(NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference))
-                {
-                    candidateList.push(candidateLine.clone());
-                }
-                else
-                {
-                    var minDist = Math.min(minDistOne,minDistTwo);
-                    p1median.x = p1.x+(p1median.x-p1.x)*minDist/minDistOne;
-                    p1median.y = p1.y+(p1median.y-p1.y)*minDist/minDistOne;
-                    p2median.x = p2.x+(p2median.x-p2.x)*minDist/minDistTwo;
-                    p2median.y = p2.y+(p2median.y-p2.y)*minDist/minDistTwo;
-
-                    // Otherwise check whether the line can be shifted perpendicular to the median with the smallest distance
-                    var oldLine = new Line(p1,p2);
-                    candidateLine = new Line(p1median,p2median);
-                    if(oldLine.orientation(PointGroupOne[groupOneLength]) == oldLine.orientation(PointGroupTwo[groupTwoLength])
-                        && NaiveCheckIfLineIsProperCut(candidateLine, PointGroupOne, PointGroupTwo, allowOneDifference))
-                    {
-                        candidateList.push(candidateLine.clone());
-                    }
-                    else
-                    {
-                        candidateList.push(new Line(p1,p2));
-                    }
-                }
-                candidateList.push(new Line(p1,p2));
+                candidateList.push(candidateLine.clone());               
 			}
 
             if(!returnMostHorizontal && candidateList.length > 0)

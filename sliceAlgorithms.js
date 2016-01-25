@@ -1,13 +1,8 @@
 function DualityAlgorithm(pointGroupOne, pointGroupTwo)
 {
-    // Extract one point from even-sized groups
-    // ~later
-
     // Convert to dual represenation
-    // WARNING: It says not to use dual() for the algorithm - why not?
     dualGroupOne = pointGroupOne.map(function(obj){return obj.dual();});
     dualGroupTwo = pointGroupTwo.map(function(obj){return obj.dual();});
-    //console.log(dualGroupOne[0].x1, dualGroupOne[0].y1, dualGroupOne[0].x2, dualGroupOne[0].y2)
 
     // Find intersections of n-level
     var findAllIntersections = function(obj, lines)
@@ -15,7 +10,7 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
         var intersections = [];
         for(var i = 0; i < lines.length; i++)
         {
-            // Only non-paralle 
+            // Only non-parallel lines intersect
             if(obj.slope() != lines[i].slope())
             {
                 intersections.push([obj.intersectionWith(lines[i]),i]);
@@ -27,37 +22,48 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
     intersectionGroupTwo = dualGroupTwo.map(function(obj){return findAllIntersections(obj, dualGroupTwo);});
     crossGroupIntersections = dualGroupOne.map(function(obj){return findAllIntersections(obj, dualGroupTwo);});
 
-    // Find the left-most intersection for both groups, and determine the median line
-    // just to the left of that intersection.
-    intersectionGroupOne.reduceRight(function(a,b){return a.concat(b);}, [])
-    x1s = intersectionGroupOne
-            .reduceRight(function(a,b){return a.concat(b);}, [])
-            .map(function(obj){return obj[0].x;});
-    x2s = intersectionGroupTwo
-            .reduceRight(function(a,b){return a.concat(b);}, [])
-            .map(function(obj){return obj[0].x;});
-    xCross = crossGroupIntersections
-                .reduceRight(function(a,b){return a.concat(b);}, [])
-                .map(function(obj){return obj[0].x;});
-    smallestX1 = x1s.reduceRight(function(a, b) { return Math.min(a,b);} , Infinity);
-    smallestX2 = x2s.reduceRight(function(a, b) { return Math.min(a,b);} , Infinity);
-    smallestCrossX = xCross.reduceRight(function(a, b) { return Math.min(a,b);} , Infinity);
+    // Find the left-most intersection, so we can determine the start of the median line (left of that intersection)
+    leftMostIntersection = intersectionGroupOne
+                            .concat(intersectionGroupTwo)
+                            .concat(crossGroupIntersections)
+                            .reduceRight(function(a,b){return a.concat(b);}, []) // Flatten lists
+                            .map(function(obj){return obj[0].x;})  // Only look at x-values
+                            .reduceRight(function(a, b) { return Math.min(a,b);} , Infinity); // Find minimal x-value
 
-    indexOfMedianY1 = Math.floor(dualGroupOne.length/2); // floor, because of 0-indexing
-    indexOfMedianY2 = Math.floor(dualGroupTwo.length/2);
-    y1s =  dualGroupOne.map(function(obj){return obj.atX(smallestX1 - 0.5);});
-    y2s = dualGroupTwo.map(function(obj){return obj.atX(smallestX2 - 0.5);});
+    xBeforeAnyIntersection = leftMostIntersection - 1;
+    medianIndexG1 = FindIndexOfNthHighestLineAtX(dualGroupOne, Math.floor(dualGroupOne.length/2), xBeforeAnyIntersection);
+    medianIndexG2 = FindIndexOfNthHighestLineAtX(dualGroupTwo, Math.floor(dualGroupTwo.length/2), xBeforeAnyIntersection);
+    
+    // Find the intersection of the two median lines
+    intersections = FindMedianIntersections(dualGroupOne, dualGroupTwo, medianIndexG1, medianIndexG2, intersectionGroupOne, intersectionGroupTwo, xBeforeAnyIntersection);
+    
+    if(intersections.length>0)
+    {
+        return intersections.sort(function(a,b){ return Math.abs(a.x) - Math.abs(b.x); })[0].dual();
+    }
+    else
+    {
+        console.log("No median line found.");
+    }
+    // Convert intersection back to normal level
+    return new Line(0,0,0,0);
+}
 
+function FindIndexOfNthHighestLineAtX(lineGroup, n, x)
+{
+    yValues =  lineGroup.map(function(obj){return obj.atX(x - 0.5);});
+
+    // Find the y-value of the median line by sorting the lines based on y
     compareNumbers = function(a,b){return a-b;};
-    mediany1 = y1s.slice().sort(compareNumbers)[indexOfMedianY1];
-    mediany2 = y2s.slice().sort(compareNumbers)[indexOfMedianY2];
+    mediany1 = yValues.slice().sort(compareNumbers)[n];
 
-    indexOfMedianLine1 = y1s.indexOf(mediany1);
-    indexOfMedianLine2 = y2s.indexOf(mediany2);
+    // Then look up at which index of the unsorted array it is located
+    return yValues.indexOf(mediany1);
+}
 
-    // Include cross-group intersections
-    xOfLastIntersect = Math.min(smallestX1, smallestX2, smallestCrossX) - 0.5;
-    hamsandwichpoints = [];
+function FindMedianIntersections(dualGroupOne, dualGroupTwo, indexOfMedianLine1, indexOfMedianLine2, intersectionGroupOne, intersectionGroupTwo, xOfLastIntersect)
+{
+    intersections = []
     while(true)
     {
         currentMedianLine1 = dualGroupOne[indexOfMedianLine1];
@@ -79,7 +85,7 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
                 && (nextIntersect1 == undefined || medianIntersect.x < nextIntersect1[0].x)
                 && (nextIntersect2 == undefined || medianIntersect.x < nextIntersect2[0].x))
             {
-                hamsandwichpoints.push(medianIntersect);
+                intersections.push(medianIntersect);
                 //return medianIntersect.dual();
             }
         }
@@ -104,17 +110,7 @@ function DualityAlgorithm(pointGroupOne, pointGroupTwo)
             indexOfMedianLine2 = nextIntersect2[1];
         }
     }
-
-    if(hamsandwichpoints.length>0)
-    {
-        return hamsandwichpoints.sort(function(a,b){ return Math.abs(a.x) - Math.abs(b.x); })[0].dual();
-    }
-    else
-    {
-        console.log("No median line found.");
-    }
-    // Convert intersection back to normal level
-    return new Line(0,0,0,0);
+    return intersections;
 }
 
 // A cubic time algorithm which simply tries all possible lines,

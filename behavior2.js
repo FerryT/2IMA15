@@ -33,8 +33,12 @@ Behavior.Habit('WallsColliding', function ()
 	function bump(point, rect)
 	{
 		var y = point.y, y1 = rect.y, y2 = y1 + rect.h;
-		if (y >= y1 && y <= y2)
-			point.y = (y < (y1 + y2) / 2) ? y1 - 1 : y2 + 1;
+		if (y < y1 || y > y2) return;		
+		var slice = game.slices[0];
+		if (slice)
+			point.y = slice.line.orientation(point) < 0 ? y1 - 1 : y2 + 1;
+		else
+			point.y = (y < (y1 + y2) / 2) ? y1 - 1 : y2 + 1;			
 	}
 
 	this.update = function update(dt)

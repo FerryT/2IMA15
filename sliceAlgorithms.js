@@ -127,7 +127,7 @@ function FindMedianIntersections(dualGroupOne, dualGroupTwo, indexOfMedianLine1,
 function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
 {
     returnMostHorizontal = returnMostHorizontal || false;
-	// When there is an even number of points, leave out the last point
+
     var groupOneLength = PointGroupOne.length;
 	var groupTwoLength = PointGroupTwo.length;
     var candidateList = [];
@@ -138,9 +138,15 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
 		{
 			var p1 = PointGroupOne[i].clone();
 			var p2 = PointGroupTwo[j].clone();
+
+            // We pick one point from group one, and one point from group two
+            // Then we construct the line that is defined by the two points, and
+            // check whether or not it is a hamsandwich cut.
 			var candidateLine = new Line(p1, p2);
 
 			// We allow for a difference of one if the groups are of even size
+            // This isn't quite correct, but it is the only we if the line goes
+            // through a point in the group
 			var allowOneDifference = true;
 			var isProperCut = NaiveCheckIfLineIsProperCut(candidateLine,
                                                          PointGroupOne.slice(0,groupOneLength),
@@ -151,6 +157,10 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
                 candidateList.push(candidateLine.clone());               
 			}
 
+            // If the line is a proper cut, we can simply return it
+            // alternatively, we can look at all proper cuts, and see
+            // which one is the most horizontal, and thus might look the most
+            // like the split line we want to achieve in the game.
             if(!returnMostHorizontal && candidateList.length > 0)
                 return candidateList[0];
 		}
@@ -159,6 +169,8 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
     var mostHorizontalLine = candidateList[0];
     for(var i = 1; i < candidateList.length; i++)
     {
+        // We look at the absolute value of the slopes of the line since
+        // the direction of the line does not matter
         if(Math.abs(mostHorizontalLine.slope()) > Math.abs(candidateList[i].slope))
         {
             mostHorizontalLine = candidateList[i];
@@ -187,6 +199,8 @@ function NaiveCheckIfLineIsProperCut(line, pointGroupOne, pointGroupTwo, allowOn
 	{
 		var p = pointGroupOne[k];
 		var pos = line.orientation(p);
+        // since the orientation is given in -1, 0 or 1, using
+        // [pos + 1] nicely defines the three bins.
 		groupOnePositions[pos + 1]++;
 	}
 
@@ -202,16 +216,19 @@ function NaiveCheckIfLineIsProperCut(line, pointGroupOne, pointGroupTwo, allowOn
 	var groupTwoWellSplit = (groupTwoPositions[0] == groupTwoPositions[2]);
 
 	// However, if a group is of even size, then there won't be a split with as many points
-	// to the left as to the right, so we allow for a difference of one (if we evaluate a slice through two points)
+	// to the left as to the right (since the line goes through one of the points in the group)
+    // so we allow for a difference of one (if we evaluate a slice through two points)
 	if(allowOneDifference)
 	{
 		if(groupOneLength % 2 == 0)
 		{
-			groupOneWellSplit = ((groupOnePositions[0] + 1 == groupOnePositions[2]) || (groupOnePositions[0] - 1 == groupOnePositions[2]));
+			groupOneWellSplit = ((groupOnePositions[0] + 1 == groupOnePositions[2]) 
+                                || (groupOnePositions[0] - 1 == groupOnePositions[2]));
 		}
 		if(groupTwoLength % 2 == 0)
 		{
-			groupTwoWellSplit = ((groupTwoPositions[0] + 1 == groupTwoPositions[2]) || (groupTwoPositions[0] - 1 == groupTwoPositions[2]));
+			groupTwoWellSplit = ((groupTwoPositions[0] + 1 == groupTwoPositions[2])
+                                || (groupTwoPositions[0] - 1 == groupTwoPositions[2]));
 		}
 	}
 

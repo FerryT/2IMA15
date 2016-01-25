@@ -128,8 +128,8 @@ function NaiveAlgorithm(PointGroupOne, PointGroupTwo, returnMostHorizontal)
 {
     returnMostHorizontal = returnMostHorizontal || false;
 	// When there is an even number of points, leave out the last point
-    var groupOneLength = PointGroupOne.length + (PointGroupOne.length%2 - 1);
-	var groupTwoLength = PointGroupTwo.length + (PointGroupTwo.length%2 - 1);
+    var groupOneLength = PointGroupOne.length;
+	var groupTwoLength = PointGroupTwo.length;
     var candidateList = [];
 
 	for(var i = 0; i < groupOneLength; i++)

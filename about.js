@@ -164,8 +164,8 @@ $('#about-instructions')
 			Depending on the pilot, they either tend to move towards your mouse clicks, or they will flee from it.</dd></dl>\
 			The president is a man of time. He will evaluate your performance solely based on time spent to move the ships. This evaluation \
 			can be seen in the top left corner while commanding your fleets (6). But do not worry, if you need some time, \
-			you can always take a break with the pause button in the top right corner (7). If you feel you could have done better, \
-			you\'re in luck. There is a rewind button, which will revert all actions you performed since you came to the area (8), giving you a new chance. \
+			you can always take a break with the pause button in the top right corner (8). If you feel you could have done better, \
+			you\'re in luck. There is a rewind button, which will revert all actions you performed since you came to the area (7), giving you a new chance. \
 			There will also be a line shown on the console (9). This line indicates the current division which divides both the techs \
 			and armed forces in half. Since the goal is to have both the techs and armed forces in equal representation on both sides \
 			of the rift, if this line coincides with the rift-line, you completed your mission.')

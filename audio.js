@@ -6,7 +6,7 @@ function MusicPlayer(id)
 {
 	this.audio = document.getElementById(id);
 	this.playing = false;
-	this.loop = undefined;
+	this.timer = undefined;
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -28,15 +28,15 @@ MusicPlayer.prototype.loop = function loop(start, end)
 
 	var self = this,
 		duration = (end - start) * 1000 - 25;
-	function loop()
+	function repeat()
 	{
 		self.audio.currentTime = start;
-		self.loop = setTimeout(loop, duration);
+		self.timer = setTimeout(repeat, duration);
 	}
 	setTimeout(function()
 	{
 		self.audio.currentTime = 0;
-		self.loop = setTimeout(loop, end * 1000 - 25);
+		self.timer = setTimeout(repeat, end * 1000 - 25);
 	}, 1000);
 	return this.play();
 }
@@ -46,10 +46,10 @@ MusicPlayer.prototype.loop = function loop(start, end)
 MusicPlayer.prototype.stop = function stop()
 {
 	if (!this.playing) return;
-	if (this.loop)
+	if (this.timer)
 	{
-		clearTimeout(this.loop);
-		this.loop = undefined;
+		clearTimeout(this.timer);
+		this.timer = undefined;
 	}
 	this.audio.pause();
 	this.audio.currentTime = 0;

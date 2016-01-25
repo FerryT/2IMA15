@@ -15,31 +15,35 @@ $('#about-algorithms')
 			O(n) time, but is very complex. We will discuss two algorithms we implemented ourselves, \
 			a O(n<sup>3</sup>) algorithm and a O(n<sup>2</sup>) algorithm. For the O(n) algorithm, we refer to a good \
 			explanation by Danielle MacNevin ')
-		.append('<a href=http://cgm.cs.mcgill.ca/~athens/cs507/Projects/2002/DanielleMacNevin/algorithm-pg3.html>over here</a>.<br>')
-		.append('The most simple algorithm is the O(n<sup>3</sup>) algorithm. It works on two groups of points that are both of odd size.\
+		.append('<a href=http://cgm.cs.mcgill.ca/~athens/cs507/Projects/2002/DanielleMacNevin/algorithm-pg3.html>over here</a>.<br>'))
+	.append($('<p>')
+		.append('The simplest algorithm is the O(n<sup>3</sup>) algorithm. It works on two groups of points that are both of odd size.\
 			For a group with an odd number of points to have as many on one side of a line as on the other, one point has to be \
 			on the line. This is exactly used in the algorithm. The algorithm checks for every pair of two points, where one point is \
 			chosen from each group, if the line defined by those two points is a hamsandwich cut. \
 			To determine if the line is a hamsandwich cut, given the line, for every point it is determined whether they are to the left or \
 			to the right of the line. By this counting, one can determine whether or not the line is a hamsandwich cut. \
 			This algorithm runs in O(n<sup>3</sup>) time, because it will check for O(n<sup>2</sup>) combination of points whether or not it is a \
-			hamsandwich cut in O(n) time.<br>')
+			hamsandwich cut in O(n) time.'))
+	.append($('<p>')
 		.append('The O(n<sup>2</sup>) algorithm is not only a lot faster, but also more advanced. It makes use of a concept called duality. \
 			We refer to the section on duality for a more thorough explanation, but in short it means that there is a second representation of the problem. This second \
-			representation sees the points in the original problems as lines, and the hamsandwich line as a point.<br>')
-		.append('After transforming the problem to its dual representation, for both sets of lines, the median line is determined. \
-			The median line is a set of linesegments (it is not truly a line). It is made up of the parts of lines. A segment is part \
-			of the median line of a group, if of that group there are as many lines above as below it. In the figure below, for the set of red lines, \
+			representation sees the points in the original problem as lines, and the hamsandwich line as a point.<br>')
+		.append('After transforming the problem to its dual representation, for both sets of lines, a median line is determined. \
+			The median line is a set of linesegments (it is not truly a line) made up of parts of the lines. A segment is part \
+			of the median line (of one group), if there are as many lines above as below it belonging to that group. In the figure below, for the set of red lines, \
 			the median line is accentuated by pink, and for the blue line by dark blue. One can see that there is always exactly one line above and below the median line \
 			for the given group.')		
 		.append('<br><img src="about/MedianLine.gif" class="figure" alt="Shows the median lines of in the dual representation."><br>')
-		.append('After determining the median line, the intersections of the two median lines are determined (the green and brown circles in the figure). The point of intersection between the \
-			two median lines represents the cut-line in the original representation. This is the case, because when the median lines intersect, that \
-			means there are as many lines on both sides of that intersection (which correspond to points in the original representation).<br> \
-			The algorithm takes O(n) time to create the dual representation, but after that it will have to compute the median line for both groups. \
+		.append('After determining the median line, intersections of the two median lines are determined (the green and brown circles in the figure). \
+			The point of intersection between the median lines of the two groups represents the cut-line in the original representation. \
+			This is the case because when the median lines intersect, it \
+			means there are as many lines on both sides of that intersection (which correspond to points in the original representation).'))
+	.append($('<p>')
+		.append('The algorithm takes O(n) time to create the dual representation, but after that it will have to compute the median line for both groups. \
 			This takes O(n<sup>2</sup>) time. After this, one can simply go over all the intersections of the median line, which takes at most O(n). \
 			Because these actions all happen sequentially, the dominating factor is O(n<sup>2</sup>). The key reason that this runs in O(n<sup>2</sup>) \
-			instead of O(n<sup>3</sup>), is that when you find the intersections of the median lines, you know that it is a valid slice - without checking all \
+			instead of O(n<sup>3</sup>), is that when you find the intersections of the median lines, you know that it is a valid slice without checking all \
 			other lines first.')
 	)
 ;
@@ -68,11 +72,14 @@ $('#about-duality')
 		.append('Duality is a different way to interpret geometric problems with points and lines. \
 			Where the original problem considers a point, the dual representation will consider a line, and vice versa. \
 			The demo above will give you some feeling for this. You can drag the points, and see how they behave in the \
-			dual representation. If you mouse-over a point, the corresponding line will be highlighted.<br> \
-			Points are converted rather directly; a point (p<sub>x</sub>,p<sub>y</sub>) will be converted to the line y=p<sub>x</sub>*x-p<sub>y</sub>. \
-			Conversely, the line y=a*x+b will be convered to point (a,b). You can see this in the demo, if you increase p<sub>x</sub> \
+			dual representation. If you mouse-over a point, the corresponding line will be highlighted.'))
+	.append($('<p>')
+		.append('Points are converted rather directly; a point ( <var>p<sub>x</sub></var> , <var>p<sub>y</sub></var> ) will \
+			be converted to the line <var>y</var> = <var>p<sub>x</sub></var><var>x</var> - <var>p<sub>y</sub></var>. \
+			Conversely, the line <var>y</var> = <var>a</var><var>x</var> + <var>b</var> will be converted to the point \
+			( <var>a</var> , <var>b</var> ). You can see this in the demo, if you increase <var>p<sub>x</sub></var> \
 			by moving a point to the right, the corresponding line will get a steeper slope. Likewise, moving the point downwards will \
-			make the corresponding line go down as well.<br>'))
+			make the corresponding line go down as well.'))
 ;
 
 $(function()
@@ -134,30 +141,34 @@ $('#about-instructions')
 			'Supreme judge Zoid Splark has recently ruled the laws of physics to be unconstitutional, \
 			and as such, he has decided to abolish them. Because of this, the universe became unstable. \
 			Recently, rifts have been opening everywhere. The army was highly unprepared, and did not have their fleets of \
-			spaceships positioned adequately to make sure every area stays defended.<br>\
-			The president himself has appointed you as a new lieutenant, who has to make sure the spaceships are \
-			well distributed through space. The army has two main branches, medical personnel in red ships and \
+			spaceships positioned adequately to make sure every area stays defended.'))
+	.append($('<p>')
+		.append(
+			'The president himself has appointed you as a new lieutenant, who has to make sure the spaceships are \
+			well distributed through space. The army has two main branches, technical support in red ships and \
 			armed forces in blue ships. You will be sent to wherever rifts appear, where you will have to divide \
-			the medics and armed forces into two groups of equal size. For this task, you will be using a console, of which the \
+			the techs and armed forces into two groups of equal size. For this task, you will be using a console, of which the \
 			user interface is shown in the following figure.<br>')
 		// TODO (?) Put this image in index.html and scale the content based on size of the context.
 		.append('<img src="about/game.gif" alt="An overview of UI elements."><br>')
 		.append('There will be a small briefing at the top of the screen (1). \
 			The green band indicates where the rift is going to develop (2). \
 			You have to make sure both sides of the rift \
-			have the same amount of medics (red ships), and both sides of the rift have an equal amount of armed forces (blue ships).<br>\
-			Both the medics (red) and armed forces (blue) have the same type of ships, here are a few, but not all, ships:<br>\
-			- DRAGSHIP (3) This is the biggest ship the army has. You can order it by dragging it on your screen.<br>\
-			- COWARDSHIP (4) This ship has the most volatile people of the army. Depending on the pilot, they either tend \
-			to move towards your mouse clicks, or they will flee from it.<br>\
-			- STATIONARYSHIP (5) This ship is stationary. It will never move.<br><br>\
+			have the same amount of techs (red ships), and both sides of the rift have an equal amount of armed forces (blue ships).<br>\
+			Both the techs (red) and armed forces (blue) have the same type of ships, here are a few, but not all, ships:<br><dl>\
+			<dt>Frigate (3)</dt><dd>This is the biggest ship the army has. It has a strong hierarchy and loyal crew. \
+			You can order them directly by dragging them around on your screen.</dd>\
+			<dt>Cruiser (5)</dt><dd>These ships are part of special task forces hence can not be ordered directly. \
+			They can be summoned though which makes them appear almost instantaneously due to its powerful translocation unit.</dd> \
+			<dt>Fighter/scout (4)</dt><dd>These ships feature the most independent (and even slightly volatile) crew of the army. \
+			Depending on the pilot, they either tend to move towards your mouse clicks, or they will flee from it.</dd></dl>\
 			The president is a man of time. He will evaluate your performance solely based on time spent to move the ships. This evaluation \
 			can be seen in the top left corner while commanding your fleets (6). But do not worry, if you need some time, \
 			you can always take a break with the pause button in the top right corner (7). If you feel you could have done better, \
 			you\'re in luck. There is a rewind button, which will revert all actions you performed since you came to the area (8), giving you a new chance. \
-			There will also be a line shown on the console (9). This line indicates the current division which divides both the medics \
-			and armed forces in half. Since the goal is to have both the medics and armed forces in equal representation on both sides \
-			of the rift, if this line coincidices with the rift-line, you completed your mission.')
+			There will also be a line shown on the console (9). This line indicates the current division which divides both the techs \
+			and armed forces in half. Since the goal is to have both the techs and armed forces in equal representation on both sides \
+			of the rift, if this line coincides with the rift-line, you completed your mission.')
 	)
 ;
 

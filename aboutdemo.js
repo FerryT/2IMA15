@@ -16,8 +16,8 @@ function AboutDemo(id1, id2, algorithm)
 	this.algorithm = algorithm;
 
 	this.dual.xscale = d3.scale.linear()
-		.domain([1, -1])
-		.range([-100,100])
+		.domain([-1, 1])
+		.range([100,-100])
 	;
 	
 	this.q1 = this.rect.clone();
